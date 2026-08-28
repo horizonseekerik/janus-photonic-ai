@@ -2600,7 +2600,11 @@
       const target = document.getElementById('tab-' + tabId);
       if (target) target.classList.add('active');
 
-      if (tabId === 'arch') {
+      if (tabId === 'rns') {
+        if (typeof evalInteger === 'function') evalInteger();
+      } else if (tabId === 'ai') {
+        if (typeof loadAIData === 'function') loadAIData();
+      } else if (tabId === 'arch') {
         setTimeout(() => {
           if (typeof initArchAnimation === 'function') initArchAnimation();
           if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
@@ -2729,9 +2733,9 @@
           `;
         }
 
-        if (res.moduli_16 && res.residues_16) {
-          renderTiles(res.moduli_16, res.residues_16);
-        }
+        const mList = res.moduli_16 || res.moduli || [256, 251, 243, 241, 239, 233, 229, 227, 223, 211, 199, 197, 193, 191, 181, 179];
+        const rList = res.residues_16 || res.residues || mList.map(m => 42 % m);
+        renderTiles(mList, rList);
       } catch (err) {
         console.error('evalInteger error:', err);
       }
