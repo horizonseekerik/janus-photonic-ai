@@ -1,0 +1,2865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PROJECT JANUS MINI (16-TILE) - Co-Simulation Specification</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 12mm 9mm 12mm 9mm;
+        @bottom-right {
+            content: "Page " counter(page);
+            font-size: 7pt;
+            color: #64748b;
+            font-family: 'Segoe UI', sans-serif;
+        }
+    }
+    *, *:before, *:after { box-sizing: border-box; }
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        color: #0f172a;
+        line-height: 1.38;
+        font-size: 8.5pt;
+        background: #ffffff;
+        padding: 0; margin: 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+    h1 {
+        color: #0f2b48; font-size: 14pt; font-weight: 700;
+        border-bottom: 2.5px solid #0f2b48; padding-bottom: 5px;
+        margin-top: 0; margin-bottom: 8px; page-break-after: avoid;
+    }
+    h2 {
+        color: #1b4b72; font-size: 11pt; font-weight: 600;
+        border-bottom: 1.5px solid #cbd5e1; padding-bottom: 3px;
+        margin-top: 14px; margin-bottom: 6px; page-break-after: avoid;
+    }
+    h3 {
+        color: #1e3a8a; font-size: 9.5pt; font-weight: 600;
+        margin-top: 10px; margin-bottom: 4px; page-break-after: avoid;
+    }
+    h4 {
+        color: #334155; font-size: 8.5pt; font-weight: 600;
+        margin-top: 7px; margin-bottom: 3px; page-break-after: avoid;
+    }
+    p { margin-top: 2px; margin-bottom: 4px; }
+    ul, ol { margin-top: 2px; margin-bottom: 4px; padding-left: 16px; }
+    li { margin-bottom: 1px; }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+        margin: 6px 0 10px 0;
+        font-size: 6.5pt;
+        page-break-inside: auto;
+        border: 1.5px solid #0f2b48;
+    }
+    tr { page-break-inside: avoid; page-break-after: auto; }
+    th {
+        background-color: #0f2b48 !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        text-align: left;
+        padding: 3px 4px;
+        border-top: 1.5px solid #0f2b48 !important;
+        border-bottom: 1.5px solid #0f2b48 !important;
+        border-left: 1px solid #2d4a6e !important;
+        border-right: 1px solid #2d4a6e !important;
+        font-size: 6.5pt;
+        white-space: nowrap;
+    }
+    th:first-child { border-left: 1.5px solid #0f2b48 !important; }
+    th:last-child { border-right: 1.5px solid #0f2b48 !important; }
+    td {
+        padding: 2px 4px;
+        border-top: 1px solid #cbd5e1 !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+        border-left: 1px solid #94a3b8 !important;
+        border-right: 1px solid #94a3b8 !important;
+        vertical-align: middle;
+        font-size: 6.5pt;
+    }
+    td:first-child { border-left: 1.5px solid #0f2b48 !important; font-family: 'Consolas', monospace; font-size: 6.0pt; }
+    td:last-child { border-right: 1.5px solid #0f2b48 !important; }
+    tbody tr:nth-child(even) { background-color: #f8fafc; }
+    tbody tr:nth-child(odd) { background-color: #ffffff; }
+
+    /* Code Blocks */
+    pre {
+        background-color: #f8fafc;
+        border: 1.5px solid #64748b;
+        border-radius: 3px;
+        padding: 5px 7px;
+        overflow-x: hidden;
+        font-family: 'Consolas', 'Courier New', monospace !important;
+        font-size: 6.0pt !important;
+        line-height: 1.18 !important;
+        white-space: pre !important;
+        margin: 5px 0;
+        page-break-inside: avoid;
+        color: #0f172a;
+    }
+    pre code {
+        font-family: 'Consolas', 'Courier New', monospace !important;
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+    }
+    code {
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 7pt;
+        background-color: #f1f5f9;
+        padding: 0px 2px;
+        border-radius: 2px;
+        color: #0f172a;
+    }
+    hr { height: 1px; background-color: #cbd5e1; border: none; margin: 10px 0; }
+    strong { color: #0f172a; font-weight: 600; }
+</style>
+</head>
+<body>
+<h1 id="project-janus-mini-16-tile-multi-physics-co-simulation-system-verification-specification">PROJECT JANUS MINI (16-TILE): MULTI-PHYSICS CO-SIMULATION &amp; SYSTEM VERIFICATION SPECIFICATION</h1>
+<p><strong>Document ID:</strong> JANUS-SIM-SPEC-MINI16-2026-V1<br />
+<strong>Target Hardware:</strong> JANUS Mini 16-Tile Monolithic Planar MVP (Model 1A)<br />
+<strong>Classification:</strong> Engineering Blueprint / Verification Standard<br />
+<strong>Lead Architect:</strong> Deepanshu Bhardwaj<br />
+<strong>Status:</strong> Approved for Implementation</p>
+<hr />
+<h2 id="1-executive-summary-verification-objective">1. Executive Summary &amp; Verification Objective</h2>
+<p>The objective of this specification is to define the end-to-end, multi-scale, multi-physics co-simulation framework for the <strong>JANUS Mini 16-Tile Accelerator (Model 1A)</strong>.</p>
+<p>To bridge the gap between nanophotonic Maxwell field physics and high-level artificial intelligence inference, this framework couples <strong>open-source, high-performance simulation engines</strong> into an automated, single-command validation pipeline.</p>
+<pre><code>+---------------------------------------------------------------------------------------------------+
+|                        JANUS MINI 16-TILE MULTI-SCALE VERIFICATION STACK                          |
++---------------------+-----------------------+-----------------------------------------------------+
+| Simulation Tier     | Engine / Toolchain    | Primary Physical / Architectural Scope              |
++---------------------+-----------------------+-----------------------------------------------------+
+| Tier 1: Optics      | 3D MEEP (FDTD)        | Maxwell solver, GST-467 S-matrix, field absorption |
+| Tier 2: Thermal     | Elmer FEM (3D FEM)    | Transient Z-axis heat diffusion, SiO2 buffer, ROM   |
+| Tier 3: Circuit     | Xyce (Parallel SPICE) | SAC2M APD, StrongARM latches, 100 GHz eye diagrams  |
+| Tier 4: RTL Logic   | Cocotb + Verilator    | Gate-level CRT adder tree (210 ps), RNS encoders    |
+| Tier 5: Arithmetic  | Python RNS Engine     | Spatial One-Hot, JIR scheduler, RRNS, Z3 proofs     |
++---------------------+-----------------------+-----------------------------------------------------+
+</code></pre>
+<hr />
+<h2 id="2-global-simulation-constants-variable-registry">2. Global Simulation Constants &amp; Variable Registry</h2>
+<p>All simulation parameters defined in this section are <strong>immutable constants</strong> shared across all five verification tiers. Every variable is assigned a canonical <strong>Python identifier</strong> (used directly in simulation code), a <strong>mathematical symbol</strong>, a <strong>fixed numerical value</strong>, <strong>SI-compatible unit</strong>, and <strong>tier scope</strong> indicating which simulation tiers consume it.</p>
+<p><strong>Tier Scope Key:</strong> T1 = MEEP Optics | T2 = Elmer Thermal | T3 = Xyce Circuit | T4 = Cocotb RTL | T5 = Python RNS</p>
+<hr />
+<h3 id="21-universal-physical-constants">2.1 Universal Physical Constants</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>c_vacuum</code></td>
+<td style="text-align: left;">c</td>
+<td style="text-align: left;">2.9979 x 10^8</td>
+<td style="text-align: left;">m/s</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Speed of light in vacuum</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_planck</code></td>
+<td style="text-align: left;">h</td>
+<td style="text-align: left;">6.626 x 10^-34</td>
+<td style="text-align: left;">J-s</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Planck's constant</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_bar</code></td>
+<td style="text-align: left;">h-bar</td>
+<td style="text-align: left;">1.0546 x 10^-34</td>
+<td style="text-align: left;">J-s</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Reduced Planck's constant (h/2pi)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_boltzmann</code></td>
+<td style="text-align: left;">k_B</td>
+<td style="text-align: left;">1.381 x 10^-23</td>
+<td style="text-align: left;">J/K</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Boltzmann constant</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>q_electron</code></td>
+<td style="text-align: left;">q</td>
+<td style="text-align: left;">1.602 x 10^-19</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Elementary charge</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>epsilon_0</code></td>
+<td style="text-align: left;">eps_0</td>
+<td style="text-align: left;">8.854 x 10^-12</td>
+<td style="text-align: left;">F/m</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Permittivity of free space</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>mu_0</code></td>
+<td style="text-align: left;">mu_0</td>
+<td style="text-align: left;">1.2566 x 10^-6</td>
+<td style="text-align: left;">H/m</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Permeability of free space</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pi</code></td>
+<td style="text-align: left;">pi</td>
+<td style="text-align: left;">3.14159265358979</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Mathematical constant pi</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-operating-wavelength-laser-source-optical-carrier">2.2 Operating Wavelength, Laser Source &amp; Optical Carrier</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>lambda_0</code></td>
+<td style="text-align: left;">lambda_0</td>
+<td style="text-align: left;">1064 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Primary operating wavelength (Yb-fiber CW)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lambda_0_nm</code></td>
+<td style="text-align: left;">lambda_0</td>
+<td style="text-align: left;">1064</td>
+<td style="text-align: left;">nm</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Operating wavelength (nanometers)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>f_optical</code></td>
+<td style="text-align: left;">f_0</td>
+<td style="text-align: left;">281.76 x 10^12</td>
+<td style="text-align: left;">Hz</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Optical carrier frequency (c/lambda)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>omega_optical</code></td>
+<td style="text-align: left;">omega</td>
+<td style="text-align: left;">1.7703 x 10^15</td>
+<td style="text-align: left;">rad/s</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Angular optical frequency (2<em>pi</em>f_0)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_photon</code></td>
+<td style="text-align: left;">E_ph</td>
+<td style="text-align: left;">1.8669 x 10^-19</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Single photon energy (h*f_0)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_photon_eV</code></td>
+<td style="text-align: left;">E_ph</td>
+<td style="text-align: left;">1.1654</td>
+<td style="text-align: left;">eV</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Photon energy in electron-volts</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lambda_pump</code></td>
+<td style="text-align: left;">lambda_p</td>
+<td style="text-align: left;">976 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Yb-fiber pump wavelength</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>eta_qd_yb</code></td>
+<td style="text-align: left;">eta_QD</td>
+<td style="text-align: left;">0.917</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Yb quantum defect efficiency (976/1064)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_lambda</code></td>
+<td style="text-align: left;">N_lambda</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Number of wavelength channels (single-lambda)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_ghost</code></td>
+<td style="text-align: left;">P_ghost</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Parasitic FWM ghost power (single-lambda: 0)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-optical-material-refractive-indices-electro-optic-coefficients">2.3 Optical Material Refractive Indices &amp; Electro-Optic Coefficients</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>n_si</code></td>
+<td style="text-align: left;">n_Si</td>
+<td style="text-align: left;">3.565</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Silicon refractive index at 1064 nm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_sio2</code></td>
+<td style="text-align: left;">n_SiO2</td>
+<td style="text-align: left;">1.444</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">SiO2 cladding refractive index at 1064 nm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_sin</code></td>
+<td style="text-align: left;">n_SiN</td>
+<td style="text-align: left;">2.01</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Si3N4 waveguide refractive index at 1064 nm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_litao3</code></td>
+<td style="text-align: left;">n_LT</td>
+<td style="text-align: left;">2.13</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">LiTaO3 refractive index at 1064 nm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_gst467_amorph</code></td>
+<td style="text-align: left;">n_a</td>
+<td style="text-align: left;">3.45</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 amorphous real refractive index</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_gst467_amorph</code></td>
+<td style="text-align: left;">kappa_a</td>
+<td style="text-align: left;">0.008</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 amorphous extinction coefficient</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>n_gst467_cryst</code></td>
+<td style="text-align: left;">n_c</td>
+<td style="text-align: left;">4.20</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 crystalline real refractive index</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_gst467_cryst</code></td>
+<td style="text-align: left;">kappa_c</td>
+<td style="text-align: left;">0.18</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 crystalline extinction coefficient</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_n_pcm</code></td>
+<td style="text-align: left;">delta_n</td>
+<td style="text-align: left;">0.75</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">PCM refractive index contrast (n_c - n_a)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_n_pcm_range_max</code></td>
+<td style="text-align: left;">delta_n</td>
+<td style="text-align: left;">2.5</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Maximum observed PCM delta_n (literature)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>dn_dT_si</code></td>
+<td style="text-align: left;">dn/dT</td>
+<td style="text-align: left;">1.86 x 10^-4</td>
+<td style="text-align: left;">K^-1</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Thermo-optic coefficient of silicon</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>r33_litao3</code></td>
+<td style="text-align: left;">r_33</td>
+<td style="text-align: left;">30.5 x 10^-12</td>
+<td style="text-align: left;">m/V</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">LiTaO3 Pockels electro-optic coefficient</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>loss_sin_prop</code></td>
+<td style="text-align: left;">alpha_SiN</td>
+<td style="text-align: left;">&lt; 0.1</td>
+<td style="text-align: left;">dB/cm</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Si3N4 waveguide propagation loss</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>loss_litao3_prop</code></td>
+<td style="text-align: left;">alpha_LT</td>
+<td style="text-align: left;">&lt; 0.1</td>
+<td style="text-align: left;">dB/cm</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">LiTaO3 waveguide propagation loss</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="24-phase-change-material-ge4sb6te7-gst-467-properties">2.4 Phase-Change Material (Ge4Sb6Te7 / GST-467) Properties</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>T_crystallization</code></td>
+<td style="text-align: left;">T_cryst</td>
+<td style="text-align: left;">200 - 220</td>
+<td style="text-align: left;">deg-C</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">GST-467 SET crystallization temperature</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_melting</code></td>
+<td style="text-align: left;">T_melt</td>
+<td style="text-align: left;">500 - 540</td>
+<td style="text-align: left;">deg-C</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">GST-467 RESET melting/amorphization temperature</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_pcm_program</code></td>
+<td style="text-align: left;">E_PCM</td>
+<td style="text-align: left;">10 - 50 x 10^-12</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">PCM programming energy per device (pJ range)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cycling_endurance</code></td>
+<td style="text-align: left;">N_endure</td>
+<td style="text-align: left;">&gt;= 10^6</td>
+<td style="text-align: left;">cycles</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 switch cycling endurance floor</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cycling_endurance_max</code></td>
+<td style="text-align: left;">N_endure_max</td>
+<td style="text-align: left;">10^8</td>
+<td style="text-align: left;">cycles</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 demonstrated endurance ceiling</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>volumetric_expansion</code></td>
+<td style="text-align: left;">delta_V</td>
+<td style="text-align: left;">4 - 8</td>
+<td style="text-align: left;">%</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Volumetric strain (amorphous to crystalline)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_gst_thermal</code></td>
+<td style="text-align: left;">k_GST</td>
+<td style="text-align: left;">0.5</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">GST-467 thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>A_pcm_cell</code></td>
+<td style="text-align: left;">A_sw</td>
+<td style="text-align: left;">1.25 x 10^-12</td>
+<td style="text-align: left;">m^2</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Single PCM switch footprint (1.25 um^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>V_gap_pcm</code></td>
+<td style="text-align: left;">V_gap</td>
+<td style="text-align: left;">25 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Nanoscale engineered void gap (&gt; 20 nm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>V_gap_minimum</code></td>
+<td style="text-align: left;">V_gap_min</td>
+<td style="text-align: left;">20 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Absolute minimum void gap (phonon tunneling cutoff)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>gst_patch_thickness</code></td>
+<td style="text-align: left;">t_GST</td>
+<td style="text-align: left;">15 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 active patch thickness (15 nm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_pcm_static_hold</code></td>
+<td style="text-align: left;">P_hold</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3, T5</td>
+<td style="text-align: left;">Non-volatile PCM static hold power (zero)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="25-waveguide-photonic-cell-geometry">2.5 Waveguide &amp; Photonic Cell Geometry</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>wg_width_si</code></td>
+<td style="text-align: left;">w_wg</td>
+<td style="text-align: left;">450 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Silicon waveguide core width (450 nm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>wg_height_si</code></td>
+<td style="text-align: left;">h_wg</td>
+<td style="text-align: left;">220 x 10^-9</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Silicon waveguide core height (220 nm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_wg_phase</code></td>
+<td style="text-align: left;">L</td>
+<td style="text-align: left;">500 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Waveguide length for phase stability (500 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_wire_electrical</code></td>
+<td style="text-align: left;">L_wire</td>
+<td style="text-align: left;">200 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">On-chip local electrical wire length (200 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>v_wire</code></td>
+<td style="text-align: left;">v_e</td>
+<td style="text-align: left;">1.5 x 10^8</td>
+<td style="text-align: left;">m/s</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">Speed of light in on-chip metal (c/2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>IL_crossing</code></td>
+<td style="text-align: left;">IL_X</td>
+<td style="text-align: left;">0.02</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">MMI waveguide crossing insertion loss per crossing</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>XT_crossing</code></td>
+<td style="text-align: left;">XT_X</td>
+<td style="text-align: left;">-40</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">MMI waveguide crossing crosstalk</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="26-mini-16-tile-architectural-topology">2.6 Mini 16-Tile Architectural Topology</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>N_tiles</code></td>
+<td style="text-align: left;">N_t</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Number of independent residue tiles</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_dim</code></td>
+<td style="text-align: left;">N_d</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Matrix dimension per tile (32 x 32 mesh)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_mult_per_tile</code></td>
+<td style="text-align: left;">N_m/t</td>
+<td style="text-align: left;">1,024</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Multipliers per tile (N_d^2 = 32^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_mult_total</code></td>
+<td style="text-align: left;">N_m</td>
+<td style="text-align: left;">16,384</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Total optical multipliers (N_t x N_m/t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_alphabet</code></td>
+<td style="text-align: left;">N</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1, T5</td>
+<td style="text-align: left;">Waveguide alphabet per multiplier (1-Hot 8-bit)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_alphabet_bits</code></td>
+<td style="text-align: left;">b</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">bits</td>
+<td style="text-align: left;">T4, T5</td>
+<td style="text-align: left;">Bit-width of spatial alphabet (log2(256))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_wg_total</code></td>
+<td style="text-align: left;">N_wg</td>
+<td style="text-align: left;">4,194,304</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Total spatial waveguides (N_m x N)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>S_benes</code></td>
+<td style="text-align: left;">S</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">stages</td>
+<td style="text-align: left;">T1, T5</td>
+<td style="text-align: left;">Benes switching stages (2*log2(256) - 1)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_switch_per_mult</code></td>
+<td style="text-align: left;">N_sw/m</td>
+<td style="text-align: left;">1,920</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1, T5</td>
+<td style="text-align: left;">Switches per multiplier fabric ((N/2) x S)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_switch_total</code></td>
+<td style="text-align: left;">N_sw</td>
+<td style="text-align: left;">31,457,280</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Total GST-467 switch cells (~31.46 M)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_apd_total</code></td>
+<td style="text-align: left;">N_det</td>
+<td style="text-align: left;">4,194,304</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Total SAC2M Ge/Si APD detectors (~4.19 M)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_active_per_cycle</code></td>
+<td style="text-align: left;">N_act</td>
+<td style="text-align: left;">16,384</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1, T3, T5</td>
+<td style="text-align: left;">Active photons per 10 ps cycle</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_active_per_phase</code></td>
+<td style="text-align: left;">N_ph</td>
+<td style="text-align: left;">8,192</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Active photons per 5 ps half-cycle phase</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_spatial</code></td>
+<td style="text-align: left;">alpha_s</td>
+<td style="text-align: left;">1/256</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3, T5</td>
+<td style="text-align: left;">Spatial activity factor (1-in-N sparsity)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_spatial_decimal</code></td>
+<td style="text-align: left;">alpha_s</td>
+<td style="text-align: left;">0.00390625</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3, T5</td>
+<td style="text-align: left;">Decimal spatial activity factor</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="27-die-geometry-z-axis-physical-stack-mini-16-tile-planar">2.7 Die Geometry &amp; Z-Axis Physical Stack (Mini 16-Tile Planar)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>A_die</code></td>
+<td style="text-align: left;">A_die</td>
+<td style="text-align: left;">100.00 x 10^-6</td>
+<td style="text-align: left;">m^2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Die footprint area (100.00 mm^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>A_die_mm2</code></td>
+<td style="text-align: left;">A_die</td>
+<td style="text-align: left;">100.00</td>
+<td style="text-align: left;">mm^2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Die footprint area (mm^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_die</code></td>
+<td style="text-align: left;">L_die</td>
+<td style="text-align: left;">10.0 x 10^-3</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Die side length (10.0 mm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>A_tile</code></td>
+<td style="text-align: left;">A_t</td>
+<td style="text-align: left;">6.25 x 10^-6</td>
+<td style="text-align: left;">m^2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Individual tile area (100/16 = 6.25 mm^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>A_apd_single</code></td>
+<td style="text-align: left;">A_pd</td>
+<td style="text-align: left;">1.5 x 10^-12</td>
+<td style="text-align: left;">m^2</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Single Ge/Si APD device area (1.5 um^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_cmos</code></td>
+<td style="text-align: left;">h_CMOS</td>
+<td style="text-align: left;">50 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">CMOS base substrate thickness (50 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_sio2_buffer</code></td>
+<td style="text-align: left;">h_ox</td>
+<td style="text-align: left;">250 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 monolithic thermal buffer thickness (250 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_siph</code></td>
+<td style="text-align: left;">h_SiPh</td>
+<td style="text-align: left;">30 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiPh stratum thickness (30 um per stratum)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_strata</code></td>
+<td style="text-align: left;">N_str</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiPh strata count (Gen-1 planar monolithic)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_total_active</code></td>
+<td style="text-align: left;">T_act</td>
+<td style="text-align: left;">330 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Total active die height (50+250+30 = 330 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_inter_stratum_sio2</code></td>
+<td style="text-align: left;">h_iox</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Inter-stratum SiO2 spacer (N/A for Gen-1)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="28-heat-spreader-package-dimensions">2.8 Heat Spreader &amp; Package Dimensions</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>h_hs1</code></td>
+<td style="text-align: left;">h_HS1</td>
+<td style="text-align: left;">30 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Heat Spreader 1 (dense Cu-pillar micro-matrix)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_spreader_gap</code></td>
+<td style="text-align: left;">h_gap</td>
+<td style="text-align: left;">50 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Spreader gap (Cu-Cu pillar + vacuum/air void)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_hs2</code></td>
+<td style="text-align: left;">h_HS2</td>
+<td style="text-align: left;">250 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Heat Spreader 2 (external convective slim-lid)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_package_added</code></td>
+<td style="text-align: left;">h_pkg</td>
+<td style="text-align: left;">330 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Total macro-package added height (HS1+gap+HS2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_package_total</code></td>
+<td style="text-align: left;">T_pkg</td>
+<td style="text-align: left;">660 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Total packaged system height (330+330 = 660 um)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_cu_pillar_sparse</code></td>
+<td style="text-align: left;">rho_sp</td>
+<td style="text-align: left;">10,000</td>
+<td style="text-align: left;">mm^-2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Sparse Cu-pillar density (CMOS/SiO2/SiPh)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_cu_pillar_dense</code></td>
+<td style="text-align: left;">rho_dn</td>
+<td style="text-align: left;">900,000</td>
+<td style="text-align: left;">mm^-2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Dense Cu-pillar density (SiPh to HS1)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_cu_pillar_hs</code></td>
+<td style="text-align: left;">rho_hs</td>
+<td style="text-align: left;">950,000</td>
+<td style="text-align: left;">mm^-2</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">HS1 to HS2 macro-package Cu-pillar density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>h_hbm_reference</code></td>
+<td style="text-align: left;">h_HBM</td>
+<td style="text-align: left;">720 x 10^-6</td>
+<td style="text-align: left;">m</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Adjacent-die HBM memory stack height (reference)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="29-thermal-material-properties-silicon-cmos-substrate">2.9 Thermal Material Properties -- Silicon (CMOS Substrate)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_si_thermal</code></td>
+<td style="text-align: left;">k_Si</td>
+<td style="text-align: left;">148</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Silicon thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_si</code></td>
+<td style="text-align: left;">rho_Si</td>
+<td style="text-align: left;">2,330</td>
+<td style="text-align: left;">kg/m^3</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Silicon mass density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cp_si</code></td>
+<td style="text-align: left;">c_p,Si</td>
+<td style="text-align: left;">705</td>
+<td style="text-align: left;">J/(kg-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Silicon specific heat capacity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_si_thermal</code></td>
+<td style="text-align: left;">alpha_Si</td>
+<td style="text-align: left;">9.010 x 10^-5</td>
+<td style="text-align: left;">m^2/s</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Silicon thermal diffusivity (k/rho/cp)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="210-thermal-material-properties-sio2-thermal-buffer">2.10 Thermal Material Properties -- SiO2 (Thermal Buffer)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_sio2_thermal</code></td>
+<td style="text-align: left;">k_ox</td>
+<td style="text-align: left;">1.38</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 fused silica thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_sio2</code></td>
+<td style="text-align: left;">rho_ox</td>
+<td style="text-align: left;">2,200</td>
+<td style="text-align: left;">kg/m^3</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 mass density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cp_sio2</code></td>
+<td style="text-align: left;">c_p,ox</td>
+<td style="text-align: left;">703</td>
+<td style="text-align: left;">J/(kg-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 specific heat capacity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_sio2</code></td>
+<td style="text-align: left;">alpha_ox</td>
+<td style="text-align: left;">9.05 x 10^-7</td>
+<td style="text-align: left;">m^2/s</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 thermal diffusivity (k/rho/cp)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>m_sio2_buffer</code></td>
+<td style="text-align: left;">m_ox</td>
+<td style="text-align: left;">5.500 x 10^-5</td>
+<td style="text-align: left;">kg</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 buffer mass (A_die x h_ox x rho_ox)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>C_sio2_buffer</code></td>
+<td style="text-align: left;">C_ox</td>
+<td style="text-align: left;">38.66 x 10^-3</td>
+<td style="text-align: left;">J/K</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">SiO2 buffer heat capacity (m_ox x c_p,ox)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="211-thermal-material-properties-copper-tdvs-heat-spreaders">2.11 Thermal Material Properties -- Copper (TDVs, Heat Spreaders)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_cu</code></td>
+<td style="text-align: left;">k_Cu</td>
+<td style="text-align: left;">400</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Copper thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_cu</code></td>
+<td style="text-align: left;">rho_Cu</td>
+<td style="text-align: left;">8,960</td>
+<td style="text-align: left;">kg/m^3</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Copper mass density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cp_cu</code></td>
+<td style="text-align: left;">c_p,Cu</td>
+<td style="text-align: left;">385</td>
+<td style="text-align: left;">J/(kg-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Copper specific heat capacity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_cu</code></td>
+<td style="text-align: left;">alpha_Cu</td>
+<td style="text-align: left;">1.160 x 10^-4</td>
+<td style="text-align: left;">m^2/s</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Copper thermal diffusivity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="212-thermal-material-properties-germanium-apd-absorption-layer">2.12 Thermal Material Properties -- Germanium (APD Absorption Layer)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_ge</code></td>
+<td style="text-align: left;">k_Ge</td>
+<td style="text-align: left;">60</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Germanium thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_ge</code></td>
+<td style="text-align: left;">rho_Ge</td>
+<td style="text-align: left;">5,323</td>
+<td style="text-align: left;">kg/m^3</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Germanium mass density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cp_ge</code></td>
+<td style="text-align: left;">c_p,Ge</td>
+<td style="text-align: left;">320</td>
+<td style="text-align: left;">J/(kg-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Germanium specific heat capacity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alpha_ge</code></td>
+<td style="text-align: left;">alpha_Ge</td>
+<td style="text-align: left;">3.52 x 10^-5</td>
+<td style="text-align: left;">m^2/s</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Germanium thermal diffusivity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="213-thermal-material-properties-air-package-voids">2.13 Thermal Material Properties -- Air (Package Voids)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_air</code></td>
+<td style="text-align: left;">k_air</td>
+<td style="text-align: left;">0.026</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Air thermal conductivity (54x lower than SiO2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="214-thermal-material-properties-litao3-pockels-modulators">2.14 Thermal Material Properties -- LiTaO3 (Pockels Modulators)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>k_litao3</code></td>
+<td style="text-align: left;">k_LT</td>
+<td style="text-align: left;">4.6</td>
+<td style="text-align: left;">W/(m-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">LiTaO3 thermal conductivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>rho_litao3</code></td>
+<td style="text-align: left;">rho_LT</td>
+<td style="text-align: left;">7,456</td>
+<td style="text-align: left;">kg/m^3</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">LiTaO3 mass density</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cp_litao3</code></td>
+<td style="text-align: left;">c_p,LT</td>
+<td style="text-align: left;">424</td>
+<td style="text-align: left;">J/(kg-K)</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">LiTaO3 specific heat capacity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="215-thermal-dynamics-jir-scheduling-temperature-budgets">2.15 Thermal Dynamics, JIR Scheduling &amp; Temperature Budgets</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>T_ambient</code></td>
+<td style="text-align: left;">T_amb</td>
+<td style="text-align: left;">298.15</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Ambient reference temperature (25 deg-C)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_ambient_C</code></td>
+<td style="text-align: left;">T_amb</td>
+<td style="text-align: left;">25.0</td>
+<td style="text-align: left;">deg-C</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Ambient reference temperature (Celsius)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_diff</code></td>
+<td style="text-align: left;">tau_diff</td>
+<td style="text-align: left;">69.06 x 10^-3</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">SiO2 thermal diffusion time (h_ox^2 / alpha_ox)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_diff_ms</code></td>
+<td style="text-align: left;">tau_diff</td>
+<td style="text-align: left;">69.06</td>
+<td style="text-align: left;">ms</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">Thermal diffusion time (milliseconds)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_jir</code></td>
+<td style="text-align: left;">tau_JIR</td>
+<td style="text-align: left;">5.0 x 10^-6</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">JIR activation cycle duration (5 us)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_jir_us</code></td>
+<td style="text-align: left;">tau_JIR</td>
+<td style="text-align: left;">5.0</td>
+<td style="text-align: left;">us</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">JIR activation cycle (microseconds)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_jir_per_tau_diff</code></td>
+<td style="text-align: left;">N_JIR</td>
+<td style="text-align: left;">13,812</td>
+<td style="text-align: left;">cycles</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">JIR cycles per thermal diffusion time</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_jir_rotation</code></td>
+<td style="text-align: left;">t_rot</td>
+<td style="text-align: left;">4.0 x 10^-6</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">JIR state-transition rotation overhead (4 us)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Q_gen_per_jir</code></td>
+<td style="text-align: left;">Q_gen</td>
+<td style="text-align: left;">30.85 x 10^-6</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">Heat generated per JIR cycle (P_total x tau_JIR)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_T_cycle</code></td>
+<td style="text-align: left;">dT_cyc</td>
+<td style="text-align: left;">0.798 x 10^-3</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">Per-cycle thermal transient rise (Q_gen / C_ox)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_T_cycle_mK</code></td>
+<td style="text-align: left;">dT_cyc</td>
+<td style="text-align: left;">0.798</td>
+<td style="text-align: left;">mK</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">Per-cycle thermal rise (millikelvin)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_T_crit_phase</code></td>
+<td style="text-align: left;">dT_crit</td>
+<td style="text-align: left;">5.72</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Phase-drift critical temperature rise</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_T_steady</code></td>
+<td style="text-align: left;">dT_ss</td>
+<td style="text-align: left;">0.213</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Steady-state SiPh temperature rise above ambient</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>thermal_margin_ratio</code></td>
+<td style="text-align: left;">M_th</td>
+<td style="text-align: left;">26.9</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Thermal stability margin (dT_crit / dT_ss)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_max_operating</code></td>
+<td style="text-align: left;">T_op,max</td>
+<td style="text-align: left;">70.0</td>
+<td style="text-align: left;">deg-C</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Maximum allowable steady-state operating temp</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_crystallization_guard</code></td>
+<td style="text-align: left;">T_guard</td>
+<td style="text-align: left;">150.0</td>
+<td style="text-align: left;">deg-C</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">GST-467 crystallization onset temperature</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>R_th_down</code></td>
+<td style="text-align: left;">R_down</td>
+<td style="text-align: left;">0.195</td>
+<td style="text-align: left;">K/W</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Downward CMOS-SiO2 thermal resistance (100 mm^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>R_th_up</code></td>
+<td style="text-align: left;">R_up</td>
+<td style="text-align: left;">0.552</td>
+<td style="text-align: left;">K/W</td>
+<td style="text-align: left;">T2</td>
+<td style="text-align: left;">Upward SiPh-HS1 thermal resistance (100 mm^2)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_per_tile</code></td>
+<td style="text-align: left;">P_t</td>
+<td style="text-align: left;">0.386</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T2, T5</td>
+<td style="text-align: left;">Average power dissipation per tile</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_T_permissible_siph</code></td>
+<td style="text-align: left;">dT_perm</td>
+<td style="text-align: left;">0.048</td>
+<td style="text-align: left;">K</td>
+<td style="text-align: left;">T1, T2</td>
+<td style="text-align: left;">Permissible SiPh thermal stability window</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="216-sac2m-gesi-avalanche-photodetector-parameters">2.16 SAC2M Ge/Si Avalanche Photodetector Parameters</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>M_apd</code></td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">APD avalanche multiplication gain</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_ionization</code></td>
+<td style="text-align: left;">k</td>
+<td style="text-align: left;">0.06</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Effective impact ionization ratio</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>F_excess_noise</code></td>
+<td style="text-align: left;">F(M)</td>
+<td style="text-align: left;">2.0</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">McIntyre excess noise factor at M=7, k=0.06</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>R_responsivity</code></td>
+<td style="text-align: left;">R</td>
+<td style="text-align: left;">0.8</td>
+<td style="text-align: left;">A/W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Germanium responsivity at 1064 nm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>f_3db_apd</code></td>
+<td style="text-align: left;">f_3dB</td>
+<td style="text-align: left;">105 x 10^9</td>
+<td style="text-align: left;">Hz</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">APD 3 dB electrical bandwidth (105 GHz)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>GBP_apd</code></td>
+<td style="text-align: left;">GBP</td>
+<td style="text-align: left;">441 x 10^9</td>
+<td style="text-align: left;">Hz</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Gain-bandwidth product (M x f_3dB)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_pd_clearance</code></td>
+<td style="text-align: left;">t_PD</td>
+<td style="text-align: left;">1.52 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Photogenerated carrier clearance time (1.52 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>C_j_apd</code></td>
+<td style="text-align: left;">C_j</td>
+<td style="text-align: left;">0.8 x 10^-15</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">APD junction capacitance (0.8 fF)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>R_s_apd</code></td>
+<td style="text-align: left;">R_s</td>
+<td style="text-align: left;">25</td>
+<td style="text-align: left;">ohm</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">APD series resistance (25 ohm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>C_int_parasitic</code></td>
+<td style="text-align: left;">C_int</td>
+<td style="text-align: left;">3.0 x 10^-15</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Maximum parasitic input capacitance (3 fF)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>I_dark_apd</code></td>
+<td style="text-align: left;">I_dark</td>
+<td style="text-align: left;">&lt; 10^-9</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">APD dark current upper bound (&lt; 1 nA)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="217-receiver-electronics-decision-logic">2.17 Receiver Electronics &amp; Decision Logic</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>sigma_tia</code></td>
+<td style="text-align: left;">sigma_TIA</td>
+<td style="text-align: left;">1.8 x 10^-6</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">TIA input-referred RMS noise current (1.8 uA)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_strongarm</code></td>
+<td style="text-align: left;">E_SA</td>
+<td style="text-align: left;">100 x 10^-18</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">StrongARM per-decision energy (100 aJ = 0.1 fJ)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_regen</code></td>
+<td style="text-align: left;">t_reg</td>
+<td style="text-align: left;">3.5 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">StrongARM regeneration time (&lt;=3.5 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_pockels_switch</code></td>
+<td style="text-align: left;">E_Pock</td>
+<td style="text-align: left;">50 x 10^-18</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Pockels electro-optic switch energy (50 aJ)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="218-receiver-sensitivity-ber-detection-margin">2.18 Receiver Sensitivity, BER &amp; Detection Margin</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>BER_target</code></td>
+<td style="text-align: left;">BER</td>
+<td style="text-align: left;">10^-18</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3, T5</td>
+<td style="text-align: left;">Target bit error rate (&lt;1 error per century @ 100 GHz)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>Q_factor</code></td>
+<td style="text-align: left;">Q</td>
+<td style="text-align: left;">9.38</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Q-factor for BER=10^-18 (erfc inverse)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_sens_theoretical</code></td>
+<td style="text-align: left;">P_sens,th</td>
+<td style="text-align: left;">3.01 x 10^-6</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Theoretical receiver sensitivity (3.01 uW)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_sens_theoretical_dbm</code></td>
+<td style="text-align: left;">P_sens,th</td>
+<td style="text-align: left;">-25.21</td>
+<td style="text-align: left;">dBm</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Theoretical sensitivity in dBm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>sensitivity_margin_db</code></td>
+<td style="text-align: left;">M_sens</td>
+<td style="text-align: left;">2.0</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Engineering margin added to theoretical sensitivity</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_sens_practical</code></td>
+<td style="text-align: left;">P_sens</td>
+<td style="text-align: left;">4.79 x 10^-6</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Practical receiver sensitivity (4.79 uW)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_sens_practical_dbm</code></td>
+<td style="text-align: left;">P_sens</td>
+<td style="text-align: left;">-23.21</td>
+<td style="text-align: left;">dBm</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Practical sensitivity in dBm (-25.21 + 2.0)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_det</code></td>
+<td style="text-align: left;">P_det</td>
+<td style="text-align: left;">13.82 x 10^-6</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Delivered signal power at detector (13.82 uW)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_det_dbm</code></td>
+<td style="text-align: left;">P_det</td>
+<td style="text-align: left;">-18.59</td>
+<td style="text-align: left;">dBm</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Delivered power in dBm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>link_margin</code></td>
+<td style="text-align: left;">M_link</td>
+<td style="text-align: left;">+4.61</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Net binary detection margin (P_det - P_sens)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>link_margin_linear</code></td>
+<td style="text-align: left;">M_link</td>
+<td style="text-align: left;">2.89</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Linear power safety factor (10^(4.61/10))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_false_positive</code></td>
+<td style="text-align: left;">P_FP</td>
+<td style="text-align: left;">2.55 x 10^-16</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3, T5</td>
+<td style="text-align: left;">Dark-channel false positive probability (255 x BER)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="219-laser-optical-power-electrical-power-mini-16-tile">2.19 Laser Optical Power &amp; Electrical Power (Mini 16-Tile)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>P_laser_optical</code></td>
+<td style="text-align: left;">P_opt</td>
+<td style="text-align: left;">2.21</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Master laser CW optical launch power</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_laser_optical_dbm</code></td>
+<td style="text-align: left;">P_opt</td>
+<td style="text-align: left;">+33.44</td>
+<td style="text-align: left;">dBm</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Laser optical power in dBm</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>WPE</code></td>
+<td style="text-align: left;">eta_WPE</td>
+<td style="text-align: left;">0.75</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Laser wall-plug efficiency (&gt;75%)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_laser_electrical</code></td>
+<td style="text-align: left;">P_elec</td>
+<td style="text-align: left;">2.95</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Laser electrical consumption (P_opt / WPE)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="220-optical-distribution-loss-budget-mini-16-tile">2.20 Optical Distribution Loss Budget (Mini 16-Tile)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>N_mmi_stages</code></td>
+<td style="text-align: left;">N_MMI</td>
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">stages</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Cascaded 1:2 MMI splitter count (log2(8192))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_split_per_stage</code></td>
+<td style="text-align: left;">L_sp</td>
+<td style="text-align: left;">3.0103</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Ideal per-stage splitting loss (10*log10(2))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_split_ideal</code></td>
+<td style="text-align: left;">L_sp,tot</td>
+<td style="text-align: left;">39.13</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Total ideal passive splitting loss (13 x 3.0103)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_mmi_excess_per_stage</code></td>
+<td style="text-align: left;">L_MMI</td>
+<td style="text-align: left;">0.30</td>
+<td style="text-align: left;">dB/stage</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">MMI excess insertion loss per stage</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_mmi_excess_total</code></td>
+<td style="text-align: left;">L_MMI,tot</td>
+<td style="text-align: left;">3.90</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Total MMI excess loss (13 x 0.30)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_benes_per_stage</code></td>
+<td style="text-align: left;">L_B</td>
+<td style="text-align: left;">0.50</td>
+<td style="text-align: left;">dB/stage</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Dilated Benes routing loss per stage</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_benes_total</code></td>
+<td style="text-align: left;">L_B,tot</td>
+<td style="text-align: left;">7.50</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Total 15-stage Benes loss (15 x 0.50)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_propagation_coupling</code></td>
+<td style="text-align: left;">L_prop</td>
+<td style="text-align: left;">1.50</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Waveguide propagation &amp; interlayer coupling</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_excess_total</code></td>
+<td style="text-align: left;">L_ex</td>
+<td style="text-align: left;">12.90</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Total excess path loss (MMI + Benes + prop)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>L_distribution_total</code></td>
+<td style="text-align: left;">L_tot</td>
+<td style="text-align: left;">52.03</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Total end-to-end distribution loss (ideal + excess)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>IL_switch_cell</code></td>
+<td style="text-align: left;">IL_sw</td>
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">dB/cell</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">GST-467 switch cell insertion loss (a-GST state)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ER_dilated_benes</code></td>
+<td style="text-align: left;">ER</td>
+<td style="text-align: left;">25.0</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Dilated Benes extinction ratio (minimum)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="221-system-electrical-power-budget-mini-16-tile">2.21 System Electrical Power Budget (Mini 16-Tile)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>P_laser_elec</code></td>
+<td style="text-align: left;">P_1</td>
+<td style="text-align: left;">2.95</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">1064 nm Yb laser (75% WPE) electrical power</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_litao3_routers</code></td>
+<td style="text-align: left;">P_2</td>
+<td style="text-align: left;">0.51</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">LiTaO3 Pockels micro-ring router power</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_apd_detectors</code></td>
+<td style="text-align: left;">P_3</td>
+<td style="text-align: left;">0.16</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Ge/Si SAC2M APD detector array power (M=7)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_optical_amp</code></td>
+<td style="text-align: left;">P_4</td>
+<td style="text-align: left;">0.00</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Optical amplification layer (eliminated = 0 W)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_pcm_static</code></td>
+<td style="text-align: left;">P_5</td>
+<td style="text-align: left;">0.00</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">PCM routing switch static hold (non-volatile = 0 W)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_cmos_logic</code></td>
+<td style="text-align: left;">P_6</td>
+<td style="text-align: left;">1.05</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">CMOS encoders / adders / CRT reconstruction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_jir_control</code></td>
+<td style="text-align: left;">P_7</td>
+<td style="text-align: left;">1.50</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T4, T5</td>
+<td style="text-align: left;">JIR scheduler and control logic</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_total_system</code></td>
+<td style="text-align: left;">P_sys</td>
+<td style="text-align: left;">6.17</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Total full-system electrical power</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="222-timing-frequency-latency-budget">2.22 Timing, Frequency &amp; Latency Budget</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>f_clk</code></td>
+<td style="text-align: left;">f_clk</td>
+<td style="text-align: left;">100 x 10^9</td>
+<td style="text-align: left;">Hz</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">System operating clock frequency (100 GHz)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_cycle</code></td>
+<td style="text-align: left;">T_cyc</td>
+<td style="text-align: left;">10.0 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">All</td>
+<td style="text-align: left;">Wave-pipelined clock cycle period (10.0 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_phase</code></td>
+<td style="text-align: left;">T_ph</td>
+<td style="text-align: left;">5.0 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Time-multiplexed illumination phase duration (5 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_fwhm_min</code></td>
+<td style="text-align: left;">tau_min</td>
+<td style="text-align: left;">3.0 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Minimum optical pulse FWHM (3 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>tau_fwhm_max</code></td>
+<td style="text-align: left;">tau_max</td>
+<td style="text-align: left;">5.0 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Maximum optical pulse FWHM (5 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_mod</code></td>
+<td style="text-align: left;">t_mod</td>
+<td style="text-align: left;">10.0 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Electro-optic injection pulse interval (&lt;=10 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_pd</code></td>
+<td style="text-align: left;">t_PD</td>
+<td style="text-align: left;">1.52 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Photodetector carrier clearance (1.52 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_wire</code></td>
+<td style="text-align: left;">t_wire</td>
+<td style="text-align: left;">1.33 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T3, T4</td>
+<td style="text-align: left;">Electrical wire interconnect delay (L_wire/v_e)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_guard</code></td>
+<td style="text-align: left;">t_guard</td>
+<td style="text-align: left;">3.5 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1, T3</td>
+<td style="text-align: left;">Inter-pulse guard margin (ISI isolation)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_opt_benes</code></td>
+<td style="text-align: left;">t_opt</td>
+<td style="text-align: left;">750 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">15-stage Benes optical propagation delay (750 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_crt</code></td>
+<td style="text-align: left;">t_CRT</td>
+<td style="text-align: left;">210 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T4</td>
+<td style="text-align: left;">CRT adder-tree accumulation delay (210 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_crt_pipeline_stages</code></td>
+<td style="text-align: left;">S_CRT</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">stages</td>
+<td style="text-align: left;">T4</td>
+<td style="text-align: left;">CRT pipelined adder tree stage count</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>T_latency_total</code></td>
+<td style="text-align: left;">T_lat</td>
+<td style="text-align: left;">963 x 10^-12</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T1-T4</td>
+<td style="text-align: left;">Total end-to-end single-op latency (963 ps)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_pipeline_depth</code></td>
+<td style="text-align: left;">D_pipe</td>
+<td style="text-align: left;">96</td>
+<td style="text-align: left;">stages</td>
+<td style="text-align: left;">T4</td>
+<td style="text-align: left;">Wave-pipelined in-flight computation depth</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>t_reconfig_window</code></td>
+<td style="text-align: left;">t_cfg</td>
+<td style="text-align: left;">100 x 10^-6</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">PCM full-weight reconfiguration window (0.1 ms)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="223-rns-arithmetic-moduli-configuration">2.23 RNS Arithmetic &amp; Moduli Configuration</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>m_max</code></td>
+<td style="text-align: left;">m_max</td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Maximum modulus value (fits 256-waveguide alphabet)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>m_bits</code></td>
+<td style="text-align: left;">b_m</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">bits</td>
+<td style="text-align: left;">T4, T5</td>
+<td style="text-align: left;">Bit-width per residue channel (log2(m_max))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_int4</code></td>
+<td style="text-align: left;">k_4</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">tiles</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Tiles needed for INT4 (ceil(2*4/8))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_int8</code></td>
+<td style="text-align: left;">k_8</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">tiles</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Tiles needed for INT8 (ceil(2*8/8))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_int16</code></td>
+<td style="text-align: left;">k_16</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">tiles</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Tiles needed for INT16 (ceil(2*16/8))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_int32</code></td>
+<td style="text-align: left;">k_32</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">tiles</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Tiles needed for INT32 (ceil(2*32/8))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>k_int64</code></td>
+<td style="text-align: left;">k_64</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">tiles</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Tiles needed for INT64 (ceil(2*64/8))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>N_rrns_redundant</code></td>
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">channels</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">RRNS redundant moduli channels for fault detection</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>carry_propagation</code></td>
+<td style="text-align: left;">t_carry</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Inter-tile carry propagation delay (spatial: zero)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>max_int4_product</code></td>
+<td style="text-align: left;">Z_4</td>
+<td style="text-align: left;">225</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Maximum INT4 product (15 x 15 = 225 &lt; 256)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="224-throughput-energy-efficiency-mini-16-tile">2.24 Throughput &amp; Energy Efficiency (Mini 16-Tile)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>eta_peak</code></td>
+<td style="text-align: left;">eta_pk</td>
+<td style="text-align: left;">1.00</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Peak theoretical hardware utilization (100%)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>eta_sustained</code></td>
+<td style="text-align: left;">eta_su</td>
+<td style="text-align: left;">0.85</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Sustained operational utilization (85%)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MAC_per_FLOPS</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">FLOPS/MAC</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">MAC to FLOPS equivalence (1 MAC = 2 FLOPS)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>MAC_per_tile_raw</code></td>
+<td style="text-align: left;">M_t</td>
+<td style="text-align: left;">102.4 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Raw per-tile MAC rate (N_d^2 x f_clk)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int4_peak</code></td>
+<td style="text-align: left;">TP_4p</td>
+<td style="text-align: left;">1,638.4 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT4 peak throughput (16 tiles x MAC_t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int4_sustained</code></td>
+<td style="text-align: left;">TP_4s</td>
+<td style="text-align: left;">1,392.6 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT4 sustained throughput (peak x 0.85)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int8_peak</code></td>
+<td style="text-align: left;">TP_8p</td>
+<td style="text-align: left;">819.2 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT8 peak throughput (16/2 x MAC_t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int8_sustained</code></td>
+<td style="text-align: left;">TP_8s</td>
+<td style="text-align: left;">696.3 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT8 sustained throughput</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int16_peak</code></td>
+<td style="text-align: left;">TP_16p</td>
+<td style="text-align: left;">409.6 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT16 peak throughput (16/4 x MAC_t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int16_sustained</code></td>
+<td style="text-align: left;">TP_16s</td>
+<td style="text-align: left;">348.2 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT16 sustained throughput</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int32_peak</code></td>
+<td style="text-align: left;">TP_32p</td>
+<td style="text-align: left;">204.8 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT32 peak throughput (16/8 x MAC_t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int32_sustained</code></td>
+<td style="text-align: left;">TP_32s</td>
+<td style="text-align: left;">174.1 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT32 sustained throughput</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int64_peak</code></td>
+<td style="text-align: left;">TP_64p</td>
+<td style="text-align: left;">102.4 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT64 peak throughput (16/16 x MAC_t)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>TP_int64_sustained</code></td>
+<td style="text-align: left;">TP_64s</td>
+<td style="text-align: left;">87.0 x 10^12</td>
+<td style="text-align: left;">MAC/s</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT64 sustained throughput</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>EE_int4</code></td>
+<td style="text-align: left;">EE_4</td>
+<td style="text-align: left;">225.7</td>
+<td style="text-align: left;">TMAC/s/W</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT4 sustained energy efficiency</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>EE_int64</code></td>
+<td style="text-align: left;">EE_64</td>
+<td style="text-align: left;">14.1</td>
+<td style="text-align: left;">TMAC/s/W</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">INT64 sustained energy efficiency</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="225-pcm-reconfiguration-transient-power">2.25 PCM Reconfiguration &amp; Transient Power</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>E_pcm_tier1</code></td>
+<td style="text-align: left;">E_cfg1</td>
+<td style="text-align: left;">100 x 10^-15</td>
+<td style="text-align: left;">J/switch</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 1 PCM programming energy (~100 fJ)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_pcm_tier2</code></td>
+<td style="text-align: left;">E_cfg2</td>
+<td style="text-align: left;">1 x 10^-12</td>
+<td style="text-align: left;">J/switch</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 2 PCM programming energy (~1 pJ)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_pcm_tier3</code></td>
+<td style="text-align: left;">E_cfg3</td>
+<td style="text-align: left;">10 x 10^-12</td>
+<td style="text-align: left;">J/switch</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 3 PCM programming energy (~10 pJ)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_reconfig_tier1</code></td>
+<td style="text-align: left;">P_cfg1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 1 transient reconfig power (10^9 switches @ 0.1 ms)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_reconfig_tier2</code></td>
+<td style="text-align: left;">P_cfg2</td>
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 2 transient reconfig power</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>P_reconfig_tier3</code></td>
+<td style="text-align: left;">P_cfg3</td>
+<td style="text-align: left;">100</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Tier 3 transient reconfig power (conservative)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>f_delta_sparse</code></td>
+<td style="text-align: left;">f_delta</td>
+<td style="text-align: left;">&lt; 0.01</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Sparse incremental update fraction (&lt;1%)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>E_sparse_update</code></td>
+<td style="text-align: left;">E_sp</td>
+<td style="text-align: left;">&lt; 0.1 x 10^-3</td>
+<td style="text-align: left;">J</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">Sparse incremental energy per update (&lt;0.1 mJ)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="226-nonlinear-optics-spectral-purity">2.26 Nonlinear Optics &amp; Spectral Purity</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>sigma_nl_squared</code></td>
+<td style="text-align: left;">sigma_NL^2</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">W^2</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Nonlinear interference power (single-lambda: 0)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>entropy_interchannel</code></td>
+<td style="text-align: left;">E_ij</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Inter-channel entropy transfer (single-lambda: 0)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>pulse_bw_constant</code></td>
+<td style="text-align: left;">K_TBP</td>
+<td style="text-align: left;">0.44</td>
+<td style="text-align: left;">dimensionless</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Transform-limited pulse-bandwidth product</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delta_f_5ps</code></td>
+<td style="text-align: left;">delta_f</td>
+<td style="text-align: left;">88 x 10^9</td>
+<td style="text-align: left;">Hz</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">5 ps pulse spectral width (0.44/5ps = 88 GHz)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="227-analog-snr-precision-limits-reference-comparisons">2.27 Analog SNR &amp; Precision Limits (Reference Comparisons)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>S_max_32x32</code></td>
+<td style="text-align: left;">S_max</td>
+<td style="text-align: left;">2,080,800</td>
+<td style="text-align: left;">levels</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Max analog accumulation (32 x 255 x 255)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SNR_analog_32x32</code></td>
+<td style="text-align: left;">SNR_A</td>
+<td style="text-align: left;">126.4</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Minimum analog SNR for 32x32 (20*log10)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ADC_bits_32x32</code></td>
+<td style="text-align: left;">N_ADC</td>
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">bits</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">Equivalent ADC resolution (log2 of S_max)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>dB_per_bit</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">6.02</td>
+<td style="text-align: left;">dB/bit</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">ADC quantization SNR scaling constant</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>SNR_adc_floor</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">1.76</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">ADC SNR floor offset in SNR = 6.02N + 1.76</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>temporal_slicing_penalty</code></td>
+<td style="text-align: left;">S_slice</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">cycles/MAC</td>
+<td style="text-align: left;">T5</td>
+<td style="text-align: left;">23-bit sliced into 4-bit: 6 cycles per MAC</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="228-logarithmic-unit-conversion-constants">2.28 Logarithmic &amp; Unit Conversion Constants</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Python Variable</th>
+<th style="text-align: left;">Symbol</th>
+<th style="text-align: left;">Value</th>
+<th style="text-align: left;">Unit</th>
+<th style="text-align: left;">Tier Scope</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>dB_per_split</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">3.0103</td>
+<td style="text-align: left;">dB</td>
+<td style="text-align: left;">T1</td>
+<td style="text-align: left;">Power per 1:2 split (10*log10(2))</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>mW_to_dBm_offset</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">dBm</td>
+<td style="text-align: left;">T3</td>
+<td style="text-align: left;">dBm reference: 0 dBm = 1 mW</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-target-hardware-baseline-janus-mini-16-tile-model-1a">3. Target Hardware Baseline: JANUS Mini 16-Tile (Model 1A)</h2>
+<p>The simulation suite strictly targets the verified hardware parameters of the <strong>JANUS Mini 16-Tile Planar Monolithic Accelerator</strong>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Architectural Parameter</th>
+<th style="text-align: left;">Physical Value</th>
+<th style="text-align: left;">Engineering Unit / Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Residue Tile Count (N_tiles)</strong></td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">Independent optical residue tiles</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Tile Matrix Mesh (N_dim)</strong></td>
+<td style="text-align: left;">32 x 32</td>
+<td style="text-align: left;">Matrix dimensions per tile</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Multipliers per Tile</strong></td>
+<td style="text-align: left;">1,024</td>
+<td style="text-align: left;">32^2 optical multiplier fabrics</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total Optical Multipliers</strong></td>
+<td style="text-align: left;"><strong>16,384</strong></td>
+<td style="text-align: left;">16 tiles x 1,024 multipliers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Waveguide Alphabet per Multiplier</strong></td>
+<td style="text-align: left;">256</td>
+<td style="text-align: left;">One-Hot 8-bit residue spatial channels</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total Spatial Waveguides</strong></td>
+<td style="text-align: left;"><strong>4,194,304</strong></td>
+<td style="text-align: left;">16,384 x 256 spatial channels</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Benes Switching Stages (S)</strong></td>
+<td style="text-align: left;">15 stages</td>
+<td style="text-align: left;">2*log2(256) - 1 universal topology</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Switches per Multiplier Fabric</strong></td>
+<td style="text-align: left;">1,920</td>
+<td style="text-align: left;">(256/2) x 15 non-volatile cells</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total GST-467 Switch Cells</strong></td>
+<td style="text-align: left;"><strong>31,457,280</strong></td>
+<td style="text-align: left;">~31.46 Million non-volatile cells (0 W hold)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Terminal Ge/Si SAC2M APDs</strong></td>
+<td style="text-align: left;"><strong>4,194,304</strong></td>
+<td style="text-align: left;">~4.19 Million monolithic pixels</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Active Photons per 10 ps Cycle</strong></td>
+<td style="text-align: left;">16,384</td>
+<td style="text-align: left;">1-in-256 spatial sparsity (8,192 per 5 ps phase)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Operating Frequency</strong></td>
+<td style="text-align: left;"><strong>100 GHz</strong></td>
+<td style="text-align: left;">T_cycle = 10.0 ps wave-pipelined</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Die Footprint (A_die)</strong></td>
+<td style="text-align: left;"><strong>100.00 mm^2</strong></td>
+<td style="text-align: left;">10.0 mm x 10.0 mm monolithic planar</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total Active Die Height</strong></td>
+<td style="text-align: left;"><strong>330 um</strong></td>
+<td style="text-align: left;">50 um CMOS + 250 um SiO2 + 30 um SiPh</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Master Laser Launch Power</strong></td>
+<td style="text-align: left;"><strong>2.21 W Optical CW</strong></td>
+<td style="text-align: left;">1064 nm Yb-fiber CW (+33.44 dBm)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Master Laser Electrical Power</strong></td>
+<td style="text-align: left;"><strong>2.95 W Electrical</strong></td>
+<td style="text-align: left;">&gt;75% Wall-Plug Efficiency (WPE)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Total System Electrical Power</strong></td>
+<td style="text-align: left;"><strong>6.17 W</strong></td>
+<td style="text-align: left;">Full chip power under continuous load</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sustained INT4 Throughput (eta=0.85)</strong></td>
+<td style="text-align: left;"><strong>1,392.6 TMAC/s</strong></td>
+<td style="text-align: left;">225.7 TMAC/s/W energy efficiency</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Sustained INT64 Throughput (eta=0.85)</strong></td>
+<td style="text-align: left;"><strong>87.0 TMAC/s</strong></td>
+<td style="text-align: left;">14.1 TMAC/s/W energy efficiency</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-five-tier-multi-physics-co-simulation-pipeline">4. Five-Tier Multi-Physics Co-Simulation Pipeline</h2>
+<pre><code>+---------------------------------------------------------------------------------------------------+
+|                        JANUS MINI 16-TILE DATA HANDOFF &amp; SIMULATION FLOW                          |
++---------------------------------------------------------------------------------------------------+
+
+   [ TIER 1: 3D MEEP FDTD ]
+   | - Solves GST-467 cell (a-GST vs c-GST), TFLN crossing, and 1x256 Pockels router
+   | - Exports: S-parameters (Touchstone format) &amp; Volumetric Optical Absorption Q_opt(x,y,z)
+   v
+   +-- S-Parameters (Touchstone .s4p) ----------+
+   |                                            v
+   |                                 [ TIER 3: XYCE SPICE ]
+   |                                 | - Vector-fitting (vectfit) to passive subcircuit
+   |                                 | - SAC2M APD equivalent circuit (M=7, C_j=0.8 fF)
+   |                                 | - StrongARM dynamic latch model (~100 aJ/event)
+   |                                 | - Outputs: 100 GHz Eye Diagrams, Jitter, BER &lt;= 10^-18
+   v                                 v
+   [ TIER 2: ELMER FEM THERMAL ]     | Realistic BER &amp; Transit Delays
+   | - 3D transient heat diffusion   |
+   | - Imports Q_opt(x,y,z) + CMOS   |
+   | - Validates tau_diff = 69.06 ms |
+   | - Exports: Reduced-Order Model  |
+   v                                 |
+   +-- Dynamic Thermal ROM Matrix ---+-----------------------------+
+   |                                 v                             v
+   |              [ TIER 4: DIGITAL RTL (COCOTB + VERILATOR) ]     |
+   |              | - Gate-level RNS Modulo Front-End               |
+   |              | - Pipelined CRT Adder Tree (210 ps)             |
+   |              | - Evaluates CMOS propagation &amp; clock power       |
+   |              v                                                |
+   |              +-- Gate Delays &amp; Latency -----------------------+
+   |                                                               v
+   +-----------------------------------------------------&gt; [ TIER 5: PYTHON RNS ENGINE ]
+                                                           | - Spatial One-Hot Tensor Routing
+                                                           | - JIR Dynamic Thermal Scheduler
+                                                           | - RRNS Fault Self-Healing
+                                                           | - Z3 SMT Formal Proofs
+                                                           | - Exact INT4-INT64 GEMM Benchmarking
+                                                           v
+                                                           [ VERIFIED EXACT ACCELERATOR ]
+</code></pre>
+<hr />
+<h3 id="tier-1-electro-optics-fdtd-extraction-3d-meep">Tier 1: Electro-Optics &amp; FDTD Extraction (3D MEEP)</h3>
+<h4 id="a-target-unit-cell-geometries">A. Target Unit-Cell Geometries</h4>
+<ol>
+<li><strong>GST-467 Phase-Change Directional Coupler Switch:</strong></li>
+<li>Silicon core (wg_width_si=450 nm x wg_height_si=220 nm), SiO2 cladding (n_sio2=1.444).</li>
+<li>Active Ge4Sb6Te7 patch (gst_patch_thickness=15 nm, A_pcm_cell=1.25 um^2 relaxed cell area).</li>
+<li>Solves at lambda_0=1064 nm in both states:<ul>
+<li><strong>Amorphous (a-GST):</strong> n_gst467_amorph=3.45 + i*k_gst467_amorph=0.008 (Low-loss cross state).</li>
+<li><strong>Crystalline (c-GST):</strong> n_gst467_cryst=4.20 + i*k_gst467_cryst=0.18 (High-index bar state).</li>
+</ul>
+</li>
+<li><strong>Ultra-Low-Loss Waveguide Crossing Matrix:</strong></li>
+<li>Multi-mode interference (MMI) optimized crossing (IL_crossing &lt; 0.02 dB, XT_crossing &lt; -40 dB).</li>
+<li><strong>LiTaO3 Pockels Input Modulator Cell:</strong></li>
+<li>Thin-film lithium tantalate (r33_litao3=30.5 pm/V) with sub-E_pockels_switch=50 aJ/switch energy.</li>
+</ol>
+<h4 id="b-extracted-deliverables">B. Extracted Deliverables</h4>
+<ul>
+<li><strong>Scattering Matrix (Touchstone <code>.s4p</code> format):</strong> Insertion loss (IL_switch_cell &lt;= 0.10 dB), extinction ratio (ER_dilated_benes &gt;= 25 dB), phase response, and group delay.</li>
+<li><strong>Volumetric Heat Density Map (Q_opt(x,y,z)):</strong> Exported to HDF5 grid using the formula:<br />
+  Q_opt(x,y,z) = (1/2) * omega_optical * epsilon_0 * Im[eps_r(x,y,z)] * |E(x,y,z)|^2</li>
+</ul>
+<hr />
+<h3 id="tier-2-3d-multi-stratum-thermal-stack-analysis-elmer-fem">Tier 2: 3D Multi-Stratum Thermal Stack Analysis (Elmer FEM)</h3>
+<h4 id="a-geometric-domain-material-properties">A. Geometric Domain &amp; Material Properties</h4>
+<ul>
+<li><strong>CMOS Base Substrate:</strong> h_cmos=50 um Silicon (k_si_thermal=148 W/(m-K), rho_si=2330 kg/m^3, cp_si=705 J/(kg-K)).</li>
+<li><strong>Monolithic SiO2 Thermal Buffer:</strong> h_sio2_buffer=250 um fused silica (k_sio2_thermal=1.38 W/(m-K), rho_sio2=2200 kg/m^3, cp_sio2=703 J/(kg-K), alpha_sio2=9.05 x 10^-7 m^2/s).</li>
+<li><strong>SiPh Core Stratum:</strong> h_siph=30 um active photonics + Cu Through-Dielectric Vias (TDVs).</li>
+<li><strong>Boundary Conditions:</strong> Top surface convection/conduction to Heat Spreader (HS1, T_ambient=25 deg-C), lateral adiabatic boundaries.</li>
+</ul>
+<h4 id="b-verification-targets">B. Verification Targets</h4>
+<ol>
+<li><strong>Thermal Diffusion Time Constant:</strong> Verify tau_diff = h_sio2_buffer^2 / alpha_sio2 = 69.06 ms = 13,812 JIR cycles.</li>
+<li><strong>Per-Cycle Thermal Rise:</strong> Verify delta_T_cycle &lt;= 0.80 mK per tau_jir=5 us JIR computational epoch.</li>
+<li><strong>Non-Volatile Retention Guard:</strong> Ensure T_max_operating &lt; 70 deg-C (much less than T_crystallization_guard=150 deg-C).</li>
+<li><strong>Thermal ROM Extraction:</strong> Export state-space Foster/Cauer RC thermal impedance matrices for the Python JIR scheduler.</li>
+</ol>
+<hr />
+<h3 id="tier-3-circuit-signal-integrity-co-simulation-xyce-spice">Tier 3: Circuit &amp; Signal Integrity Co-Simulation (Xyce SPICE)</h3>
+<h4 id="a-subcircuit-network-composition">A. Subcircuit Network Composition</h4>
+<ol>
+<li><strong>Passive Optical Backbone:</strong> MEEP S-parameter Touchstone files fitted to passive, causal SPICE subcircuits using rational vector-fitting (vectfit).</li>
+<li><strong>SAC2M Ge/Si Avalanche Photodetector:</strong></li>
+<li>Equivalent circuit with primary photocurrent I_ph = R_responsivity * P_opt (R_responsivity=0.8 A/W at lambda_0=1064 nm).</li>
+<li>Avalanche gain multiplication M_apd=7.</li>
+<li>Junction capacitance C_j_apd=0.8 fF, series resistance R_s_apd=25 ohm.</li>
+<li>Excess noise factor F_excess_noise=2.0 with ionization ratio k_ionization=0.06.</li>
+<li><strong>StrongARM Regenerative Comparator:</strong></li>
+<li>Clocked sensing latch consuming E_strongarm=100 aJ/event, regeneration time t_regen &lt;= 3.5 ps.</li>
+</ol>
+<h4 id="b-verification-targets_1">B. Verification Targets</h4>
+<ol>
+<li><strong>Eye Diagram Opening:</strong> Open eye at f_clk=100 GHz optical rate (T_cycle=10 ps cycle period).</li>
+<li><strong>Bit Error Rate (BER):</strong> Verify BER_target &lt;= 10^-18 under practical sensitivity P_sens_practical=-23.21 dBm with link_margin=+4.61 dB at P_det=-18.59 dBm.</li>
+</ol>
+<hr />
+<h3 id="tier-4-digital-cmos-rtl-timing-verification-cocotb-verilator">Tier 4: Digital CMOS RTL &amp; Timing Verification (Cocotb + Verilator)</h3>
+<h4 id="a-synthesized-digital-blocks">A. Synthesized Digital Blocks</h4>
+<ol>
+<li><strong>High-Speed RNS Modulo Front-End:</strong> Decomposes input integers X into x_i = X mod m_i across N_tiles=16 parallel residue channels (m_i &lt;= m_max=256).</li>
+<li><strong>Pipelined Chinese Remainder Theorem (CRT) Adder Tree:</strong></li>
+<li>N_crt_pipeline_stages=4 stage pipelined modulo adder tree reconstructing 64-bit integer values from 16 residue channels.</li>
+<li>Total digital reconstruction latency t_crt &lt;= 210 ps.</li>
+<li><strong>JIR Consistency &amp; Fault Monitor:</strong> Monitors strongARM column outputs for RRNS parity violations.</li>
+</ol>
+<h4 id="b-verification-targets_2">B. Verification Targets</h4>
+<ul>
+<li>Cycle-accurate co-simulation linking Python testbenches to compiled Verilog logic with zero clock cycle slips.</li>
+</ul>
+<hr />
+<h3 id="tier-5-algorithmic-exactness-jir-rrns-verification-python-engine">Tier 5: Algorithmic Exactness, JIR &amp; RRNS Verification (Python Engine)</h3>
+<h4 id="a-core-python-modules">A. Core Python Modules</h4>
+<ol>
+<li><strong><code>moduli_generator.py</code>:</strong> Generates coprime sets M = {m_1, ..., m_16} with m_i &lt;= m_max=256, satisfying dynamic range prod(m_i) &gt; 2^64.</li>
+<li><strong><code>formal_verifier.py</code>:</strong> Uses the <strong>Z3 SMT Solver</strong> to mathematically prove that finite field multiplication in Z_(m_i) is isomorphic to the Benes permutation states without edge-case failures.</li>
+<li><strong><code>one_hot_router.py</code>:</strong> Simulates spatial 1-hot tensor contractions (N_dim=32 x 32 matrices across N_tiles=16 tiles) with zero floating-point rounding.</li>
+<li><strong><code>jir_scheduler.py</code>:</strong> Emulates microsecond-level closed-loop tile temperature tracking using the Elmer thermal ROM matrix, executing dynamic tile rotation within tau_jir=5 us.</li>
+<li><strong><code>rrns_fault_engine.py</code>:</strong> Injects stochastic physical bit errors (from Xyce BER models) and executes single-channel residue projection self-healing with N_rrns_redundant=2 redundant channels.</li>
+<li><strong><code>gemm_validator.py</code>:</strong> Executes standard INT4, INT8, INT16, INT32, INT64 matrix multiplication benchmarks and performs bit-exact comparison against NumPy / PyTorch 64-bit ground truth.</li>
+</ol>
+<hr />
+<h2 id="5-quantitative-pass-fail-verification-criteria">5. Quantitative Pass / Fail Verification Criteria</h2>
+<p>To achieve full engineering sign-off for the JANUS Mini 16-Tile model, the unified simulation suite must satisfy the following numerical bounds:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Verification Metric</th>
+<th style="text-align: left;">Target Requirement</th>
+<th style="text-align: left;">Strict Pass / Fail Threshold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>GST-467 Insertion Loss (a-GST)</strong></td>
+<td style="text-align: left;">IL_switch_cell &lt;= 0.10 dB/cell</td>
+<td style="text-align: left;"><strong>PASS if IL &lt;= 0.10 dB</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Dilated Benes Extinction Ratio</strong></td>
+<td style="text-align: left;">ER_dilated_benes &gt;= 25.0 dB</td>
+<td style="text-align: left;"><strong>PASS if ER &gt;= 25.0 dB</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Waveguide Crossing Insertion Loss</strong></td>
+<td style="text-align: left;">IL_crossing &lt;= 0.02 dB/crossing</td>
+<td style="text-align: left;"><strong>PASS if IL &lt;= 0.02 dB</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Waveguide Crossing Crosstalk</strong></td>
+<td style="text-align: left;">XT_crossing &lt;= -40.0 dB</td>
+<td style="text-align: left;"><strong>PASS if XT &lt;= -40.0 dB</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>SiO2 Thermal Diffusion Time</strong></td>
+<td style="text-align: left;">tau_diff = 69.06 ms</td>
+<td style="text-align: left;"><strong>PASS if 65 ms &lt;= tau_diff &lt;= 72 ms</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Per-Cycle Thermal Transient</strong></td>
+<td style="text-align: left;">delta_T_cycle &lt;= 0.80 mK</td>
+<td style="text-align: left;"><strong>PASS if dT &lt;= 0.80 mK</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Max Steady-State Operating Temp</strong></td>
+<td style="text-align: left;">&lt;= T_max_operating = 70 deg-C</td>
+<td style="text-align: left;"><strong>PASS if T_steady &lt; 100 deg-C</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>APD Practical Sensitivity Margin</strong></td>
+<td style="text-align: left;">link_margin &gt;= +4.61 dB</td>
+<td style="text-align: left;"><strong>PASS if Margin &gt;= +4.00 dB</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Optical Receiver Bit Error Rate</strong></td>
+<td style="text-align: left;">BER_target &lt;= 10^-18</td>
+<td style="text-align: left;"><strong>PASS if BER &lt;= 10^-18</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>CRT Adder Tree Digital Latency</strong></td>
+<td style="text-align: left;">t_crt &lt;= 210 ps</td>
+<td style="text-align: left;"><strong>PASS if t_CRT &lt;= 220 ps</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>RRNS Single-Fault Correction</strong></td>
+<td style="text-align: left;">100.0% Recovery</td>
+<td style="text-align: left;"><strong>PASS if Error Correction = 100.0%</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Arithmetic GEMM Precision Error</strong></td>
+<td style="text-align: left;"><strong>0.00000000000000%</strong></td>
+<td style="text-align: left;"><strong>PASS if Numerical Deviation = 0</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-directory-architecture-modular-workspace-layout">6. Directory Architecture &amp; Modular Workspace Layout</h2>
+<pre><code>janus_mini16_sim/
++-- configs/
+|   +-- mini_16t_constants.py         # ALL Section 2 global variables as Python constants
+|   +-- mini_16t_specs.json           # JSON export of constants for cross-tool interop
++-- tier1_meep_optics/
+|   +-- gst467_switch_cell.py         # 3D FDTD of PCM directional coupler
+|   +-- waveguide_crossing.py         # MMI crossing extraction
+|   +-- litao3_pockels_router.py      # LiTaO3 Pockels micro-ring modulator
+|   +-- export_touchstone.py          # Generates Touchstone .s4p files
+|   +-- export_heat_map.py            # Exports Q_opt(x,y,z) to HDF5
++-- tier2_elmer_thermal/
+|   +-- mini16_mesh.geo               # Gmsh 3D stack geometry (330 um)
+|   +-- materials.sif                 # Elmer material property definitions
+|   +-- case.sif                      # Elmer solver input file (transient heat)
+|   +-- extract_thermal_rom.py        # Extracts Foster/Cauer RC network
++-- tier3_xyce_circuit/
+|   +-- vector_fit_s_params.py        # Rational fitting for SPICE subcircuits
+|   +-- sac2m_apd_model.cir           # Ge/Si SAC2M equivalent circuit
+|   +-- strongarm_latch.cir           # StrongARM regenerative comparator
+|   +-- run_eye_diagram.cir           # 100 GHz transient eye diagram &amp; BER
++-- tier4_rtl_digital/
+|   +-- rns_encoder.v                 # Modulo decomposition logic
+|   +-- crt_adder_tree.v              # 210 ps pipelined CRT reconstruction
+|   +-- jir_fault_monitor.v           # RRNS parity violation detector
+|   +-- test_crt_cocotb.py            # Cocotb testbench with Verilator
++-- tier5_python_rns/
+|   +-- moduli_generator.py           # 16-channel coprime dynamic range
+|   +-- formal_verifier.py            # Z3 SMT formal proof
+|   +-- spatial_one_hot_router.py     # 15-stage Benes tensor contraction
+|   +-- jir_thermal_scheduler.py      # Microsecond tile rotation engine
+|   +-- rrns_self_healing.py          # Single-fault parity recovery
+|   +-- gemm_exact_benchmark.py       # Bit-exact GEMM validation vs FP32/INT64
++-- run_mini16_full_cosim.py          # Master orchestrator executing Tiers 1-5
++-- README.md                         # Setup instructions &amp; dependencies
+</code></pre>
+<hr />
+<p><em>Specification approved for Project JANUS Mini 16-Tile hardware realization and validation suite execution.</em></p>
+</body>
+</html>

@@ -1,0 +1,38 @@
+name: JANUS Mini 16-Tile Multi-Physics CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y iverilog
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest numpy scipy h5py z3-solver jaxtyping black
+
+    - name: Run Master Co-Simulation Orchestrator
+      run: |
+        python run_mini16_full_cosim.py --verbose
+
+    - name: Run Full Multi-Tier Automated Test Suite
+      run: |
+        pytest -v

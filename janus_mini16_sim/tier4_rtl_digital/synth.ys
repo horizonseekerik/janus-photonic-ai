@@ -1,0 +1,33 @@
+# ==============================================================================
+# PROJECT JANUS MINI (16-TILE): YOSYS LOGIC SYNTHESIS SCRIPT
+# ==============================================================================
+# Synthesizes Tier 4 100 GHz Digital RTL blocks into generic gate-level netlists.
+#
+# Usage (with Yosys installed):
+#     yosys synth.ys
+# ==============================================================================
+
+# 1. Read Verilog Sources
+read_verilog -sv rns_encoder.v
+read_verilog -sv crt_adder_tree.v
+read_verilog -sv jir_fault_monitor.v
+
+# 2. Check Design Hierarchy
+hierarchy -check -top crt_adder_tree
+
+# 3. High-Level Synthesis & Optimization
+proc; opt; fsm; opt; memory; opt
+
+# 4. Flatten Arithmetic Multipliers & Adders
+techmap; opt
+
+# 5. Map to Generic Standard Cells (DFFs and 2-Input Gates)
+dfflibmap -liberty generic.lib
+abc -liberty generic.lib
+
+# 6. Clean & Print Area Statistics
+clean
+stat
+
+# 7. Write Gate-Level Netlist
+write_verilog -noattr crt_adder_tree_synth_netlist.v

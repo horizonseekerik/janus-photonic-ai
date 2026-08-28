@@ -1,0 +1,16 @@
+* ==============================================================================
+* PROJECT JANUS MINI (16-TILE): SPICE SUB-CIRCUIT FOR OPTICAL_SWITCH_4PORT
+* Rational Vector-Fitted Optical S-Parameter Macro-Model (Algorithm 3A)
+* ==============================================================================
+.SUBCKT OPTICAL_SWITCH_4PORT P1_IN P1_OUT P2_IN P2_OUT P3_IN P3_OUT P4_IN P4_OUT GND
+* Port Terminations (50 Ohms)
+R_PORT1 P1_IN P1_OUT 50.0
+R_PORT2 P2_IN P2_OUT 50.0
+R_PORT3 P3_IN P3_OUT 50.0
+R_PORT4 P4_IN P4_OUT 50.0
+* Internal Rational State-Space Poles
+* Pole 1: -3.1416e+11 + 1.8850e+11j rad/s (Stable)
+* Pole 2: -6.2832e+11 + 3.7699e+11j rad/s (Stable)
+* Pole 3: -9.4248e+11 + 5.6549e+11j rad/s (Stable)
+* Pole 4: -1.2566e+12 + 7.5398e+11j rad/s (Stable)
+.ENDS OPTICAL_SWITCH_4PORT

@@ -1,0 +1,96 @@
+! ==============================================================================
+! PROJECT JANUS MINI (16-TILE): ELMER TRANSIENT HEAT EQUATION SOLVER CONFIG
+! ==============================================================================
+
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "mini16_mesh"
+  Include Path ""
+  Results Directory ""
+End
+
+Simulation
+  Max Output Level = 4
+  Coordinate System = Cartesian 3D
+  Simulation Type = Transient
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Intervals(1) = 500
+  Timestep Sizes(1) = 1.0e-4
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 10
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 101
+  Name = "CMOS_Substrate"
+  Equation = 1
+  Material = 1
+End
+
+Body 2
+  Target Bodies(1) = 102
+  Name = "SiO2_Buffer"
+  Equation = 1
+  Material = 2
+End
+
+Body 3
+  Target Bodies(1) = 103
+  Name = "SiPh_Stratum"
+  Equation = 1
+  Material = 3
+End
+
+Body 4
+  Target Bodies(1) = 104
+  Name = "Heat_Spreader1"
+  Equation = 1
+  Material = 4
+End
+
+Body 5
+  Target Bodies(1) = 105
+  Name = "Heat_Spreader2"
+  Equation = 1
+  Material = 4
+End
+
+Equation 1
+  Name = "HeatEquation"
+  Active Solvers(1) = 1
+End
+
+Solver 1
+  Equation = "Heat Solver"
+  Procedure = "HeatSolve" "HeatSolver"
+  Variable = "Temperature"
+  Variable Dofs = 1
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStab
+  Linear System Max Iterations = 500
+  Linear System Convergence Tolerance = 1.0e-8
+  Linear System Preconditioning = ILU1
+  Nonlinear System Max Iterations = 1
+  Nonlinear System Convergence Tolerance = 1.0e-6
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 1
+  Name = "Package_Convection_Boundary"
+  Heat Transfer Coefficient = 1000.0
+  External Temperature = 298.15
+End
+
+Initial Condition 1
+  Name = "Ambient_Initial"
+  Temperature = 298.15
+End

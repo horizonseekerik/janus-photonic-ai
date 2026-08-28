@@ -1,0 +1,84 @@
+! ==============================================================================
+! PROJECT JANUS MINI (16-TILE): ELMER FEM MATERIAL PROPERTY DEFINITIONS
+! ==============================================================================
+
+Material 1
+  Name = "Silicon_CMOS"
+  Density = 2330.0
+  Heat Conductivity = 148.0
+  Heat Capacity = 705.0
+End
+
+Material 2
+  Name = "SiO2_Thermal_Buffer"
+  Density = 2200.0
+  Heat Conductivity = 1.38
+  Heat Capacity = 703.0
+End
+
+Material 3
+  Name = "SiPh_Stratum"
+  ! FIX (audit CRITICAL): was erroneously assigned SiO2 properties, giving the
+  ! active photonic layer 100x lower k than reality and invalidating thermal
+  ! diffusion. SiPh stratum is crystalline Silicon.
+  Density = 2330.0
+  Heat Conductivity = 148.0
+  Heat Capacity = 705.0
+End
+
+Material 4
+  Name = "Copper_Heat_Spreader"
+  Density = 8960.0
+  Heat Conductivity = 400.0
+  Heat Capacity = 385.0
+End
+
+Material 5
+  Name = "Sb2S3_Phase_Change"
+  ! FIX (audit CRITICAL): replaced GST467 (Ge2Sb2Te5) with Sb2S3 to match the
+  ! global project constants. Heat Conductivity = 0.5 comes directly from
+  ! mini_16t_constants.py (k_gst_thermal).
+  ! Density/Heat Capacity: NOT in mini_16t_constants.py -- now sourced from
+  ! literature instead of guessed: bulk crystalline stibnite (Sb2S3),
+  ! density 4562 kg/m3, molar Cp 123.32 J/(mol-K) / M=339.70 g/mol =
+  ! 363.0 J/(kg-K) (NIST/CODATA thermochemical values, room temperature).
+  ! NOTE: this is bulk crystal data; a thin-film amorphous patch can differ
+  ! by 10-20%, but no measured thin-film value is available. TODO(cfg):
+  ! replace with your measured Sb2S3 thin-film rho/Cp if you have it.
+  Density = 4562.0
+  Heat Conductivity = 0.5
+  Heat Capacity = 363.0
+End
+
+Material 6
+  Name = "Graphene_Microheater"
+  ! ADDED (audit HIGH): no material block previously existed for the graphene
+  ! micro-heaters despite them being physically present in the stack.
+  ! STILL a config gap: mini_16t_constants.py's LAYER_MAP has no graphene/
+  ! heater layer at all. Properties below are for a single/few-layer CVD
+  ! graphene film used as a resistive heater (see elmer_thermal_solver.py /
+  ! gmsh_mesh_generator.py for the literature-sourced geometry and power).
+  ! Density/Cp use bulk graphite in-plane values (graphene sheets are
+  ! effectively 2D, so an in-plane graphite approximation is standard
+  ! practice for thin-film FEM heater models); k is the commonly cited
+  ! supported-graphene (substrate-limited, not suspended) in-plane thermal
+  ! conductivity used in graphene-heater PCM switching papers (Ríos et al.
+  ! 2021, Adv. Photonics Research; Zhang et al. 2020, ACS Appl. Mater.
+  ! Interfaces -- both report graphene's "ultra-low heat capacity, high
+  ! in-plane thermal conductivity" as the key enabler vs. Si/ITO heaters).
+  ! TODO(cfg): replace with your measured heater-stack properties if
+  ! mini_16t_constants.py adds a real heater spec.
+  Density = 2260.0
+  Heat Conductivity = 600.0
+  Heat Capacity = 700.0
+End
+
+Material 7
+  Name = "TIM_Spreader_Gap"
+  ! ADDED: supports the 50 um TIM gap now inserted in the mesh geometry
+  ! (see gmsh_mesh_generator.py fix). TODO(cfg): replace with your TIM
+  ! datasheet k (typical thermal greases/pads: 1-8 W/mK).
+  Density = 2600.0
+  Heat Conductivity = 3.0
+  Heat Capacity = 900.0
+End

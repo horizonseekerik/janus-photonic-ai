@@ -1,0 +1,193 @@
+# Scalable Ultra-Low-Power Photodetector Readout for JANUS
+
+**Executive Summary:** Designing billions of binary optical detectors (one-hot readers) for JANUS requires novel, **event-driven** architectures that trade analog fidelity for ultra-low power.  We find that *dynamic latched comparators* (e.g. StrongARM latch) and *integrating (CTIA) receivers* both can yield few-fJ–pJ per-detection energy, but each has trade-offs.  Dynamic latches offer zero static power and GHz speed, at the cost of limited sensitivity and offset/kickback noise.  Charge-integrating TIAs (with reset) can reach near-quantum-limit sensitivity by accumulating photon charge on tiny fF capacitors, but require clocked reset and complex CDS, giving ~pJ-level energy per bit.  *Clocked regenerative sense amps* are essentially high-speed comparators (no static draw) that can amplify femtoamp signals if pre-amplified.  In practice, **SPAD/APD** pixels offer one-bit outputs (with internal avalanche gain) and naturally integrate pulses, but need high bias (tens of volts), quench circuits, and suffer dark counts/afterpulsing.  **Shared-amplifier** topologies (e.g. half-shared TIAs) and *sample-and-hold multiplexing* can amortize power over many pixels but introduce readout latency.  To scale to 10^6–10^12 detectors, hierarchical event-driven wake-up and duty-cycling are essential: only small subsets of comparators or ADC channels turn on in response to an optical trigger.  We survey recent 2024–2026 literature on these techniques, summarize their sensitivity (photons per pulse), biasing, capacitances (few fF), integration caps (≈fF–10s fF), timing (ps–ns), energy (fJ–pJ per detection), static leakage, and error rates.  Comparison tables (below) contrast topologies’ energy, pros/cons, and scalability.  We include conceptual mermaid diagrams for hierarchical wake-up and shared-readout flows.  Our review highlights that event-driven, duty-cycled arrays leveraging dynamic or regenerative latches, together with sub-fF integration caps, offer the best path to minimize pJ→fJ energy per bit while achieving single-photon sensitivity.  Key gaps include quantifying false-positive/negative rates in scaled arrays and cryogenic integration constraints.  We end with recommendations for simulation and prototype experiments (e.g. test a 10×10 pixel array with dynamic latches, duty-cycled gating, and SPADs) to validate these concepts.  
+
+## Background and Goals
+
+Massively parallel optical processors like JANUS encode data into femtosecond (GHz-rate) light pulses across many channels.  The readout electronics must detect which channel (one-hot) has a pulse.  At 100 GHz rates (10 ps pulses), even a few-photon pulse (~fJ) must be sensed as a digital bit.  Key challenges are **ultra-low energy per detection (fJ–pJ)**, no static bias per pixel, extremely low input capacitance (a few fF or less) to preserve signal, and scalability to millions–trillions of pixels.  Conventional TIAs with continuous ADCs consume milliwatts per pixel and do not scale.  Instead, we consider mostly *binary* (on/off) sensing, trading analog linearity for digital simplicity.  We survey the latest circuit solutions: dynamic latched comparators, integrating (capacitive) TIAs, clocked regenerative sense amps, capacitive-feedback receivers, SPAD/APD event readout, and shared/S/H architectures.  We also discuss **hierarchical wake-up** (coarse-to-fine activation of pixels) and **duty cycling** (off most detectors between pulses) to eliminate static power.  We integrate findings from 2024–2026 publications (and key prior art) to quantify sensitivity (photons/pulse), bias voltages, capacitance budgets, timing windows, energy per detection, leakage, noise, error rates, area, and manufacturability.  
+
+## Key Readout Architectures
+
+### Dynamic Latched (Clocked) Comparators  
+**Concept:**  Use a clocked regenerative (latch) comparator (e.g. StrongARM latch or double-tail sense amp) to detect photogenerated voltage or current on a node.  The latch is precharged/reset and then enables a high-gain cross-coupled latch stage that quickly resolves which side has more charge. There is essentially **no static power** (only dynamic toggling), and the circuit is fully CMOS-digital.  The input node can be tied to the photodiode or APD output (possibly with a preamplifier).  
+
+**Performance:**  Very fast (10s–100s ps resolution) and energy-efficient (tens to hundreds of fJ per compare in 65–130 nm CMOS).  For example, state-of-the-art 65 nm comparators can have *energy-delay products* around 80 fJ·ns (implying ≈100 fJ per 200 ps decision).  The sensitivity depends on the smallest differential charge the latch can resolve.  Without gain, this typically requires >10s of electrons (few-fC) of signal, meaning tens of photons at 1550 nm.  With front-end amplification (e.g. a high-gain amplifier or low-noise front-end), even fewer photons can be resolved.  
+
+**Pros/Cons:**  + **Zero static power**, minimal area, high speed. + Simple digital output, easily clocked.  – **Limited sensitivity**: requires a relatively large input charge (capacitance must be minimized to a few fF) or pre-amplifier gain. – Comparator **offset/kickback** noise can cause false triggers unless carefully calibrated or CDS is used. – Usually requires two-phase clocks and careful timing.  
+
+**Biasing:**  CMOS comparators run at 0.6–1.2 V supply; no special high-voltage bias.  If driven by an APD, the APD must supply current but the comparator itself uses only standard CMOS.  
+
+**Noise & Errors:**  Offset voltage (kT/C noise, transistor mismatch) leads to a minimum detectable charge.  Kickback from the latch must be isolated (e.g. via bootstrapped or cascode input). False positives occur if dark noise exceeds threshold (mitigated by disabling latch until pulse arrival).  
+
+**Scalability:**  Excellent.  Each comparator can be only a few μm² in advanced CMOS.  It scales to millions of channels, provided the pulse is known to arrive at a clock edge so most latches can be kept idle.  
+
+### Charge-Integrating (Capacitive) Receiver (CTIA / Integrate-and-Dump)  
+**Concept:**  Replace the TIA feedback resistor with a capacitor to integrate photocurrent over the pulse period, then reset.  In practice, a *clocked integrate-and-dump TIA* captures the charge from an optical pulse on a small capacitor (the detector’s input node) and then uses a latch or ADC to digitize the voltage.  This effectively implements a matched filter for sharp pulses, maximizing sensitivity. In one design, the entire receiver front-end was a single-inverter amplifier with a feedback cap and reset switch, plus CDS to remove offsets.  
+
+**Performance:**  Very high sensitivity, approaching the quantum limit.  For example, Laube et al. (2024) achieved a sensitivity only 18 dB above the shot-noise limit (for OOK at 20 Mbps) by using a 30 µm PIN diode and tiny integration caps.  They report an *effective* integration capacitance of only ~2–3 fF (limited by parasitics).  At a 10 Gb/s pulse rate (100 ps pulse), 3 fF of capacitance holds ~0.5 fC per 10 photon pulse (at 1 A/W, 1550 nm), giving ~0.16 V swing.  Energy per bit can be in the ~pJ range (dominated by reset switching and amplifier energy at multi-gigasample rate).  
+
+**Pros/Cons:**  + **Ultra-high sensitivity:** Integrating on a small C yields a large voltage per photon, enabling ~few-photon detection. + Matches pulse shape for optimal SNR. – Requires a *reset phase* each cycle, plus Correlated Double Sampling (CDS) or offset cancellation to remove kT/C and reset noise. – Analog amplifier complexity: must handle the switch (adds kT/C noise) and high gain. – Not as simple as a latch; typically needs 2–3 clock phases. – Static power: the reset switch and post-amp consume some static I (though can be low if duty-cycled).  
+
+**Biasing:**  Only needs a few volts bias if using a PIN diode (no avalanche gain).  In Laube’s design, 8–10 V substrate bias was used to deplete 30 µm Si PIN.  No multi-kV like SPAD, but tens of volts are typical for large-area pin diodes.  
+
+**Noise & Errors:**  Major noise sources are thermal (kT/C) from the reset switch and amplifier noise.  With CDS, offset and 1/f noise are largely canceled.  Dark current adds shot noise over the integration. False-negative errors occur if the threshold is set too high; false-positive from reset feedthrough can be minimized by shielding and blanking during reset.  
+
+**Scalability:**  Moderate.  Each pixel needs a small cap and possibly 1–2 transistors.  Area is larger than a simple latch, but still feasible in, say, 65–180 nm.  Pulling off <5 fF integration caps requires minimum-length transistors and small wiring, which fits in ~10–20 µm².  For millions of pixels, sample-clock distribution and CDS logic become challenging.  
+
+### Clocked Regenerative Sense Amplifiers  
+**Concept:**  This overlaps the above comparators, but emphasizes on-chip precharge/enable phases.  For example, *double-tail comparators* use one transistor to precharge nodes (reset) then a differential pair to steer into a latch.  This class is similar to strongARM latch except often single-clock-phase.  
+
+**Performance:**  Comparable to the dynamic latch above: ~100–500 ps decision times, energy ~10–100 fJ.  Very wide bandwidth (multi-GHz) possible with small loads.  
+
+**Pros/Cons:**  + *No static power* like the dynamic latch. + Well-known in ADCs/memories. – Needs a low-noise front-end or offset calibration. – Kickback and offset hazards as with any latch.  
+
+**Example:**  A common high-speed comparator from prior work (JSSC 2024) had 210 ps delay and energy-delay product 86 fJ·ns.  At 210 ps, that’s ≈410 fJ per decision.  Modern 28 nm designs can do ~20 fJ but require design effort.  
+
+**Scalability:**  Very good in advanced CMOS (22–28 nm used in imagers).  Each sense amp is only ~10–20 µm².  Useful for column-wise ADCs or time-division multiplexing.  
+
+### Resistive-Feedback TIA (Continuous)  
+**Concept:**  The classic TIA (voltage amplifier + feedback resistor).  It continuously maintains the photodiode at virtual ground and produces an analog current-to-voltage output.  
+
+**Performance:**  Broadband (GHz), but always-on.  Bandwidth set by R_F and total capacitance.  Noise is thermal and shot.  This topology yields a transimpedance Z = R_F/(1 + sR_FC_T) at low freq, rolling off at f_c ≈ 1/(2πR_FC_T).  
+
+**Pros/Cons:**  + Linear output, well-understood. + Can handle high optical power (large currents).  – **High static power:** R_F * I_photo sets DC bias power; amplifiers consume current.  – Noise from R_F dominates at low freq.  – Not inherently binary; needs ADC.  
+
+**Biasing:**  No special bias (0.5–1 V supplies typical).  R_F must be physically implemented (often via transistor).  
+
+**Noise:**  Feedback resistor adds Johnson noise: Laube notes the resistor’s thermal noise severely limits sensitivity.  For µA-level signals, R_F might be 100 kΩ to 1 MΩ, leading to significant noise.  
+
+**Scalability:**  Poor for ultra-low-power arrays.  Each TIA may draw 10s–100s of µW continuously (e.g. 5–20µA supply at 1–5V) to maintain bandwidth.  Millions of these would be prohibitive.  However, they remain the benchmark for comparison (the “transimpedance limit”).  
+
+### SPAD/APD Event-Driven Readout  
+**Concept:**  Use single-photon detectors directly: SPADs (Geiger-mode) or low-gain APDs with a comparator.  When a photon triggers an avalanche (SPAD) or a threshold in an APD, the pixel emits a digital pulse and may latch its state (or generate an address-event).  In an **event-driven** scheme, pixels are normally idle until triggered by an incoming photon pulse, at which point the local latch or TDC is enabled and reported.  
+
+**Performance:**  **SPADs:** inherently one-bit: either detection or not.  Timing jitter ~10–50 ps for state-of-the-art SPADs.  Dark count rates vary (Hz–kHz).  **APDs:** provide analog gain (10–100×), and can be used in linear mode with a comparator to make a one-bit decision.  Both require high reverse bias.  
+
+**Example:**  Severini et al. (2023) built a 24×24 SPAD imager (160 nm BCD) that reports only coincident detections.  It achieved 100% duty-cycle and a fixed 330 ns readout latency regardless of array size.  Zheng et al. (2025) implemented per-pixel gated ring-oscillator TDCs: only pixels that fire start a local clock to time-stamp the photon.  They achieved 102 ps resolution and 0.32 mW average per pixel (active only on events).  
+
+**Energy (per detection):**  Typically dominated by the bias and quench circuits.  Zheng’s SPAD TDC consumed 0.32 mW per pixel when active; if only 1/1e6 pixels fire at a time, effective energy can be low, but worst-case single-pixel *event* cost is on the order of nJ (many mW·ns).  Duty-cycled, most pixels use ~0 static power, but each fired pixel may dissipate nanojoules.  APD+comparator (low-gain avalanche) might draw tens of μW static, plus ~pJ to latch per pulse (depending on speed).  
+
+**Pros/Cons:**  + **Single-photon sensitivity (for SPAD)**, and inherent digital output.  + Event-driven output means near-zero idle power.  – **High bias voltage** (20–100 V for Si devices).  – **Dark counts/afterpulsing:** SPAD dark count (thermal/defect) leads to false triggers; after-pulsing sets a dead-time (tens of ns).  – APDs have *excess noise* in gain.  – Pixel fill-factor often low if complex quench/readout in-pixel.  
+
+**Scalability:**  CMOS-compatible SPAD arrays (e.g. 50 µm pitch) exist up to 1–10 million pixels (for imaging).  APD arrays (e.g. Ge-on-Si at 1550 nm) are emerging for full monolithic integration.  Event-driven schemes promise huge savings: e.g. Zheng 2025 cites “power is conserved in sparse photon scenarios”.  However, bias generation (e.g. off-chip high-voltage supplies) and crosstalk are manufacturing challenges.  
+
+### Sample/Hold + Shared-Amplifier Architectures  
+**Concept:**  To reduce per-pixel amplifiers, one can *share* a small number of high-speed amplifiers among many detectors, time-multiplexing with sample-and-hold.  For example, a small capacitive S/H holds each pixel’s voltage at a clock edge, and a single comparator or ADC samples many cells sequentially.  In the “half-shared” scheme, multiple TIAs share the same non-inverting input stage, effectively doubling density.  
+
+**Example:**  Mulberry et al. (2018) fabricated a 1024-channel TIA array for biosensing in 0.35 µm CMOS: they used a half-shared amplifier design with an integrating capacitor front-end.  Each amplifier integrator was simple (5T OPA) and half-shared to cut area/power by ~2×.  This array demonstrated 0.86–7.00 mV/pA gain and very low noise across 1024 channels.  
+
+**Performance:**  The per-detection energy depends on the sample capacitors and the shared amplifier switching.  If one event is sampled and read by one amplifier clock cycle, the energy is the amplifier’s dynamic energy (fJ–pJ) spread over many detectors.  For example, if 1 amplifier serves 1000 detectors, and it uses 1 pJ per conversion, that is ~1 fJ per pixel averaged.  
+
+**Pros/Cons:**  + **Area/power per pixel reduced:** Only a few analog blocks replace many. + Good for large low-rate arrays.  – **Throughput limited:** To read N pixels with M amplifiers takes N/M cycles. – **Complex timing:** Needs S/H switch array, column buses, etc. – **Extra clock energy:** each S/H transition costs kT/C noise.  
+
+**Scalability:**  Very high.  If pulses are rare (sparse events), few amplifiers can cover millions of detectors.  However, if pulses may occur in many pixels per frame, the multiplexing bandwidth becomes a bottleneck.  Architectures may hierarchically clock groups of S/H and amplifiers to achieve duty-cycling.  
+
+## Hierarchical Wake-Up & Duty Cycling
+
+To avoid static power in huge arrays, multi-level wake-up logic is needed. A **hierarchical tree** of enabling comparators can first detect activity in a coarse group, then activate subgroups only on demand. For example, the top row of detectors (or a simple beacon detector) can act as a trigger: only when it sees light does it enable scanning or comparators in the selected column/row. Alternatively, address-event schemes (AER) can route only “pixel fired” signals. Duty-cycling is also critical: if pulses repeat at 100 GHz, the readout may only need to be on for a few ps in each 10 ns period (100× oversampling). All other times detectors can be asleep. This is analogous to “power gating” the array around the clock, or using a fast global clock to strobe only around expected pulse windows. The result is that **static leakage power** (parasitic in transistors) is multiplied by a tiny duty fraction.  
+
+```mermaid
+flowchart TD
+    ClockEdge([Clock Edge]) --> Level1[Enable Level-1 Detectors]
+    Level1 -- No Light --> WaitCycle([Next Pulse])
+    Level1 -- Light Detected --> Level2[Enable Level-2 Detectors]
+    Level2 -- No Light --> WaitCycle
+    Level2 -- Light Detected --> Level3[Activate Final Comparator]
+    Level3 --> Done[Detect & Latch Output]
+```
+
+In the above *hierarchical wake-up* example, only the first level of detectors is active on each clock edge. If no pulse is seen, the system returns to sleep. If a pulse is detected, it gates the next level, and so on, limiting activity to a tiny fraction of time. Severini et al. 2023 showed a SPAD array reading out only *coincidence events* (no global read at all). Zheng et al. 2025 used gating circuits to turn on pixel TDCs only when a photon arrives. In principle, a wide-scale array can use a tree of OR-reduction signals or wired-OR broadcasts to implement wake-up.  
+
+## Integration with CMOS Processes
+
+Scalability also hinges on fabrication.  **CMOS-compatible detectors** are key.  Standard Si CMOS can integrate PIN diodes or APDs (in bipolar-CMOSDMOS processes for high-voltage).  For IR (beyond Si bandgap), flip-chip bonding or 3D integration of InGaAs/Ge detectors is used.  Recent work (Modak 2025) demonstrates a *monolithic* Ge-on-Si APD linear array at 1550 nm – proving high-performance APDs can be built directly on Si CMOS.  Similarly, SPADs in 180 nm and 130 nm processes are mature (e.g. Germanium-on-Si SPADs with V_BD~30–50 V exist).  The trend is towards **heterogeneous integration**: bonding III-V or 2D materials for detectors on top of CMOS readout (see, e.g., 3D-stacked photonic ICs).  
+
+One recent review notes that integrated photonics (CPO) will put detectors very close to logic, drastically cutting input capacitance.  For example, 3D microbump or wafer-bonded photodiodes yield input caps ≪10 fF, enabling GHz front-ends without big noise penalty.  These integrations generally drive the choice of CMOS node: mid-range nodes (130–180 nm) often remain optimal due to high-voltage needs and low 1/f noise.  In sum, arrays of APDs/SPADs are being developed for mass production (see e.g. “megapixel LmAPD” arrays in astronomical cameras), and many of the above circuits can be built in such processes with careful design.
+
+## Key Attributes and Trade-offs
+
+**Sensitivity:**  The minimum photon count for reliable detection depends on the topology.  Integrating receivers have the best theoretical sensitivity: Laube et al. report operation just ~18 dB above the shot-noise limit (≈20 photons at BER=10^–3).  SPADs offer essentially single-photon sensitivity (one photon triggers), but dark counts (e.g. 1000 Hz) make thresholds tricky.  Dynamic latches and regenerative amps typically need tens of electrons (~10–100 photons) without front-end gain.  APDs (gain ~10–20) sit in between.  **Assumption:** e.g. at 1550 nm, 10 photons ≈1.3e-18 J = 0.0013 fJ, so even a 0.1 fJ pulse is many photons.  Realistic pulses might be 1–1000 photons (~0.001–0.1 fJ) depending on source and losses.  
+
+**Biasing:**  SPAD: tens of volts above breakdown; modern designs aim for <20 V if possible (sub-20V SPADs exist).  APD: ~10–100 V.  PIN: 1–10 V to fully deplete (Laube used 8 V for 30 µm Si PIN).  Latch comparator: CMOS supply (1–1.2 V) for logic, any detector bias separate.  Shared TIA: typical op-amp rails (1.2–3.3V).  
+
+**Capacitance Budgets:**  The total input capacitance (detector+parasitics) must be kept extremely low to detect fast pulses.  Values in literature are *only a few fF*: e.g. Laube’s 30 µm PIN had 29–33 fF capacitance, but by using a local amplifier and negative-Miller trick, the *effective* integration cap was ≈3 fF.  SPAD’s junction capacitance is similarly small (few fF) in deep-submicron.  Every femtofarad of C adds kT/C noise (~2mV RMS at 300K).  **Design note:** Gate lengths must be minimized, and wiring/parasitics must be cut, to keep C<5 fF per pixel.  
+
+**Integration Cap Sizing:**  In CTIA designs, the feedback cap C_int is typically tens of fF or less.  Laube et al. effectively had only ~3 fF (parasitic) as the integration cap.  If one wanted more range (e.g. to tolerate a larger number of photons), one could add a dedicated cap (e.g. 10 fF), but that would raise kT/C noise and reduce sensitivity.  Thus, to detect just 10–100 photons with a 1 V swing, C_int must be on the order of a few fF.  
+
+**Timing Windows:**  For GHz pulses, the front-end must settle in ~10–100 ps.  Regenerative latches naturally resolve in ~100–200 ps.  CTIAs integrate over the entire pulse (a few ps) and then need a reset interval (~a few 100 ps).  Duty-cycling allows long idle times between pulses; for example, one can sample/reset in a 1 ns window for every 10 ns period.  
+
+**Energy per Detection:**  Rough estimates (assuming CMOS 65–180nm):  
+- **Dynamic latch/sense amp:** ~10–100 fJ (for 10–100 ps decision).  Benchmarks: 65nm comparators ~100 fJ per 200ps.  
+- **Integrating CTIA:** ~pJ.  In Laube’s 20 Mb/s receiver, energy/bit is not directly given, but using 1.8V and multi-MHz clocks, one can estimate hundreds of fJ in the inverter front-end per bit (plus ~pJ for CDS).  
+- **Resistive TIA (pulsed):** ~pJ to tens of pJ per sample (plus any static    in op-amp).  
+- **Shared/S&H (amortized):** effective per-pixel ~fJ if one amplifier serves many. For instance, Mulberry et al.’s array achieved *7.00 mV/pA* at 7 pA RMS noise on 1024 channels; if one share amplifier draws, say, 1 mW at 100 MHz for all 1024, that is ~10 fJ/pixel.  
+- **SPAD/APD:** complex: SPADs have essentially zero static pixel power (unless active quenching circuits), but each triggered pixel might spend ~nJ in the avalanche and TDC.  Zheng et al.’s SPAD consumed 0.32 mW during a 417 ns range (≈130 nJ) per event.  An APD + latch might dissipate a few tens of fJ in the latch, but requires large static bias losses.  
+
+**Static Leakage:**  Digital/CMP circuits have leakage ~pA per µm of device (can be <<1 nW/pixel in deep sleep).  CTIAs and TIAs have analog bias currents (µA-level) that set a floor (often µW per pixel).  Event-driven wake-up effectively *eliminates* static leakage except clock-tree leakage.  For instance, Zheng et al. disable pixel bias until trigger.  
+
+**Area:**  Rough pixel footprints: a single latch or comparator can be <10 µm² in advanced CMOS.  Integrating TIA (with reset switch) might be ~20–50 µm².  A SPAD pixel with quench transistor might be 10–30 µm² (50 µm pitch yields 2500 µm², but high fill-factor efforts achieve 10–30%).  Hierarchical logic (OR gates, etc.) adds overhead but can be shared.  Realistic large arrays (millions of detectors) will use 3D stacking or advanced processes to fit all components.  
+
+**Noise and Error Rates:**  False positives come from noise pulses exceeding threshold.  For comparators, the offset must be less than the signal swing; using CDS or offset calibration can help.  SPAD dark counts (typically 10–10^6 Hz depending on area and temperature) set a background false event rate.  APD thermal dark current (∝ bias) causes shot noise.  False negatives occur if the threshold is too high or if multiple photons arrive during deadtime (SPAD).  Detailed error probabilities depend on detector type, gain, and clocking, and should be simulated per design.  
+
+## Comparison Table of Architectures
+
+| Topology                      | Energy/Detection  | Pros                                       | Cons                                           | Scalability                       |
+|:------------------------------|:------------------|:-------------------------------------------|:-----------------------------------------------|:----------------------------------|
+| **Dynamic Latch Comparator**  | ~10–100 fJ        | Zero static power; simple digital output; low input C  | Limited sensitivity (needs >few-fC charge); offset/kickback; requires two-phase clocks | Extremely scalable (digital CMOS) |
+| **Integrating CTIA (I&D TIA)**| ~pJ (per bit)     | Highest sensitivity (few photons); matched-filter gain   | Needs reset and CDS (kT/C noise); analog complexity; nontrivial offset cancellation  | Moderate (extra cap and clock per pixel)  |
+| **Resistive TIA (continuous)**| ~pJ–10s pJ + static | Linear, wideband; direct current sense         | High static power; high resistor noise; needs ADC  | Poor for >10^5 pixels (power/area)         |
+| **Shared Amplifier (half-shared, S/H)** | ~fJ (amortized) | Cuts per-pixel analog cost; good for sparse events  | Complex muxing; limited throughput; requires clocks/S/H  | Very good if event-driven;  multiplexing scale |
+| **SPAD/APD Event-Driven**     | ~nJ–pJ (per event)  | Single-photon sensitivity (SPAD); 0 static idle power   | Requires high bias (V_bd); dark counts/afterpulsing; per-pixel circuits (quench, TDC) | Scalable (special processes/3D); event-driven ideal  |
+
+Each entry draws on recent findings.  For instance, **Integrating CTIA** shows near-QL sensitivity at ~3 fF caps.  The **shared-amplifier** approach was validated in a 1024-channel array.  **SPAD readout** examples include 25.8% duty cycles and 0.32 mW/pix energy.  (Energy numbers are order-of-magnitude; actual values depend on pulse energy, clock rate, etc.)  
+
+## Duty-Cycle and Scaling Effects
+
+When only a small fraction *δ* of pixels is active (e.g. pulses are sparse), average power scales roughly as δ.  For example, a static-TIA array drawing 100 µW/pix at 100% duty draws only 1 µW/pix at δ=1% (10^–2 duty).  Event-driven duty-cycle is effectively δ→0 (millions of pixels idle almost always).  We illustrate these trends in conceptual plots:  
+
+```mermaid
+flowchart LR
+  DetectorsCount[Detector Count (log)] -->|100% Duty|Static[Static Power ∝ N]  
+  DetectorsCount -->|10% Duty|Duty10[10% Duty Power ~0.1·N]  
+  DetectorsCount -->|Event-Driven|Event[Event-Driven Power ~const]  
+```
+
+With 10^6 detectors, a 100% duty static design might draw ≫100 W (100 µW×10^6), whereas an event-driven scheme could hold ~1 W total (0.32 mW/pix × a few fired pixels).  
+
+## Implementation Recommendations and Next Steps
+
+**Choose topology by use-case:**  If ultimate sensitivity is needed (very low photon counts), use an integrating receiver with tiny (∼fF) caps and a latch.  If pulse energies are higher or speed is paramount, a dynamic latch or sense amp is simpler.  **Always design for event-driven gating.**  For example, clock the array only around pulses, and use coarse comparators to awaken groups.  
+
+**Simulations:**  - Build a 65–180nm model of a pixel with photodiode + dynamic latch. Inject current pulses (10–100 electrons) and simulate SNR, offset.  - Model an integrate/dump TIA: sweep integration cap (1–10 fF), comparator threshold, noise.  - Simulate SPAD dark count vs false positives.  - Test hierarchical gating logic (e.g. simulate a 4-level tree, one-hot detection).  
+
+**Prototype experiments:**  - **Small Array Chip:** Implement 8×8 pixels in CMOS, each with a comparator (latch) and fast reset, plus shared clock.  Test with optical pulses (e.g. 100ps from a laser) at varying intensities.  Measure energy/bit (via power integrator), error rates vs photon count, and threshold margins.  - **SPAD-Based Demo:** Use a SPAD sensor (or custom process SPAD) to validate event-driven TDC readout at ~GHz rates, measuring power/pixel and timing.  - **Shared-Amplifier Demo:** Fabricate a column-shared amplifier design (e.g. 16 diodes feeding 1 TIA through switches) to measure trade-offs in speed vs area.  
+
+**Assumptions:**  We assume pulses of order 1–100 photons (∼0.001–0.1 fJ at 1550 nm) per bit, 100 GHz rep-rate, and detector capacitance budgets of a few fF.  We assume modern CMOS (≥28 nm) with low-leakage transistors and the possibility of high-voltage wells for SPAD.  Where necessary, we have assumed worst-case (e.g. all pixels active) and noted that event-driven sparse operation greatly improves power.  
+
+**Open Challenges:**  - **Noise/Errors at Scale:** Need to simulate large-array statistical behavior (rare dark triggers).  - **Timing Synchronization:** Locking comparators to ps pulses.  - **Manufacturing:** Ensuring uniform detector bias and low C across millions of pixels.  
+
+**Conclusion:**  Our survey shows that *ultra-low-power binary readout* is feasible by combining charge integration with clocked comparators and event-driven gating.  Dynamic latches minimize per-event energy, while integrating receivers maximize sensitivity.  Hierarchical wake-up and shared readout enable scaling.  The next steps are targeted simulations and a scaled prototype to quantify these trade-offs under realistic pulse and process conditions.  
+
+**Comparison Table:** 
+
+| **Topology**                    | **Energy/Detection**            | **Pros**                                    | **Cons**                                            | **Scalability**                |
+|---------------------------------|-------------------------------|---------------------------------------------|-----------------------------------------------------|--------------------------------|
+| Dynamic latch comparator        | ~10–100 fJ                     | Zero static power; digital output; GHz speed | Limited sensitivity; offset/kickback noise          | Excellent (digital CMOS)       |
+| Integrating CTIA (I&D)          | ~pJ (pulse)                   | Ultra-high sensitivity; matched-filter | Requires reset+CDS; analog complexity; offset calibration | Moderate; needs analog loops  |
+| Resistive-feedback TIA          | ~pJ–10s pJ + static           | Linear, simple                                | High static power; resistor thermal noise | Poor for >10^5 pixels         |
+| Shared Amp + Sample/Hold        | ~fJ (amortized)               | Very low per-pixel cost; few amps | Complex multiplexing; slower throughput             | Very good if sparse events    |
+| SPAD / APD (event-driven)       | ~nJ (per event) | Single-photon (SPAD); 0 idle power | Requires high bias; dark counts, dead-time   | Good (special processes)      |
+
+*Table:*  Comparison of photodetector readout topologies, highlighting per-detection energy, advantages, drawbacks, and ability to scale.  (Energy estimates assume GHz pulses and are order-of-magnitude; see text for details.)  
+
+**Bibliography (2025–2026 priority):**  
+
+- Simon M. Laube *et al.*, “Highly-Sensitive Integrating Optical Receiver with Large PIN Photodiode,” *IEEE Photonics J.*, vol. 16, no. 6, Dec. 2024.  
+- Zheng *et al.*, “High-Precision Time Resolution SPAD Array Readout Circuit Based on Event-Driven Architecture,” *IEEE JSTQE*, Sept. 2025.  
+- Modak *et al.*, “CMOS-Compatible Short-Wave Infrared Linear Arrays of Ge-on-Si Avalanche Photodiodes,” *Adv. Photonics Res.*, vol. 6, no. 9, Sept. 2025.  
+- Severini *et al.*, “Spatially Resolved Event-Driven SPAD Imager With 100% Duty Cycle,” *IEEE J. Solid-State Circuits*, Aug. 2023.  
+- Mulberry *et al.*, “Analysis of Simple Half-Shared Transimpedance Amplifier for Picoampere Biosensor Measurements,” *IEEE Trans. Biomed. Circuits Syst.*, 2018.  
+- [Claveau *et al.*](https://arxiv.org/abs/2411.09185) (U. Hawai'i) “Progress towards a megapixel LmAPD array for astronomy,” *arXiv* (Nov. 2024).  
+- Achtenberg & Bielecki, “Photoreceiver Input Stages – Noise Comparison,” *Sensors*, Feb. 2025 (survey of TIA topologies).  
+
+*(Additional references were consulted for background; we have prioritized 2024–2026 sources and noted classic results where needed.)*
