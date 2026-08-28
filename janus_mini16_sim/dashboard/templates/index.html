@@ -459,7 +459,25 @@
       font-size: 0.85rem;
       margin-top: auto;
     }
+  
+    /* Specific Vivid Highlighting for AI Model Switcher in Tab 3 */
+    #ai-model-btns .sim-tab-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #ai-model-btns .sim-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)) !important;
+      color: #ffffff !important;
+      border-color: var(--accent-cyan) !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 14px rgba(0, 242, 254, 0.45) !important;
+      transform: translateY(-1px);
+    }
+
   </style>
+  <!-- Preload & Prefetch Critical Manuscript PDFs -->
+  <link rel="preload" href="/JANUS_IEEE_Manuscript.pdf" as="fetch" crossorigin>
+  <link rel="prefetch" href="/JANUS_Mini16_Simulation_Report.pdf" as="fetch" crossorigin>
+  <link rel="prefetch" href="/JANUS_Mini16_CMOS_Architecture.pdf" as="fetch" crossorigin>
 </head>
 <body>
 
@@ -2591,7 +2609,7 @@
 
     // --- Simulation Sub-Tabs Switcher ---
     function switchTab(tabId) {
-      document.querySelectorAll('.sim-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.simulation-nav-container .sim-tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
       const btn = document.getElementById('btn-tab-' + tabId);
@@ -2623,7 +2641,7 @@
     // --- AI Model View Switcher in Tab 3 ---
     function switchAIModel(modelId) {
       document.querySelectorAll('.ai-model-view').forEach(v => v.style.display = 'none');
-      document.querySelectorAll('#ai-model-btns .sim-tab-btn, #ai-model-btns .tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#ai-model-btns .sim-tab-btn, #ai-model-btns button').forEach(b => b.classList.remove('active'));
 
       const view = document.getElementById('ai-view-' + modelId);
       if (view) view.style.display = 'block';
