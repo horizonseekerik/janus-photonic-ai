@@ -635,10 +635,10 @@
             <p id="paper-doc-desc" style="color:var(--text-muted); font-size:0.88rem;">37-Page Formally Verified Manuscript • IEEEtran Standard Compilation • Zero Compilation Errors</p>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a id="paper-open-btn" href="/api/pdf" target="_blank" class="btn-outline" style="display:flex; align-items:center; gap:6px; font-weight:500;">
+            <a id="paper-open-btn" href="/JANUS_IEEE_Manuscript.pdf" target="_blank" class="btn-outline" style="display:flex; align-items:center; gap:6px; font-weight:500;">
               🌐 Open in Browser Tab
             </a>
-            <a id="paper-dl-btn" href="/api/pdf?download=1" download="JANUS_IEEE_Manuscript.pdf" class="btn-primary" style="display:flex; align-items:center; gap:6px; font-weight:600;">
+            <a id="paper-dl-btn" href="/JANUS_IEEE_Manuscript.pdf" download="JANUS_IEEE_Manuscript.pdf" class="btn-primary" style="display:flex; align-items:center; gap:6px; font-weight:600;">
               ⬇️ Download PDF
             </a>
           </div>
@@ -646,7 +646,7 @@
 
         <!-- Embedded PDF Viewer -->
         <div class="pdf-container">
-          <iframe id="paper-pdf-iframe" src="/api/pdf#toolbar=1&navpanes=1&scrollbar=1" title="JANUS Document Viewer"></iframe>
+          <iframe id="paper-pdf-iframe" src="/JANUS_IEEE_Manuscript.pdf#toolbar=1&navpanes=1&scrollbar=1" title="JANUS Document Viewer"></iframe>
         </div>
       </div>
     </section>
@@ -4363,33 +4363,33 @@
       const btnCmos = document.getElementById('btn-paper-cmos');
 
       if (type === 'simulation') {
-        iframe.src = '/api/simulation_pdf#toolbar=1&navpanes=1&scrollbar=1';
+        iframe.src = '/JANUS_Mini16_Simulation_Report.pdf#toolbar=1&navpanes=1&scrollbar=1';
         title.innerHTML = '📊 IEEE Simulation & Verification Report: Mini 16-Tile Prototype';
         desc.innerHTML = '6-Page Multi-Physics Co-Simulation, Physical Component Modeling & 16-Point Sign-Off Verification';
-        openBtn.href = '/api/simulation_pdf';
-        dlBtn.href = '/api/simulation_pdf?download=1';
+        openBtn.href = '/JANUS_Mini16_Simulation_Report.pdf';
+        dlBtn.href = '/JANUS_Mini16_Simulation_Report.pdf';
         dlBtn.setAttribute('download', 'JANUS_Mini16_Simulation_Report.pdf');
         dlBtn.innerHTML = '⬇️ Download Simulation Report (PDF)';
         btnSim.className = 'btn-primary';
         btnManu.className = 'btn-outline';
         if (btnCmos) btnCmos.className = 'btn-outline';
       } else if (type === 'cmos') {
-        iframe.src = '/api/cmos_pdf#toolbar=1&navpanes=1&scrollbar=1';
+        iframe.src = '/JANUS_Mini16_CMOS_Architecture.pdf#toolbar=1&navpanes=1&scrollbar=1';
         title.innerHTML = '🔬 IEEE Transactions on VLSI / Solid-State Circuits: Project JANUS Mini-16 CMOS Backend';
         desc.innerHTML = '65nm Digital CMOS Backend Blueprint: 1:32 Polyphase 3.125 GHz Deserializer, Dual-LUT 1.5MB SRAM, 32-Lane SIMD Array & 3D TDV Stacking';
-        openBtn.href = '/api/cmos_pdf';
-        dlBtn.href = '/api/cmos_pdf?download=1';
+        openBtn.href = '/JANUS_Mini16_CMOS_Architecture.pdf';
+        dlBtn.href = '/JANUS_Mini16_CMOS_Architecture.pdf';
         dlBtn.setAttribute('download', 'JANUS_Mini16_CMOS_Architecture.pdf');
         dlBtn.innerHTML = '⬇️ Download CMOS Specification (PDF)';
         if (btnCmos) btnCmos.className = 'btn-primary';
         btnManu.className = 'btn-outline';
         btnSim.className = 'btn-outline';
       } else {
-        iframe.src = '/api/pdf#toolbar=1&navpanes=1&scrollbar=1';
+        iframe.src = '/JANUS_IEEE_Manuscript.pdf#toolbar=1&navpanes=1&scrollbar=1';
         title.innerHTML = '📄 IEEE Transactions on Architecture: Project JANUS';
         desc.innerHTML = '37-Page Formally Verified Manuscript • IEEEtran Standard Compilation • Zero Compilation Errors';
-        openBtn.href = '/api/pdf';
-        dlBtn.href = '/api/pdf?download=1';
+        openBtn.href = '/JANUS_IEEE_Manuscript.pdf';
+        dlBtn.href = '/JANUS_IEEE_Manuscript.pdf';
         dlBtn.setAttribute('download', 'JANUS_IEEE_Manuscript.pdf');
         dlBtn.innerHTML = '⬇️ Download Manuscript (PDF)';
         btnManu.className = 'btn-primary';

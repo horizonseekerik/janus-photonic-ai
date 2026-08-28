@@ -153,9 +153,18 @@ def html_response(start_response, html_bytes: bytes, status: str = "200 OK"):
 
 def normalize_request_path(environ) -> str:
     """Robustly extracts the requested path regardless of Vercel rewrite or proxy behavior."""
+    query_str = environ.get("QUERY_STRING", "")
+    query = urllib.parse.parse_qs(query_str)
+
+    # 1. Check if Vercel passed __path parameter in rewrite
+    if "__path" in query:
+        p = query["__path"][0].lstrip("/")
+        return "/api/" + p
+
+    # 2. Check PATH_INFO
     path = environ.get("PATH_INFO", "/")
 
-    # If PATH_INFO points to the serverless function itself or is empty, extract real path
+    # 3. Check alt headers if PATH_INFO is generic
     if path in ["/api/index.py", "/api/index", "/api", "/api/", ""]:
         alt = environ.get("HTTP_X_MATCHED_PATH") or environ.get("REQUEST_URI") or environ.get("RAW_URI") or "/"
         alt = urllib.parse.urlparse(alt).path
@@ -185,7 +194,7 @@ def app(environ, start_response):
         return [b""]
 
     # 1. HTML Homepage
-    if path in ["/", "/index.html", "/index", "/api/index.py", "/api/index", "/api"]:
+    if path in ["/", "/index.html", "/index"]:
         candidates = [
             os.path.join(BASE_DIR, "public", "index.html"),
             os.path.join(BASE_DIR, "index.html"),
