@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://janus-photonic-ai.vercel.app/sitemap.xml
