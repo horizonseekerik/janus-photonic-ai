@@ -3,8 +3,13 @@ __pycache__/
 *$py.class
 *.log
 *.vvp
+tb_audit
+tb_crt
+tb_stress
 .pytest_cache/
 .venv/
 env/
 venv/
 .DS_Store
+*.swp
+*.bak

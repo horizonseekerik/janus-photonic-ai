@@ -1,6 +1,6 @@
 # Project JANUS Mini 16-Tile: Multi-Physics Co-Simulation & Verification Stack
 
-[![CI Multi-Physics Suite](https://github.com/deepanshubhardwaj/janus-mini16-sim/actions/workflows/ci.yml/badge.svg)](https://github.com/deepanshubhardwaj/janus-mini16-sim/actions)
+[![CI Multi-Physics Suite](https://github.com/horizonseekerik/janus-simulation/actions/workflows/ci.yml/badge.svg)](https://github.com/horizonseekerik/janus-simulation/actions)
 [![TRL Readiness](https://img.shields.io/badge/TRL-4.0%20(Subsystem%20Validation)-blue.svg)](#technology-readiness-level)
 [![Accuracy](https://img.shields.io/badge/GEMM%20Deviation-0.00000000%25-brightgreen.svg)](#16-point-verification-sign-off-matrix)
 [![Energy Efficiency](https://img.shields.io/badge/INT8%20Efficiency-112.8%20TMAC%2Fs%2FW-green.svg)](#gpu-comparative-benchmarks)
@@ -121,8 +121,8 @@ This repository houses the **verified 5-tier multi-physics co-simulation framewo
 - Icarus Verilog (`iverilog`, `vvp`)
 
 ```bash
-git clone https://github.com/deepanshubhardwaj/janus-mini16-sim.git
-cd janus-mini16-sim
+git clone https://github.com/horizonseekerik/janus-simulation.git
+cd janus-simulation
 pip install -r requirements.txt
 ```
 
