@@ -638,6 +638,105 @@
         min-height: 44px;
       }
 
+      /* --- TAB 1 (RNS) MOBILE REFINEMENTS --- */
+      #tab-rns .input-group {
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+      #tab-rns .input-group .input-box {
+        width: 100% !important;
+      }
+      #tab-rns .input-group .btn-action {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+      #tab-rns #tiles-container.tiles-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      #int-summary, #mult-summary {
+        word-break: break-all;
+        overflow-x: auto;
+        font-size: 0.8rem;
+      }
+
+      /* --- TAB 2 (ARCH & LIGHT) MOBILE REFINEMENTS --- */
+      #tab-arch .card-title {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .arch-controls-cluster {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 6px !important;
+      }
+      .arch-mode-label {
+        grid-column: 1 / -1 !important;
+        font-size: 0.78rem !important;
+      }
+      #arch-mode-select {
+        grid-column: 1 / -1 !important;
+        width: 100% !important;
+        height: 38px !important;
+        font-size: 0.82rem !important;
+        margin-bottom: 2px !important;
+      }
+      .arch-controls-cluster button {
+        min-height: 40px !important;
+        padding: 4px 6px !important;
+        font-size: 0.78rem !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+      .arch-status-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+      }
+
+      /* --- TAB 5 (16-POINT MATRIX) MOBILE REFINEMENTS --- */
+      #tab-matrix .card > div:first-child {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+      }
+      #tab-matrix .card > div:first-child > div:last-child {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+      #btn-run-full-cosim, #matrix-audit-badge {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+      .tier-action-bar {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 6px !important;
+        padding: 10px !important;
+      }
+      .tier-action-bar button {
+        width: 100% !important;
+        text-align: left !important;
+        justify-content: flex-start !important;
+        font-size: 0.82rem !important;
+        padding: 0.5rem 0.75rem !important;
+        min-height: 40px !important;
+      }
+      #matrix-table {
+        min-width: 680px !important;
+        width: 100% !important;
+      }
+      #matrix-table th, #matrix-table td {
+        padding: 0.6rem 0.75rem !important;
+        font-size: 0.82rem !important;
+      }
+
       /* --- Thermal Sim Config Grid (line 952 inline style) --- */
       [style*="grid-template-columns: 140px 240px 110px 175px 185px 135px auto"] {
         grid-template-columns: repeat(2, 1fr) !important;
@@ -757,6 +856,31 @@
       /* --- Cards --- */
       .card {
         padding: 1rem;
+      }
+
+      /* --- TAB 1 SMALL PHONES --- */
+      #tab-rns #tiles-container.tiles-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+      }
+      .tile-card {
+        padding: 0.5rem !important;
+      }
+      .tile-card .tile-num {
+        font-size: 0.68rem !important;
+      }
+      .tile-card .tile-val {
+        font-size: 0.92rem !important;
+      }
+
+      /* --- TAB 2 SMALL PHONES --- */
+      .arch-controls-cluster {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+
+      /* --- TAB 5 SMALL PHONES --- */
+      .tier-action-bar span {
+        font-size: 0.75rem !important;
       }
 
       /* --- Sim config fully stacked --- */
@@ -1080,8 +1204,8 @@
       <div class="card">
         <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
           <span>🔬 3D Heterogeneous Electro-Optic Stack & Light Propagation Engine</span>
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-            <label style="font-size: 0.8rem; color: var(--text-muted);">Co-Operation Mode:</label>
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" class="arch-controls-cluster">
+            <label style="font-size: 0.8rem; color: var(--text-muted);" class="arch-mode-label">Co-Operation Mode:</label>
             <select id="arch-mode-select" class="input-box" style="padding: 3px 8px; height: 30px; font-size: 0.8rem;" onchange="setArchMode(this.value)">
               <option value="gemm" selected>High-Speed 100 GHz Matrix Multiplication (Optical Compute)</option>
               <option value="jir">JIR Dynamic Modulus Permutation (Thermal Swap Rotation)</option>
@@ -1097,7 +1221,7 @@
         <!-- Interactive Live 3D Architecture Canvas -->
         <canvas id="archCanvas" style="height: 440px; width: 100%; margin-top: 4px;"></canvas>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border);">
+        <div class="arch-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border);">
           <span id="arch-status-banner"><b style="color: var(--accent-cyan);">● LIVE PHOTON PROPAGATION:</b> <span id="arch-status-text">Light pulse traversing LiTaO<sub>3</sub> modulators into 32 × 32 Benes crossbar...</span></span>
           <span style="color: var(--accent-green); font-family: monospace;">Time-of-Flight: ~10.4 ps | Latency: 0.08 ns</span>
         </div>
@@ -1466,7 +1590,7 @@
         </div>
 
         <!-- Tier Quick-Execution Action Bar -->
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; background: var(--card-sub-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--card-border); align-items: center;">
+        <div class="tier-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; background: var(--card-sub-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--card-border); align-items: center;">
           <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Run Specific Tier:</span>
           <button class="btn-outline" onclick="runTierAudit(1)" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">🔬 Tier 1: Optics FDTD (Checks 1-4)</button>
           <button class="btn-outline" onclick="runTierAudit(2)" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">🧊 Tier 2: Thermal FEM (Checks 5-8)</button>
@@ -1475,22 +1599,24 @@
           <button class="btn-outline" onclick="runTierAudit(5)" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">🧮 Tier 5: Z3 Formal & GEMM (Checks 14-16)</button>
         </div>
 
-        <table id="matrix-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Tier</th>
-              <th>Verification Metric</th>
-              <th>Target Spec</th>
-              <th>Measured Value</th>
-              <th>Status</th>
-              <th>Individual Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Populated via API -->
-          </tbody>
-        </table>
+        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; border-radius: 8px;">
+          <table id="matrix-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Tier</th>
+                <th>Verification Metric</th>
+                <th>Target Spec</th>
+                <th>Measured Value</th>
+                <th>Status</th>
+                <th>Individual Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -3238,8 +3364,8 @@
       if (!canvas || !canvas.parentElement) return { w: 800, h: 440, dpr: 1 };
       const dpr = window.devicePixelRatio || 1;
       const parentW = (canvas.parentElement.clientWidth > 60) ? canvas.parentElement.clientWidth : 840;
-      const cssWidth = Math.max(300, parentW - 40);
-      const cssHeight = 440;
+      const cssWidth = Math.max(280, parentW - 20);
+      const cssHeight = (parentW < 600) ? 380 : 440;
 
       if (canvas.width !== Math.round(cssWidth * dpr) || canvas.height !== Math.round(cssHeight * dpr)) {
         canvas.width = Math.round(cssWidth * dpr);
@@ -3271,6 +3397,7 @@
       const ctx = canvas.getContext('2d');
       const { w, h, dpr } = resizeArchCanvas();
       const dark = isDarkTheme();
+      const isMobile = w < 680;
 
       ctx.save();
       ctx.scale(dpr, dpr);
@@ -3288,14 +3415,15 @@
       ctx.lineWidth = 1.5;
       ctx.strokeRect(15, 12, w - 30, 118);
 
+      const tier1BadgeW = Math.min(480, w - 50);
       ctx.fillStyle = dark ? '#312e81' : '#e0e7ff';
-      ctx.fillRect(25, 20, 480, 22);
+      ctx.fillRect(25, 20, tier1BadgeW, 22);
       ctx.strokeStyle = dark ? '#818cf8' : '#6366f1';
       ctx.lineWidth = 1;
-      ctx.strokeRect(25, 20, 480, 22);
+      ctx.strokeRect(25, 20, tier1BadgeW, 22);
       ctx.fillStyle = dark ? '#ffffff' : '#1e1b4b';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('⚡ TIER 1: 7nm FinFET CMOS DIGITAL & HYBRID CONTROLLER LAYER', 35, 35);
+      ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 12px sans-serif';
+      ctx.fillText(isMobile ? '⚡ TIER 1: 7nm CMOS DIGITAL & CONTROLLER' : '⚡ TIER 1: 7nm FinFET CMOS DIGITAL & HYBRID CONTROLLER LAYER', 32, 35);
 
       // Intermediate 3D Heterogeneous TSV & Micro-Pillar Interconnect Tier
       ctx.fillStyle = dark ? '#090d16' : '#f1f5f9';
@@ -3304,19 +3432,20 @@
       ctx.lineWidth = 1;
       ctx.strokeRect(15, 136, w - 30, 56);
 
-      // 1. Draw 12 Copper Vertical Micro-Pillars & TSVs with metallic shading & signal pulses
-      for (let k = 0; k < 12; k++) {
-        const bx = 60 + k * (w - 120) / 11;
+      // 1. Draw Copper Vertical Micro-Pillars & TSVs with metallic shading & signal pulses
+      const numPillars = isMobile ? 8 : 12;
+      for (let k = 0; k < numPillars; k++) {
+        const bx = 45 + k * (w - 90) / (numPillars - 1);
         // Copper pillar body
         const copperGrad = ctx.createLinearGradient(bx - 5, 134, bx + 5, 134);
         copperGrad.addColorStop(0, '#78350f');
         copperGrad.addColorStop(0.5, '#d97706');
         copperGrad.addColorStop(1, '#92400e');
         ctx.fillStyle = copperGrad;
-        ctx.fillRect(bx - 5, 134, 10, 60);
+        ctx.fillRect(bx - 4, 134, 8, 60);
         ctx.strokeStyle = dark ? '#fde68a' : '#b45309';
         ctx.lineWidth = 1;
-        ctx.strokeRect(bx - 5, 134, 10, 60);
+        ctx.strokeRect(bx - 4, 134, 8, 60);
 
         // Animated bi-directional signal pulses
         if (k % 2 === 0) {
@@ -3326,7 +3455,7 @@
           ctx.shadowColor = dark ? '#00f2fe' : '#0284c7';
           ctx.shadowBlur = 6;
           ctx.beginPath();
-          ctx.arc(bx, pulseY, 3.5, 0, 2 * Math.PI);
+          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
           ctx.fill();
           ctx.shadowBlur = 0;
         } else {
@@ -3336,7 +3465,7 @@
           ctx.shadowColor = dark ? '#fbbf24' : '#d97706';
           ctx.shadowBlur = 6;
           ctx.beginPath();
-          ctx.arc(bx, pulseY, 3.5, 0, 2 * Math.PI);
+          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
           ctx.fill();
           ctx.shadowBlur = 0;
         }
@@ -3358,8 +3487,8 @@
       ctx.restore();
 
       ctx.fillStyle = dark ? '#fef08a' : '#92400e';
-      ctx.font = 'bold 11px monospace';
-      ctx.fillText('↕ 3D HETEROGENEOUS COPPER MICRO-PILLARS & TSVs (100 GHz Drive & APD Feedback)', 35, 157);
+      ctx.font = isMobile ? 'bold 9.5px monospace' : 'bold 11px monospace';
+      ctx.fillText(isMobile ? '↕ 3D COPPER TSVs (100 GHz Drive & APD)' : '↕ 3D HETEROGENEOUS COPPER MICRO-PILLARS & TSVs (100 GHz Drive & APD Feedback)', 32, 157);
 
       ctx.fillStyle = dark ? '#03141f' : '#f0fdf4';
       ctx.fillRect(15, 198, w - 30, 230);
@@ -3367,66 +3496,70 @@
       ctx.lineWidth = 1.5;
       ctx.strokeRect(15, 198, w - 30, 230);
 
+      const tier2BadgeW = Math.min(520, w - 50);
       ctx.fillStyle = dark ? '#083344' : '#cffafe';
-      ctx.fillRect(25, 206, 520, 22);
+      ctx.fillRect(25, 206, tier2BadgeW, 22);
       ctx.strokeStyle = dark ? '#22d3ee' : '#06b6d4';
       ctx.lineWidth = 1;
-      ctx.strokeRect(25, 206, 520, 22);
+      ctx.strokeRect(25, 206, tier2BadgeW, 22);
       ctx.fillStyle = dark ? '#ffffff' : '#0e7490';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('🌊 TIER 2: 220nm SOI SILICON PHOTONIC SUBSTRATE (Light-Speed Compute)', 35, 221);
+      ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 12px sans-serif';
+      ctx.fillText(isMobile ? '🌊 TIER 2: 220nm SILICON PHOTONIC SUBSTRATE' : '🌊 TIER 2: 220nm SOI SILICON PHOTONIC SUBSTRATE (Light-Speed Compute)', 32, 221);
 
       function drawArchBox(x, y, bw, bh, title, sub, bgCol, borderCol, titleCol, subCol) {
         ctx.fillStyle = bgCol;
         ctx.fillRect(x, y, bw, bh);
         ctx.strokeStyle = borderCol;
-        ctx.lineWidth = 1.8;
+        ctx.lineWidth = 1.5;
         ctx.strokeRect(x, y, bw, bh);
 
         ctx.fillStyle = titleCol || (dark ? '#ffffff' : '#0f172a');
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillText(title, x + 8, y + 20);
+        ctx.font = isMobile ? (bw < 80 ? 'bold 8.5px sans-serif' : 'bold 9.5px sans-serif') : 'bold 12px sans-serif';
+        ctx.fillText(title, x + (isMobile ? 4 : 8), y + (isMobile ? 18 : 20));
 
         ctx.fillStyle = subCol || (dark ? '#38bdf8' : '#0284c7');
-        ctx.font = 'bold 10.5px monospace';
-        ctx.fillText(sub, x + 8, y + 38);
+        ctx.font = isMobile ? (bw < 80 ? '7.5px monospace' : '8.5px monospace') : 'bold 10.5px monospace';
+        ctx.fillText(sub, x + (isMobile ? 4 : 8), y + (isMobile ? 34 : 38));
       }
 
-      const scaleX = (w - 30) / 1000;
-      const b_rns_x = 35;
-      const b_ilo_x = 35 + 230 * scaleX;
-      const b_lat_x = 35 + 470 * scaleX;
-      const b_jir_x = 35 + 710 * scaleX;
+      const availableW = w - 60;
+      const boxGap = Math.max(4, isMobile ? 4 : 12);
+      const boxW = (availableW - (3 * boxGap)) / 4;
+
+      const b_rns_x = 30;
+      const b_ilo_x = 30 + (boxW + boxGap);
+      const b_lat_x = 30 + 2 * (boxW + boxGap);
+      const b_jir_x = 30 + 3 * (boxW + boxGap);
 
       const cmosBg = dark ? '#1e1b4b' : '#ede9fe';
       const cmosBorder = dark ? '#818cf8' : '#818cf8';
       const cmosTitle = dark ? '#ffffff' : '#312e81';
       const cmosSub = dark ? '#a5b4fc' : '#4338ca';
 
-      drawArchBox(b_rns_x, 52, 210 * scaleX, 64, '1. RNS Modulo LUTs', '64b INT -> 16 Residues', cmosBg, cmosBorder, cmosTitle, cmosSub);
-      drawArchBox(b_ilo_x, 52, 220 * scaleX, 64, '2. 100 GHz Comb Clock', '50 fs RMS Comb Jitter', cmosBg, cmosBorder, cmosTitle, cmosSub);
-      drawArchBox(b_lat_x, 52, 220 * scaleX, 64, '3. StrongARM Dynamic', '3.5 ps Bit Digitization', cmosBg, cmosBorder, cmosTitle, cmosSub);
-      drawArchBox(b_jir_x, 52, 220 * scaleX, 64, '4. JIR Thermal Engine', 'Sub-10ns Modulus Swap', cmosBg, '#ef4444', cmosTitle, '#ef4444');
+      drawArchBox(b_rns_x, 52, boxW, 64, isMobile ? '1. RNS LUT' : '1. RNS Modulo LUTs', isMobile ? '64b->16' : '64b INT -> 16 Residues', cmosBg, cmosBorder, cmosTitle, cmosSub);
+      drawArchBox(b_ilo_x, 52, boxW, 64, isMobile ? '2. Comb Clk' : '2. 100 GHz Comb Clock', isMobile ? '50fs RMS' : '50 fs RMS Comb Jitter', cmosBg, cmosBorder, cmosTitle, cmosSub);
+      drawArchBox(b_lat_x, 52, boxW, 64, isMobile ? '3. StrongARM' : '3. StrongARM Dynamic', isMobile ? '3.5ps Bit' : '3.5 ps Bit Digitization', cmosBg, cmosBorder, cmosTitle, cmosSub);
+      drawArchBox(b_jir_x, 52, boxW, 64, isMobile ? '4. JIR Loop' : '4. JIR Thermal Engine', isMobile ? '<10ns Swap' : 'Sub-10ns Modulus Swap', cmosBg, '#ef4444', cmosTitle, '#ef4444');
 
-      const o_mod_x = 35;
-      const o_ben_x = 35 + 230 * scaleX;
-      const o_apd_x = 35 + 470 * scaleX;
-      const o_sb_x = 35 + 710 * scaleX;
+      const o_mod_x = b_rns_x;
+      const o_ben_x = b_ilo_x;
+      const o_apd_x = b_lat_x;
+      const o_sb_x = b_jir_x;
 
       const siphBg = dark ? '#042f2e' : '#e0f2fe';
       const siphBorder = dark ? '#2dd4bf' : '#0284c7';
       const siphTitle = dark ? '#ffffff' : '#0369a1';
       const siphSub = dark ? '#5eead4' : '#0284c7';
 
-      drawArchBox(o_mod_x, 240, 210 * scaleX, 72, '1. LiTaO₃ Modulators', '100 GHz E-O Pockels Drive', siphBg, siphBorder, siphTitle, siphSub);
-      drawArchBox(o_ben_x, 240, 220 * scaleX, 72, '2. 32 × 32 Benes Mesh', '10.4 ps Time-of-Flight', siphBg, siphBorder, siphTitle, siphSub);
-      drawArchBox(o_apd_x, 240, 220 * scaleX, 72, '3. Ge/Si SAC²M APDs', '1-Bit Binary Detection', siphBg, siphBorder, siphTitle, siphSub);
+      drawArchBox(o_mod_x, 240, boxW, 72, isMobile ? '1. LiTaO₃' : '1. LiTaO₃ Modulators', isMobile ? '100GHz EO' : '100 GHz E-O Pockels Drive', siphBg, siphBorder, siphTitle, siphSub);
+      drawArchBox(o_ben_x, 240, boxW, 72, isMobile ? '2. 32x32 Benes' : '2. 32 × 32 Benes Mesh', isMobile ? '10.4ps ToF' : '10.4 ps Time-of-Flight', siphBg, siphBorder, siphTitle, siphSub);
+      drawArchBox(o_apd_x, 240, boxW, 72, isMobile ? '3. Ge/Si APD' : '3. Ge/Si SAC²M APDs', isMobile ? '1-Bit Binary' : '1-Bit Binary Detection', siphBg, siphBorder, siphTitle, siphSub);
       
       const pcmBg = dark ? '#451a03' : '#fef3c7';
       const pcmBorder = dark ? '#fbbf24' : '#d97706';
       const pcmTitle = dark ? '#ffffff' : '#92400e';
       const pcmSub = dark ? '#fde047' : '#b45309';
-      drawArchBox(o_sb_x, 240, 220 * scaleX, 72, '4. Sb₂S₃ PCM Matrix', '0W Static Hold Switches', pcmBg, pcmBorder, pcmTitle, pcmSub);
+      drawArchBox(o_sb_x, 240, boxW, 72, isMobile ? '4. Sb₂S₃ PCM' : '4. Sb₂S₃ PCM Matrix', isMobile ? '0W Static' : '0W Static Hold Switches', pcmBg, pcmBorder, pcmTitle, pcmSub);
 
 
 
