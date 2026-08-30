@@ -169,6 +169,7 @@
       flex-direction: column;
       justify-content: center;
     }
+    .brand-title .brand-name,
     .brand-title h1 {
       font-family: 'Cinzel', 'Playfair Display', 'Bodoni MT', 'Didot', 'Georgia', serif;
       font-size: 1.65rem;
@@ -177,6 +178,7 @@
       text-transform: uppercase;
       margin: 0;
       line-height: 1;
+      display: block;
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue) 60%, var(--accent-purple));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -193,6 +195,7 @@
       margin-top: 3px;
       line-height: 1;
     }
+    .brand:hover .brand-title .brand-name,
     .brand:hover .brand-title h1 {
       filter: drop-shadow(0 2px 14px rgba(2, 132, 199, 0.40));
     }
@@ -554,6 +557,7 @@
         flex-wrap: wrap;
         gap: 8px;
       }
+      .brand-title .brand-name,
       .brand-title h1 {
         font-size: 1.3rem;
         letter-spacing: 0.18em;
@@ -870,6 +874,7 @@
       header {
         padding: 0.5rem 0.75rem;
       }
+      .brand-title .brand-name,
       .brand-title h1 {
         font-size: 1.1rem;
         letter-spacing: 0.14em;
@@ -1000,7 +1005,7 @@
     <div class="brand" onclick="switchPage('home')">
       <img src="/janus-logo.png" alt="Janus Photonic Hardware Logo" class="brand-logo-img" />
       <div class="brand-title">
-        <h1>JANUS</h1>
+        <span class="brand-name">JANUS</span>
         <span class="brand-subtitle">Photonic Hardware</span>
       </div>
     </div>
@@ -2770,9 +2775,9 @@
             <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(0, 242, 254, 0.15); color:var(--accent-cyan); font-size:0.75rem; font-weight:700; padding:3px 12px; border-radius:12px; margin-bottom:0.75rem; text-transform:uppercase; letter-spacing:0.06em;">
               👑 Lead Architect & Inventor
             </div>
-            <h1 style="font-size:2rem; color:var(--text-main); margin-bottom:0.35rem; font-weight:800; letter-spacing:-0.02em;">
+            <h2 style="font-size:2rem; color:var(--text-main); margin-bottom:0.35rem; font-weight:800; letter-spacing:-0.02em;">
               Deepanshu Bhardwaj
-            </h1>
+            </h2>
             <p style="color:var(--accent-cyan); font-size:1.05rem; font-weight:600; margin-bottom:1rem;">
               Architect & Principal Inventor of Project JANUS • Pioneer of Spatial Residue Optical Computing
             </p>
