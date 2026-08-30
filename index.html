@@ -3,6 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Janus - Photonic Hardware | Spatial Optical Computing</title>
+  <meta name="description" content="Project JANUS: Pioneering Deterministic Spatial Residue Optical Computing Architecture delivering 104.8 PetaMAC/s at ~300W with zero static hold power." />
+  <meta name="keywords" content="Janus, Photonic Hardware, Optical Computing, Silicon Photonics, RNS, Sb2S3, 3D Heterogeneous CMOS, Deep Learning Accelerator" />
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://janus-photonic-ai.vercel.app/" />
+  <meta property="og:title" content="Janus - Photonic Hardware" />
+  <meta property="og:description" content="Pioneering Deterministic Spatial Residue Optical Computing Architecture." />
+  <meta property="og:image" content="https://janus-photonic-ai.vercel.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Janus - Photonic Hardware" />
+  <meta name="twitter:description" content="Pioneering Deterministic Spatial Residue Optical Computing Architecture." />
+  <meta name="twitter:image" content="https://janus-photonic-ai.vercel.app/og-image.png" />
+
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
   <meta name="google-site-verification" content="0cvrWvMl9qnHAJ4kDpLUMmj6bmZQsPd1c1wrOu9bo1k" />
   <!-- Typography: Italian / Classical Roman Serif for Brand & Inter for UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,6 +148,22 @@
       opacity: 0.88;
       transform: translateY(-1px);
     }
+    .brand-logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 1px solid rgba(2, 132, 199, 0.35);
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.25);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .brand:hover .brand-logo-img {
+      box-shadow: 0 0 20px rgba(2, 132, 199, 0.55);
+      border-color: var(--accent-cyan);
+      transform: scale(1.05);
+    }
     .brand-title {
       display: flex;
       flex-direction: column;
@@ -134,9 +171,9 @@
     }
     .brand-title h1 {
       font-family: 'Cinzel', 'Playfair Display', 'Bodoni MT', 'Didot', 'Georgia', serif;
-      font-size: 1.75rem;
+      font-size: 1.65rem;
       font-weight: 800;
-      letter-spacing: 0.28em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       margin: 0;
       line-height: 1;
@@ -145,6 +182,16 @@
       -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 2px 8px rgba(2, 132, 199, 0.20));
       transition: filter 0.3s ease;
+    }
+    .brand-subtitle {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-top: 3px;
+      line-height: 1;
     }
     .brand:hover .brand-title h1 {
       filter: drop-shadow(0 2px 14px rgba(2, 132, 199, 0.40));
@@ -951,8 +998,10 @@
   <!-- TOP GLOBAL HEADER & NAVIGATION BAR -->
   <header>
     <div class="brand" onclick="switchPage('home')">
+      <img src="/janus-logo.png" alt="Janus Photonic Hardware Logo" class="brand-logo-img" />
       <div class="brand-title">
         <h1>JANUS</h1>
+        <span class="brand-subtitle">Photonic Hardware</span>
       </div>
     </div>
 
