@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://janus-photonic-ai.vercel.app/sitemap.xml
+Sitemap: https://janus-photonic-hardware.vercel.app/sitemap.xml

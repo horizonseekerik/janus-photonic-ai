@@ -4,32 +4,32 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>https://janus-photonic-ai.vercel.app/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://janus-photonic-hardware.vercel.app/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://janus-photonic-ai.vercel.app/JANUS_IEEE_Manuscript.pdf</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://janus-photonic-hardware.vercel.app/JANUS_IEEE_Manuscript.pdf</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://janus-photonic-ai.vercel.app/JANUS_Mini16_CMOS_Architecture.pdf</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://janus-photonic-hardware.vercel.app/JANUS_Mini16_CMOS_Architecture.pdf</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://janus-photonic-ai.vercel.app/JANUS_Mini16_Simulation_Report.pdf</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://janus-photonic-hardware.vercel.app/JANUS_Mini16_Simulation_Report.pdf</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://janus-photonic-ai.vercel.app/main.pdf</loc>
-    <lastmod>2026-08-29</lastmod>
+    <loc>https://janus-photonic-hardware.vercel.app/main.pdf</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
