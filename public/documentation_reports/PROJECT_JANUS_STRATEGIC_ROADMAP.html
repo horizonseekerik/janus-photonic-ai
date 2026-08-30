@@ -1,0 +1,2818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PROJECT JANUS - Strategic Engineering Roadmap</title>
+<style>
+    @page {
+        size: A4 portrait;
+        margin: 14mm 11mm 14mm 11mm;
+        @bottom-right {
+            content: "Page " counter(page);
+            font-size: 8pt;
+            color: #64748b;
+            font-family: 'Segoe UI', sans-serif;
+        }
+    }
+    *, *:before, *:after {
+        box-sizing: border-box;
+    }
+    body {
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+        color: #0f172a;
+        line-height: 1.45;
+        font-size: 9.5pt;
+        background: #ffffff;
+        padding: 0;
+        margin: 0;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+    h1 {
+        color: #0f2b48;
+        font-size: 17pt;
+        font-weight: 700;
+        border-bottom: 2.5px solid #0f2b48;
+        padding-bottom: 6px;
+        margin-top: 0;
+        margin-bottom: 10px;
+        page-break-after: avoid;
+    }
+    h2 {
+        color: #1b4b72;
+        font-size: 12.5pt;
+        font-weight: 600;
+        border-bottom: 1.5px solid #cbd5e1;
+        padding-bottom: 4px;
+        margin-top: 20px;
+        margin-bottom: 8px;
+        page-break-after: avoid;
+    }
+    h3 {
+        color: #1e3a8a;
+        font-size: 11pt;
+        font-weight: 600;
+        margin-top: 14px;
+        margin-bottom: 6px;
+        page-break-after: avoid;
+    }
+    h4 {
+        color: #334155;
+        font-size: 10pt;
+        font-weight: 600;
+        margin-top: 10px;
+        margin-bottom: 4px;
+        page-break-after: avoid;
+    }
+    p {
+        margin-top: 3px;
+        margin-bottom: 6px;
+    }
+    ul, ol {
+        margin-top: 3px;
+        margin-bottom: 6px;
+        padding-left: 18px;
+    }
+    li {
+        margin-bottom: 2px;
+    }
+    
+    /* Standard Tables - Guaranteed Straight Vertical and Horizontal Lines */
+    table {
+        width: 100%;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+        margin: 10px 0 14px 0;
+        font-size: 8pt;
+        page-break-inside: auto;
+        border: 1.5px solid #0f2b48;
+    }
+    tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+    th {
+        background-color: #0f2b48 !important;
+        color: #ffffff !important;
+        font-weight: 600;
+        text-align: left;
+        padding: 5px 6px;
+        border-top: 1.5px solid #0f2b48 !important;
+        border-bottom: 1.5px solid #0f2b48 !important;
+        border-left: 1px solid #2d4a6e !important;
+        border-right: 1px solid #2d4a6e !important;
+        font-size: 8pt;
+    }
+    th:first-child {
+        border-left: 1.5px solid #0f2b48 !important;
+    }
+    th:last-child {
+        border-right: 1.5px solid #0f2b48 !important;
+    }
+    td {
+        padding: 4px 6px;
+        border-top: 1px solid #cbd5e1 !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+        border-left: 1px solid #94a3b8 !important;
+        border-right: 1px solid #94a3b8 !important;
+        vertical-align: middle;
+        font-size: 8pt;
+    }
+    td:first-child {
+        border-left: 1.5px solid #0f2b48 !important;
+    }
+    td:last-child {
+        border-right: 1.5px solid #0f2b48 !important;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    tbody tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    /* 15-Column Master Matrix Table - Ultra-compact layout */
+    table.master-matrix-table {
+        font-size: 5.8pt !important;
+        margin: 12px 0 16px 0;
+        border: 1.5px solid #0f2b48;
+    }
+    table.master-matrix-table th {
+        padding: 3px 2px !important;
+        font-size: 5.8pt !important;
+        line-height: 1.15;
+        border-left: 1px solid #2d4a6e !important;
+        border-right: 1px solid #2d4a6e !important;
+    }
+    table.master-matrix-table td {
+        padding: 3px 2px !important;
+        font-size: 5.8pt !important;
+        line-height: 1.15;
+        border-left: 1px solid #94a3b8 !important;
+        border-right: 1px solid #94a3b8 !important;
+    }
+
+    /* Monospace Code Blocks & ASCII Stack Architecture Diagrams */
+    pre {
+        background-color: #f8fafc;
+        border: 1.5px solid #64748b;
+        border-radius: 3px;
+        padding: 7px 9px;
+        overflow-x: hidden;
+        font-family: 'Consolas', 'Courier New', monospace !important;
+        font-size: 6.8pt !important;
+        line-height: 1.20 !important;
+        letter-spacing: 0px !important;
+        white-space: pre !important;
+        margin: 8px 0;
+        page-break-inside: avoid;
+        color: #0f172a;
+    }
+    pre code {
+        font-family: 'Consolas', 'Courier New', monospace !important;
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: inherit !important;
+    }
+    code {
+        font-family: 'Consolas', 'Courier New', monospace;
+        font-size: 8pt;
+        background-color: #f1f5f9;
+        padding: 1px 3px;
+        border-radius: 2px;
+        color: #0f172a;
+    }
+
+    /* Callout Boxes */
+    blockquote {
+        margin: 8px 0;
+        padding: 6px 12px;
+        color: #0f172a;
+        background-color: #f0f9ff;
+        border-left: 4px solid #0284c7;
+        border-radius: 2px;
+        font-size: 8.8pt;
+        page-break-inside: avoid;
+    }
+    hr {
+        height: 1px;
+        background-color: #cbd5e1;
+        border: none;
+        margin: 14px 0;
+    }
+    strong {
+        color: #0f172a;
+        font-weight: 600;
+    }
+</style>
+</head>
+<body>
+<h1 id="project-janus-strategic-hardware-engineering-product-commercialization-roadmap">PROJECT JANUS: STRATEGIC HARDWARE ENGINEERING &amp; PRODUCT COMMERCIALIZATION ROADMAP</h1>
+<p><strong>Classification:</strong> Proprietary / Engineering Blueprint<br />
+<strong>Patent Application Reference:</strong> Indian Patent App No. 202611052791 (Patent Pending)<br />
+<strong>Lead Architect:</strong> Deepanshu Bhardwaj<br />
+<strong>System Class:</strong> Constraint-Aware Bounded Exact Photonic Accelerator  </p>
+<hr />
+<h2 id="1-executive-mission-generational-strategy">1. Executive Mission &amp; Generational Strategy</h2>
+<p>The objective of <strong>Project JANUS</strong> is the physical realization, industrial fabrication, and commercial scale-up of the world's first <strong>Constraint-Bounded Exact Photonic Accelerator</strong>.</p>
+<p>Conventional optical neural accelerators have stalled due to the <strong>Analog Precision Collapse</strong> (requiring an unachievable &gt;138 dB analog SNR at scale), multi-kilowatt thermo-optic static power dissipation, nonlinear multi-wavelength interference, and amplifier noise. </p>
+<p><strong>JANUS</strong> leapfrogs these physical limits by executing computation via <strong>One-Hot Optical Residue Number System (RNS) spatial routing</strong>, non-volatile <strong>Sb2S3 dilated Beneš switching</strong>, <strong>1064 nm passive high-power fan-out</strong>, and <strong>monolithic Z-axis thermal isolation</strong>.</p>
+<h3 id="generational-product-ladder">Generational Product Ladder</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Generation</th>
+<th style="text-align: left;">Strata Count</th>
+<th style="text-align: left;">Product Family Focus</th>
+<th style="text-align: left;">Primary Target Models</th>
+<th style="text-align: left;">Fabrication Risk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Gen-1</strong></td>
+<td style="text-align: left;">1 Stratum</td>
+<td style="text-align: left;">Monolithic Planar MVP</td>
+<td style="text-align: left;">Mini 16T (10×10), 32T</td>
+<td style="text-align: left;">Lowest (Zero 3D Vias)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gen-2</strong></td>
+<td style="text-align: left;">1 &amp; 2 Strata</td>
+<td style="text-align: left;">Planar Edge &amp; 3D Mini</td>
+<td style="text-align: left;">Edge 16T (20×20), Mini 16/32</td>
+<td style="text-align: left;">Low (Single Int-Via)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gen-3</strong></td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">Dual-Stratum Scale</td>
+<td style="text-align: left;">Mini 64T, Edge 16T, Edge 32</td>
+<td style="text-align: left;">Low-Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gen-4</strong></td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">3-Stratum Edge Focus</td>
+<td style="text-align: left;">Mini 32/64T, Edge 16/32/64</td>
+<td style="text-align: left;">Medium (3D Stacking)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gen-5</strong></td>
+<td style="text-align: left;">4 Strata</td>
+<td style="text-align: left;">4-Stratum &amp; DC MVP</td>
+<td style="text-align: left;">Mini 64T, Edge 32/64, DC 16</td>
+<td style="text-align: left;">Medium-High</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Gen-6</strong></td>
+<td style="text-align: left;">5 Strata</td>
+<td style="text-align: left;">Hyperscale Flagship</td>
+<td style="text-align: left;">DC 32T / 64T (1.01B+ sw)</td>
+<td style="text-align: left;">Full Scale Flagship</td>
+</tr>
+</tbody>
+</table>
+<h3 id="comprehensive-master-hardware-performance-matrix-models-1a-through-6b">Comprehensive Master Hardware &amp; Performance Matrix (Models 1A through 6B)</h3>
+<p>All models operate under <strong>100 GHz wave-pipelined optical cycling</strong> (T_cycle = 10.0 ps), sustained utilization η = 0.85, and binary detection margin ≥ +4.61 dB over the Ge/Si SAC²M APD sensitivity threshold (P_sens,practical = -23.20 dBm). Laser launch power is strictly derived via the optical link budget with 2-phase 5 ps time-multiplexed steering (75% Wall-Plug Efficiency).</p>
+<table class="master-matrix-table">
+<thead>
+<tr>
+<th style="text-align: left;">Model ID</th>
+<th style="text-align: left;">Generation &amp; Stack Architecture</th>
+<th style="text-align: left;">SiPh Strata</th>
+<th style="text-align: left;">Tile Count (N_tiles)</th>
+<th style="text-align: left;">Matrix Mesh per Tile</th>
+<th style="text-align: left;">Total Multipliers</th>
+<th style="text-align: left;">Total Non-Volatile Switches</th>
+<th style="text-align: left;">Total APD Detectors</th>
+<th style="text-align: left;">Die Area (A_die)</th>
+<th style="text-align: left;">Master Laser (Opt / Elec)</th>
+<th style="text-align: left;">Total System Electrical Power</th>
+<th style="text-align: left;">Sustained INT4 Throughput</th>
+<th style="text-align: left;">Sustained INT64 Throughput</th>
+<th style="text-align: left;">Sustained INT4 / INT64 Efficiency</th>
+<th style="text-align: left;">Effective Yield / Wafer (Set)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1A</strong></td>
+<td style="text-align: left;">Gen-1 Monolithic Planar MVP</td>
+<td style="text-align: left;">1 Stratum</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">16,384</td>
+<td style="text-align: left;">31,457,280 (31.46M)</td>
+<td style="text-align: left;">4,194,304 (4.19M)</td>
+<td style="text-align: left;">100.00 mm²</td>
+<td style="text-align: left;">2.21 W / 2.95 W</td>
+<td style="text-align: left;"><strong>6.17 W</strong></td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">87.0 TMAC/s</td>
+<td style="text-align: left;">225.7 / 14.1 TMAC/s/W</td>
+<td style="text-align: left;">512 Functional / Wf</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>1B</strong></td>
+<td style="text-align: left;">Gen-1 Monolithic Planar Full</td>
+<td style="text-align: left;">1 Stratum</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">32,768</td>
+<td style="text-align: left;">62,914,560 (62.91M)</td>
+<td style="text-align: left;">8,388,608 (8.39M)</td>
+<td style="text-align: left;">200.00 mm²</td>
+<td style="text-align: left;">4.74 W / 6.31 W</td>
+<td style="text-align: left;"><strong>12.67 W</strong> (13.03 W nom.)</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">219.7 / 13.7 TMAC/s/W</td>
+<td style="text-align: left;">232 Functional / Wf</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2A</strong></td>
+<td style="text-align: left;">Gen-2 Monolithic Planar Edge</td>
+<td style="text-align: left;">1 Stratum</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">400.00 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">114 Functional / Wf</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2B</strong></td>
+<td style="text-align: left;">Gen-2 3D Mini Stack (50 mm²)</td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">16,384</td>
+<td style="text-align: left;">31,457,280 (31.46M)</td>
+<td style="text-align: left;">4,194,304 (4.19M)</td>
+<td style="text-align: left;">50.00 mm²</td>
+<td style="text-align: left;">2.21 W / 2.95 W</td>
+<td style="text-align: left;"><strong>6.17 W</strong></td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">87.0 TMAC/s</td>
+<td style="text-align: left;">225.7 / 14.1 TMAC/s/W</td>
+<td style="text-align: left;">≈ 512 / 3-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2C</strong></td>
+<td style="text-align: left;">Gen-2 3D Mini Stack (100 mm²)</td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">32,768</td>
+<td style="text-align: left;">62,914,560 (62.91M)</td>
+<td style="text-align: left;">8,388,608 (8.39M)</td>
+<td style="text-align: left;">100.00 mm²</td>
+<td style="text-align: left;">4.74 W / 6.31 W</td>
+<td style="text-align: left;"><strong>12.67 W</strong> (13.03 W nom.)</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">219.7 / 13.7 TMAC/s/W</td>
+<td style="text-align: left;">≈ 240 / 3-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3A</strong></td>
+<td style="text-align: left;">Gen-3 3D Mini Stack (200 mm²)</td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">200.00 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">≈ 116 / 3-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3B</strong></td>
+<td style="text-align: left;">Gen-3 3D Edge Stack (200 mm²)</td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">200.00 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">≈ 116 / 3-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3C</strong></td>
+<td style="text-align: left;">Gen-3 3D Edge Stack (400 mm²)</td>
+<td style="text-align: left;">2 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">131,072</td>
+<td style="text-align: left;">251,658,240 (251.66M)</td>
+<td style="text-align: left;">33,554,432 (33.55M)</td>
+<td style="text-align: left;">400.00 mm²</td>
+<td style="text-align: left;">21.75 W / 29.00 W</td>
+<td style="text-align: left;"><strong>45.91 W</strong> (43.58 W nom.)</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">242.7 / 15.2 TMAC/s/W</td>
+<td style="text-align: left;">≈ 57 / 3-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4A</strong></td>
+<td style="text-align: left;">Gen-4 3D Mini Stack (66.7 mm²)</td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">32,768</td>
+<td style="text-align: left;">62,914,560 (62.91M)</td>
+<td style="text-align: left;">8,388,608 (8.39M)</td>
+<td style="text-align: left;">66.67 mm²</td>
+<td style="text-align: left;">4.74 W / 6.31 W</td>
+<td style="text-align: left;"><strong>12.67 W</strong> (13.03 W nom.)</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">219.7 / 13.7 TMAC/s/W</td>
+<td style="text-align: left;">≈ 240 / 4-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4B</strong></td>
+<td style="text-align: left;">Gen-4 3D Mini Stack (133.3 mm²)</td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">133.33 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">≈ 116 / 4-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4C</strong></td>
+<td style="text-align: left;">Gen-4 3D Edge Stack (133.3 mm²)</td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">133.33 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">≈ 116 / 4-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4D</strong></td>
+<td style="text-align: left;">Gen-4 3D Edge Stack (266.7 mm²)</td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">131,072</td>
+<td style="text-align: left;">251,658,240 (251.66M)</td>
+<td style="text-align: left;">33,554,432 (33.55M)</td>
+<td style="text-align: left;">266.67 mm²</td>
+<td style="text-align: left;">21.75 W / 29.00 W</td>
+<td style="text-align: left;"><strong>45.91 W</strong> (43.58 W nom.)</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">242.7 / 15.2 TMAC/s/W</td>
+<td style="text-align: left;">≈ 57 / 4-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4E</strong></td>
+<td style="text-align: left;">Gen-4 3D Edge Flagship (533.3 mm²)</td>
+<td style="text-align: left;">3 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">262,144</td>
+<td style="text-align: left;">503,316,480 (503.32M)</td>
+<td style="text-align: left;">67,108,864 (67.11M)</td>
+<td style="text-align: left;">533.33 mm²</td>
+<td style="text-align: left;">46.61 W / 62.15 W</td>
+<td style="text-align: left;"><strong>92.97 W</strong></td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">239.7 / 15.0 TMAC/s/W</td>
+<td style="text-align: left;">≈ 28 / 4-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5A</strong></td>
+<td style="text-align: left;">Gen-5 3D Mini Stack (100 mm²)</td>
+<td style="text-align: left;">4 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">32 × 32</td>
+<td style="text-align: left;">65,536</td>
+<td style="text-align: left;">125,829,120 (125.83M)</td>
+<td style="text-align: left;">16,777,216 (16.78M)</td>
+<td style="text-align: left;">100.00 mm²</td>
+<td style="text-align: left;">10.15 W / 13.53 W</td>
+<td style="text-align: left;"><strong>23.49 W</strong></td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">237.1 / 14.8 TMAC/s/W</td>
+<td style="text-align: left;">≈ 116 / 5-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5B</strong></td>
+<td style="text-align: left;">Gen-5 3D Edge Stack (200 mm²)</td>
+<td style="text-align: left;">4 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">131,072</td>
+<td style="text-align: left;">251,658,240 (251.66M)</td>
+<td style="text-align: left;">33,554,432 (33.55M)</td>
+<td style="text-align: left;">200.00 mm²</td>
+<td style="text-align: left;">21.75 W / 29.00 W</td>
+<td style="text-align: left;"><strong>45.91 W</strong> (43.58 W nom.)</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">242.7 / 15.2 TMAC/s/W</td>
+<td style="text-align: left;">≈ 57 / 5-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5C</strong></td>
+<td style="text-align: left;">Gen-5 3D Edge Stack (400 mm²)</td>
+<td style="text-align: left;">4 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">64 × 64</td>
+<td style="text-align: left;">262,144</td>
+<td style="text-align: left;">503,316,480 (503.32M)</td>
+<td style="text-align: left;">67,108,864 (67.11M)</td>
+<td style="text-align: left;">400.00 mm²</td>
+<td style="text-align: left;">46.61 W / 62.15 W</td>
+<td style="text-align: left;"><strong>92.97 W</strong></td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">239.7 / 15.0 TMAC/s/W</td>
+<td style="text-align: left;">≈ 28 / 5-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5D</strong></td>
+<td style="text-align: left;">Gen-5 3D Datacenter MVP (400 mm²)</td>
+<td style="text-align: left;">4 Strata</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">128 × 128</td>
+<td style="text-align: left;">262,144</td>
+<td style="text-align: left;">503,316,480 (503.32M)</td>
+<td style="text-align: left;">67,108,864 (67.11M)</td>
+<td style="text-align: left;">400.00 mm²</td>
+<td style="text-align: left;">46.61 W / 62.15 W</td>
+<td style="text-align: left;"><strong>90.39 W</strong></td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">246.5 / 15.41 TMAC/s/W</td>
+<td style="text-align: left;">≈ 28 / 5-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6A</strong></td>
+<td style="text-align: left;">Gen-6 3D Datacenter Master (640 mm²)</td>
+<td style="text-align: left;">5 Strata</td>
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">128 × 128</td>
+<td style="text-align: left;">524,288</td>
+<td style="text-align: left;">1,006,632,960 (1.0066B)</td>
+<td style="text-align: left;">134,217,728 (134.22M)</td>
+<td style="text-align: left;">640.00 mm²</td>
+<td style="text-align: left;">99.89 W / 133.19 W</td>
+<td style="text-align: left;"><strong>186.65 W</strong> (186.79 W nom.)</td>
+<td style="text-align: left;">44,564.5 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">238.8 / 14.92 TMAC/s/W</td>
+<td style="text-align: left;">≈ 14 / 6-Wafer Set</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6B</strong></td>
+<td style="text-align: left;">Gen-6 3D Hyperscale Module (1,280 mm²)</td>
+<td style="text-align: left;">5 Strata</td>
+<td style="text-align: left;">64</td>
+<td style="text-align: left;">128 × 128</td>
+<td style="text-align: left;">1,048,576</td>
+<td style="text-align: left;">2,013,265,920 (2.013B)</td>
+<td style="text-align: left;">268,435,456 (268.44M)</td>
+<td style="text-align: left;">1,280.00 mm²</td>
+<td style="text-align: left;">214.08 W / 285.44 W</td>
+<td style="text-align: left;"><strong>392.36 W</strong></td>
+<td style="text-align: left;">89,129.0 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">227.2 / 14.20 TMAC/s/W</td>
+<td style="text-align: left;">≈ 7 / 6-Wafer Set</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="product-positioning-customer-perspective-edge-16-tile-vs-mini-64-tile">Product Positioning &amp; Customer Perspective: Edge 16-Tile vs. Mini 64-Tile</h2>
+<p>A common architectural question arises when evaluating the <strong>Edge 16-Tile</strong> and the <strong>Mini 64-Tile</strong> models. Both feature exactly <strong>65,536 optical multipliers</strong>, consume <strong>23.49 W</strong> of power, and occupy identical silicon area in their respective stacked generations (200.00 mm² in Gen-3 dual-stratum, 133.33 mm² in Gen-4 3-stratum, and 100.00 mm² in Gen-5 4-stratum). However, they serve completely divergent customer profiles:</p>
+<h3 id="the-mini-64-tile-32-32-per-tile">The Mini 64-Tile (32 × 32 per tile)</h3>
+<ul>
+<li><strong>Customer Profile:</strong> Robotics, Autonomous Vehicles (AV), and multi-sensor IoT edge nodes.</li>
+<li><strong>Workload Dynamics:</strong> Requires executing many smaller, independent neural networks simultaneously. For example, an AV might need to process 8 radar streams, 4 lidar feeds, and 12 camera feeds at once.</li>
+<li><strong>Advantage:</strong> The 64 independent tiles allow the OS scheduler to achieve <strong>massive multi-tenancy</strong>. The customer can map 64 independent 32 × 32 matrix workloads in parallel without them blocking each other, achieving true spatial multitasking.</li>
+</ul>
+<h3 id="the-edge-16-tile-64-64-per-tile">The Edge 16-Tile (64 × 64 per tile)</h3>
+<ul>
+<li><strong>Customer Profile:</strong> Local LLM Inference (e.g., LLaMA-3 8B), on-premise generative AI, and heavy monolithic signal processing.</li>
+<li><strong>Workload Dynamics:</strong> Requires executing singular, massive dense matrix multiplications (GEMMs). </li>
+<li><strong>Advantage:</strong> The 64 × 64 matrix dimension allows for <strong>4x larger contiguous matrix multiplications</strong> per cycle per tile. This drastically reduces the software compiler overhead and memory-fetch bottlenecks associated with slicing massive LLM weight matrices into tiny 32 × 32 blocks. </li>
+</ul>
+<hr />
+<h2 id="2-generation-1-single-stratum-monolithic-architecture-gen-1">2. Generation 1: Single-Stratum Monolithic Architecture (Gen-1)</h2>
+<p>Generation 1 is the <strong>Alpha Minimum Viable Product (MVP)</strong> family. By consolidating all optical routing, input modulators, splitting trees, and photodetectors into a <strong>single monolithic SiPh stratum</strong> over an ultra-thick 250 µm SiO₂ thermal buffer, Gen-1 eliminates the need for interlayer vertical optical grating couplers and wafer-to-wafer 3D optical alignment.</p>
+<blockquote>
+<p>[!NOTE]<br />
+<strong>Thermal Diffusion Physics Note:</strong> The monolithic planar Gen-1 architecture employs an ultra-thick 250 µm SiO₂ buffer layer designed for maximum thermal isolation during initial single-stratum packaging (α = 9.05 × 10⁻⁷ m²/s, τ_diff = (250 µm)² / α = 69.06 ms = 13,812 JIR cycles). In contrast, the paper's highly compact multi-stratum reference package uses a 100 µm primary SiO₂ buffer (τ_diff = (100 µm)² / α = 11.05 ms = 2,210 JIR cycles). Both satisfy the fundamental JANUS design rule τ_diff ≫ τ_JIR = 5 µs by over three orders of magnitude.</p>
+</blockquote>
+<h3 id="monolithic-3-layer-physical-stack">Monolithic 3-Layer Physical Stack</h3>
+<pre><code>==================================================================================
+  LAYER 2: MONOLITHIC SiPh CORE &amp; DETECTOR STRATUM (30 µm)
+  - LiTaO3 1x256 Pockels Input Modulator Trees (50 aJ/switch @ 100 GHz)
+  - Passive Single-Wavelength 1064 nm MMI Splitting H-Tree Bus
+  - Non-Volatile Dilated PCM Beneš Routing Fabrics (Sb2S3 Vertical Reservoir, 0 W Static Hold)
+  - Monolithic Ge/Si SAC²M Avalanche Photodetector Array (1.00 - 1.10 µm² unit pixel)
+----------------------------------------------------------------------------------
+  LAYER 1.5: ULTRA-THICK MONOLITHIC SiO2 THERMAL BUFFER (250 µm)
+  - Thermal Diffusivity: α = 9.05 × 10⁻⁷ m²/s | Thermal Diffusion Time: τ_diff = 69.06 ms (13,812 JIR cycles)
+  - High-Aspect-Ratio Vertical Cu Through-Dielectric Vias (TDVs) for Electrical I/O
+----------------------------------------------------------------------------------
+  LAYER 1: CMOS BASE LOGIC, CRT ENGINE &amp; READOUT SUBSTRATE (50 µm)
+  - Event-Driven StrongARM Regenerative Latches &amp; S/H Column Multiplexing (~100 aJ / detection)
+  - High-Speed RNS Modulo Decomposition Front-End (x_i = X mod m_i, m_i &lt;= 256)
+  - Pipelined CRT Reconstruction Adder Tree (t_CRT ~ 210 ps) &amp; JIR Consistency Checker
+  - JIR Real-Time Thermal Trend Tracking &amp; Predictive RRNS Failover Engine
+==================================================================================
+  TOTAL BARE-DIE MONOLITHIC THICKNESS: 50 µm + 250 µm + 30 µm = 330 µm (0.33 mm)
+==================================================================================
+</code></pre>
+<hr />
+<h3 id="model-1a-janus-mini-16-tile-standardized-10-mm-10-mm">Model 1A: JANUS Mini 16-Tile (Standardized 10 mm × 10 mm)</h3>
+<p>Model 1A is the primary silicon tapeout vehicle: a compact 100 mm² monolithic accelerator operating at 100 GHz.</p>
+<h4 id="1-hardware-architecture-device-count">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 1,024 = <strong>16,384 multipliers</strong></li>
+<li><strong>Waveguide Alphabet per Multiplier:</strong> 256 waveguides (One-Hot 8-bit residue representation)</li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 16,384 × 256 = <strong>4,194,304 channels</strong></li>
+<li><strong>Beneš Routing Stages (S):</strong> 2·log₂(256) - 1 = <strong>15 stages</strong> (universal)</li>
+<li><strong>Switches per Multiplier Fabric:</strong> (256/2) × 15 = 128 × 15 = <strong>1,920 switches</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 16,384 × 1,920 = <strong>31,457,280 switches</strong> (≈ 31.46 Million)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 16,384 × 256 = <strong>4,194,304 detectors</strong> (≈ 4.19 Million)</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 16,384 active events (1-in-256 spatial sparsity; 8,192 illuminated per 5 ps phase)</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-100-mm-100-mm">2. Physical Layout &amp; Area Budget (10.0 mm × 10.0 mm)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Functional Component Block</th>
+<th style="text-align: left;">Unit Dimension</th>
+<th style="text-align: left;">Physical Area (mm²)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>1. Non-Volatile PCM Switch Cells (31.46M units)</strong></td>
+<td style="text-align: left;">1.35 µm² (relaxed)</td>
+<td style="text-align: left;">42.47 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>2. In-Plane Routing Shuffles &amp; Crossing Matrices</strong></td>
+<td style="text-align: left;">Low-crosstalk MMI</td>
+<td style="text-align: left;">20.20 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>3. Active 1×256 LiTaO₃ Input Routers (16,384 units)</strong></td>
+<td style="text-align: left;">1.15 mm² / router</td>
+<td style="text-align: left;">18.84 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>4. Master Laser 1:8,192 MMI Distribution H-Tree</strong></td>
+<td style="text-align: left;">Low-loss 13 stages</td>
+<td style="text-align: left;">4.50 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>5. Monolithic Ge/Si SAC²M APDs (4.19M pixels)</strong></td>
+<td style="text-align: left;">1.00 – 1.10 µm²</td>
+<td style="text-align: left;">4.40 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>6. Scribe Lines, Cu Perimeter Shunt, I/O &amp; Dicing</strong></td>
+<td style="text-align: left;">15.5% Margin</td>
+<td style="text-align: left;">15.59 mm²</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>TOTAL STANDARDIZED DIE FOOTPRINT (A_die)</strong></td>
+<td style="text-align: left;"><strong>10.0 mm × 10.0 mm</strong></td>
+<td style="text-align: left;"><strong>100.00 mm²</strong></td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (13 stages of 1:2 MMIs for 8,192 branches):</strong> L_split,ideal = 10·log₁₀(2¹³) = <strong>39.13 dB</strong></li>
+<li><strong>Excess Component Loss (L_excess):</strong> 13 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Prop/Cpl) = <strong>12.90 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 39.13 dB + 12.90 dB = <strong>52.03 dB</strong></li>
+<li><strong>Delivered Receiver Power (P_det):</strong> <strong>-18.59 dBm</strong> (13.84 µW)</li>
+<li><strong>Receiver Practical Sensitivity (P_sens):</strong> <strong>-23.20 dBm</strong> (4.79 µW @ BER = 10⁻¹⁸)</li>
+<li><strong>Net Binary Detection Margin:</strong> (-18.59 dBm) - (-23.20 dBm) = <strong>+4.61 dB</strong> (Zero In-Line Amplifiers)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>2.21 W Optical CW</strong> (+33.44 dBm, exact link budget)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>2.95 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 2.21 W Optical):</strong> 2.95 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 0.51 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 0.16 W</li>
+<li><strong>Optical Amplification (SOAs/EDFAs):</strong> 0.00 W (Eliminated)</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W (Non-Volatile)</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 1.05 W</li>
+<li><strong>JIR Scheduler &amp; Thermal Management Engine:</strong> 1.50 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>6.17 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 6.17 W / 100 mm² = <strong>0.0617 W/mm²</strong> (6.17 W/cm²)</li>
+<li><strong>SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>38.67 mJ/K</strong> (55.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR computation cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (6.17 W × 5 µs) / 38.67 mJ/K = <strong>0.00080°C</strong> = <strong>0.80 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">225.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">112.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">56.4 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">204.8 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">28.2 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">102.4 TMAC/s</td>
+<td style="text-align: left;">87.0 TMAC/s</td>
+<td style="text-align: left;">14.1 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-yield-300-mm-silicon-line">7. Foundry Wafer Yield (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Gross Dies per Wafer (DPW):</strong> <strong>640 Raw Dies / Wafer</strong></li>
+<li><strong>Net Usable Good Dies (@ 80% line yield):</strong> <strong>512 Functional Accelerators / Wafer</strong></li>
+</ul>
+<hr />
+<h3 id="model-1b-janus-mini-32-tile-full-capacity-200-mm2">Model 1B: JANUS Mini 32-Tile (Full-Capacity 200 mm²)</h3>
+<p>Model 1B doubles the parallel tile count to 32 tiles on a monolithic 200 mm² die, unlocking native 64-bit integer execution across all 16 CRT channels simultaneously with 2-way tile redundancy.</p>
+<h4 id="1-hardware-architecture-device-count_1">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 1,024 = <strong>32,768 multipliers</strong></li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 32,768 × 256 = <strong>8,388,608 channels</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 32,768 × 1,920 = <strong>62,914,560 switches</strong> (≈ 62.91 Million)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 32,768 × 256 = <strong>8,388,608 detectors</strong> (≈ 8.39 Million)</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1414-mm-1414-mm">2. Physical Layout &amp; Area Budget (14.14 mm × 14.14 mm)</h4>
+<ul>
+<li><strong>Die Area (A_die):</strong> <strong>200.00 mm²</strong> (14.14 mm × 14.14 mm × 0.33 mm)</li>
+<li><strong>Switch Core Footprint:</strong> 78.64–84.93 mm²</li>
+<li><strong>Routing Shuffles &amp; Crossing Matrices:</strong> 40.40 mm²</li>
+<li><strong>Active LiTaO₃ Routers (32,768 units):</strong> 37.68 mm²</li>
+<li><strong>Passive MMI H-Tree Distribution:</strong> 8.80 mm²</li>
+<li><strong>Monolithic Ge/Si APD Array (8.39M pixels):</strong> 8.80 mm²</li>
+<li><strong>Scribe Lines, Cu Perimeter Shunt, I/O &amp; Dicing:</strong> 19.39 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_1">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (14 stages of 1:2 MMIs for 16,384 branches):</strong> L_split,ideal = 10·log₁₀(2¹⁴) = <strong>42.14 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 14 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Prop/Cpl) = <strong>13.20 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 42.14 dB + 13.20 dB = <strong>55.34 dB</strong></li>
+<li><strong>Target Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>4.74 W Optical CW</strong> (+36.75 dBm, Table XV nominal ≈ 5.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>6.31 Watts</strong> (nominal 6.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown-from-table-xv-of-maintex">4. Full-System Electrical Power Breakdown (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 4.74 W Optical):</strong> 6.31 W (nominal 6.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 1.02 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 0.33 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 2.01 W</li>
+<li><strong>JIR Scheduler &amp; Thermal Management Engine:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>12.67 Watts</strong> (nominal Table XV baseline: <strong>13.03 Watts</strong>)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_1">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 12.67 W / 200 mm² = <strong>0.0634 W/mm²</strong> (6.34 W/cm²)</li>
+<li><strong>SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>77.33 mJ/K</strong> (110.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (12.67 W × 5 µs) / 77.33 mJ/K = <strong>0.00082°C</strong> = <strong>0.82 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_1">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">219.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">109.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">54.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">27.5 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">204.8 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">13.7 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-yield-300-mm-silicon-line_1">7. Foundry Wafer Yield (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Gross Dies per Wafer (DPW):</strong> <strong>290 Raw Dies / Wafer</strong></li>
+<li><strong>Net Usable Good Dies (@ 80% line yield):</strong> <strong>232 Functional Accelerators / Wafer</strong></li>
+</ul>
+<hr />
+<h2 id="3-generation-2-dual-stratum-3d-heterogeneous-architecture-planar-edge-gen-2">3. Generation 2: Dual-Stratum 3D Heterogeneous Architecture &amp; Planar Edge (Gen-2)</h2>
+<p>Generation 2 introduces two critical evolutionary paths:<br />
+1. <strong>Model 2A (16-Tile Planar Edge):</strong> Scaling the matrix mesh from 32 × 32 to 64 × 64 (4,096 multipliers/tile) in a monolithic single stratum (400 mm²).<br />
+2. <strong>Models 2B and 2C (2-Stratum 3D Mini):</strong> Introducing <strong>2-Stratum vertical SiPh stacking</strong> separated by a 50 µm inter-stratum SiO₂ thermal buffer, cutting die footprint by 50%.</p>
+<h3 id="dual-stratum-5-layer-physical-stack-architecture">Dual-Stratum 5-Layer Physical Stack Architecture</h3>
+<pre><code>==================================================================================
+  LAYER 4: SiPh STRATUM 2 (30 µm)
+  - Dilated Beneš Routing Stages 8-15 (Sb2S3 Switches, 0 W Static Hold)
+  - Monolithic Ge/Si SAC²M APD Array (4.19M - 8.39M pixels)
+----------------------------------------------------------------------------------
+  LAYER 3.5: INTER-STRATUM SiO2 THERMAL BUFFER (50 µm)
+  - Low-Loss Vertical Optical Grating Couplers / 3D Waveguide Vias (&lt; 0.40 dB / via)
+  - Thermal Diffusivity: α = 9.05 × 10⁻⁷ m²/s | Inter-stratum diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 3: SiPh STRATUM 1 (30 µm)
+  - LiTaO3 1x256 Pockels Input Modulators (50 aJ/switch @ 100 GHz)
+  - Passive 1064 nm MMI Splitting Tree &amp; Beneš Routing Stages 1-7
+----------------------------------------------------------------------------------
+  LAYER 2: MONOLITHIC PRIMARY SiO2 THERMAL BUFFER (250 µm)
+  - Thermal Diffusion Time: τ_diff = 69.06 ms (13,812 JIR cycles)
+  - High-Aspect-Ratio Vertical Cu Through-Dielectric Vias (TDVs)
+----------------------------------------------------------------------------------
+  LAYER 1: CMOS BASE LOGIC &amp; CRT RECONSTRUCTION SUBSTRATE (50 µm)
+  - StrongARM Regenerative Latches, RNS Encoders &amp; Pipelined CRT Engine
+==================================================================================
+  TOTAL BARE-DIE ACTIVE 3D STACK HEIGHT: 50 + 250 + 30 + 50 + 30 = 410 µm (0.41 mm)
+==================================================================================
+</code></pre>
+<hr />
+<h3 id="model-2a-janus-edge-16-tile-planar-monolithic-400-mm2">Model 2A: JANUS Edge 16-Tile (Planar Monolithic 400 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_2">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 4,096 = <strong>65,536 multipliers</strong></li>
+<li><strong>Waveguide Alphabet per Multiplier:</strong> 256 waveguides (One-Hot 8-bit residue representation)</li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 65,536 × 256 = <strong>16,777,216 channels</strong> (≈ 16.78 Million)</li>
+<li><strong>Beneš Routing Stages (S):</strong> 2·log₂(256) - 1 = <strong>15 stages</strong></li>
+<li><strong>Switches per Multiplier Fabric:</strong> (256/2) × 15 = 128 × 15 = <strong>1,920 switches</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 65,536 × 1,920 = <strong>125,829,120 switches</strong> (≈ 125.83 Million)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 65,536 × 256 = <strong>16,777,216 detectors</strong> (≈ 16.78 Million)</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 65,536 active events (32,768 illuminated per 5 ps phase)</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-200-mm-200-mm">2. Physical Layout &amp; Area Budget (20.0 mm × 20.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>400.00 mm²</strong> (20.0 mm × 20.0 mm × 0.33 mm)</li>
+<li><strong>Switch Core Footprint:</strong> 169.87 mm²</li>
+<li><strong>Routing Shuffles &amp; Crossing Matrices:</strong> 80.80 mm²</li>
+<li><strong>Active LiTaO₃ Routers (65,536 units):</strong> 75.37 mm²</li>
+<li><strong>Passive MMI H-Tree Distribution:</strong> 17.50 mm²</li>
+<li><strong>Monolithic Ge/Si APD Array (16.78M pixels):</strong> 17.62 mm²</li>
+<li><strong>Scribe Lines, Cu Perimeter Shunt, I/O &amp; Dicing:</strong> 38.84 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_2">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs for 32,768 branches):</strong> L_split,ideal = 10·log₁₀(2¹⁵) = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Prop/Cpl) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_1">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 2.05 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 0.66 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 4.25 W</li>
+<li><strong>JIR Scheduler &amp; Thermal Management Engine:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_2">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 400 mm² = <strong>0.0587 W/mm²</strong> (5.87 W/cm²)</li>
+<li><strong>SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>154.66 mJ/K</strong> (220.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.15466 J/K = <strong>0.00076°C</strong> = <strong>0.76 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_2">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-yield-300-mm-silicon-line_2">7. Foundry Wafer Yield (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Gross Dies per Wafer (DPW):</strong> <strong>143 Raw Dies / Wafer</strong></li>
+<li><strong>Net Usable Good Dies (@ 80% line yield):</strong> <strong>114 Functional Accelerators / Wafer</strong></li>
+</ul>
+<hr />
+<h3 id="model-2b-janus-mini-16-tile-2-stratum-3d-stack-500-mm2">Model 2B: JANUS Mini 16-Tile (2-Stratum 3D Stack 50.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_3">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 1,024 = <strong>16,384 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>31,457,280 switches</strong> (15.73M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>4,194,304 detectors</strong> on Stratum 2</li>
+<li><strong>SiPh Strata Count:</strong> 2 Strata (30 µm each) + 50 µm Inter-Stratum SiO₂ Buffer</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-707-mm-707-mm">2. Physical Layout &amp; Area Budget (7.07 mm × 7.07 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>50.00 mm²</strong> (7.07 mm × 7.07 mm × 0.41 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 21.24 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 10.50 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 9.42 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 4.40 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 4.44 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_3">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (13 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>39.13 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 13 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 0.80 dB (Interlayer) + 0.70 dB (Prop/Cpl) = <strong>12.90 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 39.13 dB + 12.90 dB = <strong>52.03 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>2.21 W Optical CW</strong> (+33.44 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>2.95 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_2">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 2.21 W Optical):</strong> 2.95 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 0.67 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 2.55 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>6.17 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_3">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 6.17 W / 50.0 mm² = <strong>0.1234 W/mm²</strong> (12.34 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>19.33 mJ/K</strong> (27.5 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Inter-Stratum SiO₂ Buffer (50 µm):</strong> τ_diff,inter = <strong>2.76 ms</strong> = <strong>552 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (6.17 W × 5 µs) / 0.01933 J/K = <strong>0.00160°C</strong> = <strong>1.60 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_3">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">225.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">112.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">56.4 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">204.8 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">28.2 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">102.4 TMAC/s</td>
+<td style="text-align: left;">87.0 TMAC/s</td>
+<td style="text-align: left;">14.1 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 50.00 mm² (7.07 mm × 7.07 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 3 wafers per run (1 CMOS base + 2 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 512 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 3-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-2c-janus-mini-32-tile-2-stratum-3d-stack-1000-mm2">Model 2C: JANUS Mini 32-Tile (2-Stratum 3D Stack 100.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_4">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 1,024 = <strong>32,768 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>62,914,560 switches</strong> (31.46M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>8,388,608 detectors</strong> on Stratum 2</li>
+<li><strong>SiPh Strata Count:</strong> 2 Strata (30 µm each) + 50 µm Inter-Stratum SiO₂ Buffer</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-100-mm-100-mm_1">2. Physical Layout &amp; Area Budget (10.0 mm × 10.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>100.00 mm²</strong> (10.0 mm × 10.0 mm × 0.41 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 42.47 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 21.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 18.84 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 8.80 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 8.89 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_4">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (14 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>42.14 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 14 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 0.80 dB (Interlayer) + 0.70 dB (Prop/Cpl) = <strong>13.20 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 42.14 dB + 13.20 dB = <strong>55.34 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>4.74 W Optical CW</strong> (+36.75 dBm, Table XV nominal ≈ 5.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>6.31 Watts</strong> (nominal 6.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_3">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 4.74 W Optical):</strong> 6.31 W (nominal 6.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 1.35 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 5.01 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>12.67 Watts</strong> (nominal Table XV baseline: <strong>13.03 Watts</strong>)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_4">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 12.67 W / 100.0 mm² = <strong>0.1267 W/mm²</strong> (12.67 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>38.67 mJ/K</strong> (55.0 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Inter-Stratum SiO₂ Buffer (50 µm):</strong> τ_diff,inter = <strong>2.76 ms</strong> = <strong>552 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (12.67 W × 5 µs) / 0.03867 J/K = <strong>0.00164°C</strong> = <strong>1.64 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_4">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">219.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">109.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">54.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">27.5 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">204.8 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">13.7 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_1">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 100.00 mm² (10.0 mm × 10.0 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 3 wafers per run (1 CMOS base + 2 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 240 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 3-wafer stack).</li>
+</ul>
+<hr />
+<h2 id="4-generation-3-dual-stratum-scale-up-high-density-edge-acceleration-gen-3">4. Generation 3: Dual-Stratum Scale-Up &amp; High-Density Edge Acceleration (Gen-3)</h2>
+<p>Generation 3 scales the dual-stratum 3D architecture into high-density enterprise configurations:<br />
+1. <strong>Model 3A (64-Tile 2-Stratum Mini):</strong> Scaling Mini tiles to 64 parallel residue domains on a 200 mm² die (14.14 mm × 14.14 mm), enabling 4-way 64-bit parallel execution.<br />
+2. <strong>Model 3B (16-Tile 2-Stratum Edge):</strong> Consolidating the 16-Tile Edge model from planar 400 mm² down to a compact <strong>200 mm²</strong> 3D dual-stratum form factor.<br />
+3. <strong>Model 3C (32-Tile 2-Stratum Edge):</strong> A high-throughput dual-stratum edge supercomputer core packing 131,072 optical multipliers into a 400 mm² die (20.0 mm × 20.0 mm).</p>
+<blockquote>
+<p>[!IMPORTANT]<br />
+<strong>Interleaved Two-Layer Ge/Si APD Detector Block Integration:</strong> Starting in Gen-3 for 32-tile and 64-tile models, the photodetector array is structured as a dedicated <strong>10 µm Interleaved Two-Layer Ge/Si SAC²M APD Detector Block</strong> (2 × 5 µm sub-arrays). This interleaved topology halves the vertical interconnect wiring pitch, suppresses inter-channel capacitive crosstalk, and establishes a uniform heat-spreading boundary directly beneath the primary heat spreader (HS1).</p>
+</blockquote>
+<hr />
+<h3 id="model-3a-janus-mini-64-tile-2-stratum-3d-stack-2000-mm2">Model 3A: JANUS Mini 64-Tile (2-Stratum 3D Stack 200.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_5">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 1,024 = <strong>65,536 multipliers</strong></li>
+<li><strong>Waveguide Alphabet per Multiplier:</strong> 256 waveguides (One-Hot 8-bit residue representation)</li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 65,536 × 256 = <strong>16,777,216 channels</strong> (≈ 16.78 Million)</li>
+<li><strong>Beneš Routing Stages (S):</strong> 2·log₂(256) - 1 = <strong>15 stages</strong></li>
+<li><strong>Switches per Multiplier Fabric:</strong> (256/2) × 15 = 128 × 15 = <strong>1,920 switches</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 65,536 × 1,920 = <strong>125,829,120 switches</strong> (≈ 125.83 Million, 62.91M per stratum)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 65,536 × 256 = <strong>16,777,216 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 65,536 active events (32,768 illuminated per 5 ps phase)</li>
+<li><strong>SiPh Strata Count:</strong> 2 Strata (30 µm each) + 50 µm Inter-Stratum SiO₂ Buffer + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1414-mm-1414-mm_1">2. Physical Layout &amp; Area Budget (14.14 mm × 14.14 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>200.00 mm²</strong> (14.14 mm × 14.14 mm × 0.42 mm)</li>
+<li><strong>Switch Core Footprint per Stratum:</strong> 84.93 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 41.50 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 37.68 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 17.60 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 18.29 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_5">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs for 32,768 branches):</strong> L_split,ideal = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 0.80 dB (Interlayer) + 0.70 dB (Prop/Cpl) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_4">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 2.05 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 0.66 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 4.25 W</li>
+<li><strong>JIR Scheduler &amp; Thermal Management Engine:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_5">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 200.0 mm² = <strong>0.1175 W/mm²</strong> (11.75 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>77.33 mJ/K</strong> (110.0 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Inter-Stratum SiO₂ Buffer (50 µm):</strong> τ_diff,inter = <strong>2.76 ms</strong> = <strong>552 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.07733 J/K = <strong>0.00152°C</strong> = <strong>1.52 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_5">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_2">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 200.00 mm² (14.14 mm × 14.14 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 3 wafers per run (1 CMOS base + 2 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 116 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 3-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-3b-janus-edge-16-tile-2-stratum-3d-stack-2000-mm2">Model 3B: JANUS Edge 16-Tile (2-Stratum 3D Stack 200.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_6">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 4,096 = <strong>65,536 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>125,829,120 switches</strong> (62.91M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>16,777,216 detectors</strong> on Stratum 2</li>
+<li><strong>SiPh Strata Count:</strong> 2 Strata (30 µm each) + 50 µm Inter-Stratum SiO₂ Buffer</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1414-mm-1414-mm_2">2. Physical Layout &amp; Area Budget (14.14 mm × 14.14 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>200.00 mm²</strong> (14.14 mm × 14.14 mm × 0.41 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 84.93 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 41.50 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 37.68 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 17.60 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 18.29 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_6">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 0.80 dB (Interlayer) + 0.70 dB (Prop/Cpl) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_5">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 2.71 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 7.25 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_6">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 200.0 mm² = <strong>0.1175 W/mm²</strong> (11.75 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>77.33 mJ/K</strong> (110.0 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Inter-Stratum SiO₂ Buffer (50 µm):</strong> τ_diff,inter = <strong>2.76 ms</strong> = <strong>552 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.07733 J/K = <strong>0.00152°C</strong> = <strong>1.52 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_6">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_3">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 200.00 mm² (14.14 mm × 14.14 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 3 wafers per run (1 CMOS base + 2 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 116 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 3-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-3c-janus-edge-32-tile-2-stratum-3d-stack-4000-mm2">Model 3C: JANUS Edge 32-Tile (2-Stratum 3D Stack 400.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_7">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 4,096 = <strong>131,072 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>251,658,240 switches</strong> (125.83M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>33,554,432 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 2 Strata (30 µm each) + 50 µm Inter-Stratum SiO₂ Buffer + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-200-mm-200-mm_1">2. Physical Layout &amp; Area Budget (20.0 mm × 20.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>400.00 mm²</strong> (20.0 mm × 20.0 mm × 0.42 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 169.87 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 81.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 75.37 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 35.12 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 38.64 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_7">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (16 stages of 1:2 MMIs for 65,536 branches):</strong> L_split,ideal = <strong>48.16 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 16 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 0.80 dB (Interlayer) + 0.70 dB (Prop/Cpl) = <strong>13.80 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 48.16 dB + 13.80 dB = <strong>61.96 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>21.75 W Optical CW</strong> (+43.37 dBm, Table XV nominal ≈ 20.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>29.00 Watts</strong> (nominal 26.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown-from-table-xv-of-maintex_1">4. Full-System Electrical Power Breakdown (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 21.75 W Optical):</strong> 29.00 W (nominal 26.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 4.10 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 1.31 W</li>
+<li><strong>Optical Amplification Layer:</strong> 0.00 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 8.50 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>45.91 Watts</strong> (nominal Table XV baseline: <strong>43.58 Watts</strong>, operating band 43.6–55.0 W)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_7">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 45.91 W / 400.0 mm² = <strong>0.1148 W/mm²</strong> (11.48 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>154.66 mJ/K</strong> (220.0 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Inter-Stratum SiO₂ Buffer (50 µm):</strong> τ_diff,inter = <strong>2.76 ms</strong> = <strong>552 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (45.91 W × 5 µs) / 0.15466 J/K = <strong>0.00148°C</strong> = <strong>1.48 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_7">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">242.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">121.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">60.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">30.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">15.2 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_4">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 400.00 mm² (20.0 mm × 20.0 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 3 wafers per run (1 CMOS base + 2 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 57 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 3-wafer stack).</li>
+</ul>
+<hr />
+<h2 id="5-generation-4-3-stratum-3d-heterogeneous-silicon-photonics-gen-4">5. Generation 4: 3-Stratum 3D Heterogeneous Silicon Photonics (Gen-4)</h2>
+<p>Generation 4 expands vertical stacking to <strong>3 Silicon Photonic Strata</strong>, achieving extreme areal density across Mini and Edge product tiers, and introduces the <strong>Edge 64-Tile Flagship (Model 4E)</strong>.</p>
+<h3 id="3-stratum-7-layer-monolithic-stack-architecture">3-Stratum 7-Layer Monolithic Stack Architecture</h3>
+<pre><code>==================================================================================
+  TOP: INTERLEAVED TWO-LAYER Ge/Si SAC²M APD DETECTOR BLOCK (10 µm)
+  - 2 Vertically Stacked Ge/Si Sub-Arrays (2 × 5 µm) Handling Alternating Odd/Even Waveguide Channels
+  - Dedicated Metal Routing Layers (Halved Pitch, Zero Crosstalk, Direct Contact to HS1)
+==================================================================================
+  LAYER 6: SiPh STRATUM 3 (30 µm)
+  - Dilated Beneš Routing Stages 11-15 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 5.5: INTER-STRATUM SiO2 BUFFER 2 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 5: SiPh STRATUM 2 (30 µm)
+  - Dilated Beneš Routing Stages 6-10 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 4.5: INTER-STRATUM SiO2 BUFFER 1 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 4: SiPh STRATUM 1 (30 µm)
+  - LiTaO3 1x256 Pockels Input Modulators (50 aJ/switch @ 100 GHz)
+  - Passive 1064 nm MMI Splitting Tree &amp; Beneš Routing Stages 1-5
+----------------------------------------------------------------------------------
+  LAYER 2: MONOLITHIC PRIMARY SiO2 THERMAL BUFFER (250 µm)
+  - Thermal Diffusivity: α = 9.05 × 10⁻⁷ m²/s | Thermal Diffusion Time: τ_diff = 69.06 ms (13,812 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 1: CMOS BASE LOGIC &amp; CRT RECONSTRUCTION SUBSTRATE (50 µm)
+  - StrongARM Regenerative Latches, RNS Encoders &amp; Pipelined CRT Engine
+==================================================================================
+  TOTAL BARE-DIE ACTIVE 3D STACK HEIGHT: 50 + 250 + 3×30 + 2×50 + 10 = 500 µm (0.50 mm)
+==================================================================================
+</code></pre>
+<hr />
+<h3 id="model-4a-janus-mini-32-tile-3-stratum-3d-stack-6667-mm2">Model 4A: JANUS Mini 32-Tile (3-Stratum 3D Stack 66.67 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_8">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 1,024 = <strong>32,768 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>62,914,560 switches</strong> (≈ 20.97M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>8,388,608 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 3 Strata (30 µm each) + Two 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-816-mm-816-mm">2. Physical Layout &amp; Area Budget (8.16 mm × 8.16 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>66.67 mm²</strong> (8.16 mm × 8.16 mm × 0.50 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 28.31 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 14.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 12.56 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 5.87 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 5.93 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_8">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (14 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>42.14 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 14 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.40 dB (Interlayer/Prop) = <strong>13.20 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 42.14 dB + 13.20 dB = <strong>55.34 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>4.74 W Optical CW</strong> (+36.75 dBm, Table XV nominal ≈ 5.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>6.31 Watts</strong> (nominal 6.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_6">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 4.74 W Optical):</strong> 6.31 W (nominal 6.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 1.35 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 5.01 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>12.67 Watts</strong> (nominal Table XV baseline: <strong>13.03 Watts</strong>)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_8">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 12.67 W / 66.67 mm² = <strong>0.1900 W/mm²</strong> (19.00 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>25.78 mJ/K</strong> (36.67 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (12.67 W × 5 µs) / 0.02578 J/K = <strong>0.00246°C</strong> = <strong>2.46 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_8">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">219.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">109.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">54.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">27.5 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">204.8 TMAC/s</td>
+<td style="text-align: left;">174.1 TMAC/s</td>
+<td style="text-align: left;">13.7 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_5">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 66.67 mm² (8.16 mm × 8.16 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 4 wafers per run (1 CMOS base + 3 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 240 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 4-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-4b-janus-mini-64-tile-3-stratum-3d-stack-13333-mm2">Model 4B: JANUS Mini 64-Tile (3-Stratum 3D Stack 133.33 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_9">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 1,024 = <strong>65,536 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>125,829,120 switches</strong> (≈ 41.94M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>16,777,216 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 3 Strata (30 µm each) + Two 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1155-mm-1155-mm">2. Physical Layout &amp; Area Budget (11.55 mm × 11.55 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>133.33 mm²</strong> (11.55 mm × 11.55 mm × 0.50 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 56.62 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 27.67 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 25.12 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 11.73 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 12.19 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_9">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_7">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 2.71 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 7.25 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_9">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 133.33 mm² = <strong>0.1762 W/mm²</strong> (17.62 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>51.55 mJ/K</strong> (73.33 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.05155 J/K = <strong>0.00228°C</strong> = <strong>2.28 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_9">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_6">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 133.33 mm² (11.55 mm × 11.55 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 4 wafers per run (1 CMOS base + 3 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 116 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 4-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-4c-janus-edge-16-tile-3-stratum-3d-stack-13333-mm2">Model 4C: JANUS Edge 16-Tile (3-Stratum 3D Stack 133.33 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_10">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 4,096 = <strong>65,536 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>125,829,120 switches</strong> (≈ 41.94M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>16,777,216 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 3 Strata (30 µm each) + Two 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1155-mm-1155-mm_1">2. Physical Layout &amp; Area Budget (11.55 mm × 11.55 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>133.33 mm²</strong> (11.55 mm × 11.55 mm × 0.50 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 56.62 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 27.67 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 25.12 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 11.73 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 12.19 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_10">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_8">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers + APD Readout:</strong> 2.71 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 7.25 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_10">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 133.33 mm² = <strong>0.1762 W/mm²</strong> (17.62 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>51.55 mJ/K</strong> (73.33 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.05155 J/K = <strong>0.00228°C</strong> = <strong>2.28 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_10">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_7">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 133.33 mm² (11.55 mm × 11.55 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 4 wafers per run (1 CMOS base + 3 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 116 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 4-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-4d-janus-edge-32-tile-3-stratum-3d-stack-26667-mm2">Model 4D: JANUS Edge 32-Tile (3-Stratum 3D Stack 266.67 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_11">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 4,096 = <strong>131,072 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>251,658,240 switches</strong> (≈ 83.89M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>33,554,432 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 3 Strata (30 µm each) + Two 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1633-mm-1633-mm">2. Physical Layout &amp; Area Budget (16.33 mm × 16.33 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>266.67 mm²</strong> (16.33 mm × 16.33 mm × 0.50 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 113.25 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 54.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 50.25 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 23.41 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 25.76 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_11">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (16 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>48.16 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 16 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>13.80 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 48.16 dB + 13.80 dB = <strong>61.96 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>21.75 W Optical CW</strong> (+43.37 dBm, Table XV nominal ≈ 20.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>29.00 Watts</strong> (nominal 26.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown-from-table-xv-of-maintex_2">4. Full-System Electrical Power Breakdown (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 21.75 W Optical):</strong> 29.00 W (nominal 26.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 4.10 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 1.31 W</li>
+<li><strong>Optical Amplification Layer:</strong> 0.00 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 8.50 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>45.91 Watts</strong> (nominal Table XV baseline: <strong>43.58 Watts</strong>, operating band 43.6–55.0 W)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_11">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 45.91 W / 266.67 mm² = <strong>0.1722 W/mm²</strong> (17.22 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>103.10 mJ/K</strong> (146.67 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (45.91 W × 5 µs) / 0.10310 J/K = <strong>0.00223°C</strong> = <strong>2.23 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_11">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">242.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">121.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">60.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">30.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">15.2 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_8">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 266.67 mm² (16.33 mm × 16.33 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 4 wafers per run (1 CMOS base + 3 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 57 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 4-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-4e-janus-edge-64-tile-3-stratum-3d-edge-flagship-53333-mm2">Model 4E: JANUS Edge 64-Tile (3-Stratum 3D Edge Flagship 533.33 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_12">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 4,096 = <strong>262,144 multipliers</strong></li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 262,144 × 256 = <strong>67,108,864 channels</strong> (≈ 67.11 Million)</li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 262,144 × 1,920 = <strong>503,316,480 switches</strong> (≈ 503.32 Million, ≈ 167.77M per stratum)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 67,108,864 detectors on dedicated 10 µm 2-layer detector block</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 262,144 active events (131,072 illuminated per 5 ps phase)</li>
+<li><strong>SiPh Strata Count:</strong> 3 Strata (30 µm each) + Two 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-2309-mm-2309-mm">2. Physical Layout &amp; Area Budget (23.09 mm × 23.09 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>533.33 mm²</strong> (23.09 mm × 23.09 mm × 0.50 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 226.49 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 108.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 100.50 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 46.82 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 51.52 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_12">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (17 stages of 1:2 MMIs for 131,072 branches):</strong> L_split,ideal = 10·log₁₀(2¹⁷) = <strong>51.18 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 17 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>14.10 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 51.18 dB + 14.10 dB = <strong>65.28 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>46.61 W Optical CW</strong> (+46.69 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>62.15 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_9">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 46.61 W Optical):</strong> 62.15 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 8.20 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 2.62 W</li>
+<li><strong>Optical Amplification Layer:</strong> 0.00 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 17.00 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>92.97 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_12">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 92.97 W / 533.33 mm² = <strong>0.1743 W/mm²</strong> (17.43 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>206.21 mJ/K</strong> (293.33 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (92.97 W × 5 µs) / 0.20621 J/K = <strong>0.00225°C</strong> = <strong>2.25 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_12">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">26,214.4 TMAC/s</td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">239.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">119.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">59.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">30.0 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">15.0 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_9">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 533.33 mm² (23.09 mm × 23.09 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 4 wafers per run (1 CMOS base + 3 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 28 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 4-wafer stack).</li>
+</ul>
+<hr />
+<h2 id="6-generation-5-4-stratum-3d-heterogeneous-silicon-photonics-datacenter-mvp-gen-5">6. Generation 5: 4-Stratum 3D Heterogeneous Silicon Photonics &amp; Datacenter MVP (Gen-5)</h2>
+<p>Generation 5 scales vertical stacking to <strong>4 Silicon Photonic Strata</strong> and inaugurates the <strong>Datacenter Product Line</strong> with the <strong>Datacenter 16-Tile MVP (Model 5D)</strong> utilizing 128 × 128 photonic matrix meshes.</p>
+<h3 id="4-stratum-9-layer-monolithic-stack-architecture">4-Stratum 9-Layer Monolithic Stack Architecture</h3>
+<pre><code>==================================================================================
+  TOP: INTERLEAVED TWO-LAYER Ge/Si SAC²M APD DETECTOR BLOCK (10 µm)
+  - 2 Vertically Stacked Ge/Si Sub-Arrays (2 × 5 µm) Handling Alternating Odd/Even Waveguide Channels
+  - Dedicated Metal Routing Layers (Halved Pitch, Zero Crosstalk, Direct Contact to HS1)
+==================================================================================
+  LAYER 8: SiPh STRATUM 4 (30 µm)
+  - Dilated Beneš Routing Stages 12-15 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 7.5: INTER-STRATUM SiO2 BUFFER 3 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 7: SiPh STRATUM 3 (30 µm)
+  - Dilated Beneš Routing Stages 8-11 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 6.5: INTER-STRATUM SiO2 BUFFER 2 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 6: SiPh STRATUM 2 (30 µm)
+  - Dilated Beneš Routing Stages 4-7 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 5.5: INTER-STRATUM SiO2 BUFFER 1 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 5: SiPh STRATUM 1 (30 µm)
+  - LiTaO3 1x256 Pockels Input Modulators (50 aJ/switch @ 100 GHz)
+  - Passive 1064 nm MMI Splitting Tree &amp; Beneš Routing Stages 1-3
+----------------------------------------------------------------------------------
+  LAYER 2: MONOLITHIC PRIMARY SiO2 THERMAL BUFFER (250 µm)
+  - Thermal Diffusivity: α = 9.05 × 10⁻⁷ m²/s | Thermal Diffusion Time: τ_diff = 69.06 ms (13,812 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 1: CMOS BASE LOGIC &amp; CRT RECONSTRUCTION SUBSTRATE (50 µm)
+  - StrongARM Regenerative Latches, RNS Encoders &amp; Pipelined CRT Engine
+==================================================================================
+  TOTAL BARE-DIE ACTIVE 3D STACK HEIGHT: 50 + 250 + 4×30 + 3×50 + 10 = 580 µm (0.58 mm)
+==================================================================================
+</code></pre>
+<hr />
+<h3 id="model-5a-janus-mini-64-tile-4-stratum-3d-stack-1000-mm2">Model 5A: JANUS Mini 64-Tile (4-Stratum 3D Stack 100.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_13">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 32 × 32 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 32² = 1,024 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 1,024 = <strong>65,536 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>125,829,120 switches</strong> (≈ 31.46M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>16,777,216 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 4 Strata (30 µm each) + Three 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-100-mm-100-mm_2">2. Physical Layout &amp; Area Budget (10.0 mm × 10.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>100.00 mm²</strong> (10.0 mm × 10.0 mm × 0.58 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 42.47 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 21.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 18.84 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 8.80 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 8.89 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_13">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (15 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>45.15 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 15 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>13.50 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 45.15 dB + 13.50 dB = <strong>58.65 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>10.15 W Optical CW</strong> (+40.06 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>13.53 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_10">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 10.15 W Optical):</strong> 13.53 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 2.05 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 0.66 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; JIR Engine:</strong> 7.25 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>23.49 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_13">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 23.49 W / 100.0 mm² = <strong>0.2349 W/mm²</strong> (23.49 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>38.67 mJ/K</strong> (55.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (23.49 W × 5 µs) / 0.03867 J/K = <strong>0.00304°C</strong> = <strong>3.04 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_13">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">237.1 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">118.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">59.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">29.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">409.6 TMAC/s</td>
+<td style="text-align: left;">348.2 TMAC/s</td>
+<td style="text-align: left;">14.8 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_10">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 100.00 mm² (10.0 mm × 10.0 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 5 wafers per run (1 CMOS base + 4 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 116 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 5-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-5b-janus-edge-32-tile-4-stratum-3d-stack-2000-mm2">Model 5B: JANUS Edge 32-Tile (4-Stratum 3D Stack 200.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_14">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 4,096 = <strong>131,072 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>251,658,240 switches</strong> (≈ 62.91M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>33,554,432 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 4 Strata (30 µm each) + Three 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-1414-mm-1414-mm_3">2. Physical Layout &amp; Area Budget (14.14 mm × 14.14 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>200.00 mm²</strong> (14.14 mm × 14.14 mm × 0.58 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 84.93 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 41.50 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 37.68 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 17.60 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 18.29 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_14">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (16 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>48.16 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 16 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>13.80 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 48.16 dB + 13.80 dB = <strong>61.96 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>21.75 W Optical CW</strong> (+43.37 dBm, Table XV nominal ≈ 20.0 W)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>29.00 Watts</strong> (nominal 26.67 W)</li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown-from-table-xv-of-maintex_3">4. Full-System Electrical Power Breakdown (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 21.75 W Optical):</strong> 29.00 W (nominal 26.67 W)</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 4.10 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 1.31 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 8.50 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>45.91 Watts</strong> (nominal Table XV baseline: <strong>43.58 Watts</strong>, operating band 43.6–55.0 W)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_14">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 45.91 W / 200.0 mm² = <strong>0.2296 W/mm²</strong> (22.96 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>77.33 mJ/K</strong> (110.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (45.91 W × 5 µs) / 0.07733 J/K = <strong>0.00297°C</strong> = <strong>2.97 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_14">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">242.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">121.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">60.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">30.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">819.2 TMAC/s</td>
+<td style="text-align: left;">696.3 TMAC/s</td>
+<td style="text-align: left;">15.2 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_11">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 200.00 mm² (14.14 mm × 14.14 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 5 wafers per run (1 CMOS base + 4 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 57 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 5-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-5c-janus-edge-64-tile-4-stratum-3d-stack-4000-mm2">Model 5C: JANUS Edge 64-Tile (4-Stratum 3D Stack 400.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_15">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 64 × 64 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 64² = 4,096 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 4,096 = <strong>262,144 multipliers</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> <strong>503,316,480 switches</strong> (≈ 125.83M per stratum)</li>
+<li><strong>Terminal Ge/Si APD Pixels:</strong> <strong>67,108,864 detectors</strong> on dedicated 10 µm 2-layer detector block</li>
+<li><strong>SiPh Strata Count:</strong> 4 Strata (30 µm each) + Three 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-200-mm-200-mm_2">2. Physical Layout &amp; Area Budget (20.0 mm × 20.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>400.00 mm²</strong> (20.0 mm × 20.0 mm × 0.58 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 169.87 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 81.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 75.37 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 35.12 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 38.64 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_15">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (17 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>51.18 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 17 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>14.10 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 51.18 dB + 14.10 dB = <strong>65.28 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>46.61 W Optical CW</strong> (+46.69 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>62.15 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_11">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 46.61 W Optical):</strong> 62.15 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 8.20 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 2.62 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 17.00 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>92.97 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_15">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 92.97 W / 400.0 mm² = <strong>0.2324 W/mm²</strong> (23.24 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>154.66 mJ/K</strong> (220.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (92.97 W × 5 µs) / 0.15466 J/K = <strong>0.00301°C</strong> = <strong>3.01 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_15">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">26,214.4 TMAC/s</td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">239.7 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">119.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">59.9 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">30.0 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">15.0 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_12">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 400.00 mm² (20.0 mm × 20.0 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 5 wafers per run (1 CMOS base + 4 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 28 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 5-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-5d-janus-datacenter-16-tile-4-stratum-3d-datacenter-mvp-4000-mm2">Model 5D: JANUS Datacenter 16-Tile (4-Stratum 3D Datacenter MVP 400.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_16">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 16 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 128 × 128 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 128² = 16,384 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 16 × 16,384 = <strong>262,144 multipliers</strong></li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 262,144 × 256 = <strong>67,108,864 channels</strong> (≈ 67.11 Million)</li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 262,144 × 1,920 = <strong>503,316,480 switches</strong> (≈ 503.32 Million, ≈ 125.83M per stratum)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 67,108,864 detectors on dedicated 10 µm 2-layer detector block</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 262,144 active events (131,072 illuminated per 5 ps phase)</li>
+<li><strong>SiPh Strata Count:</strong> 4 Strata (30 µm each) + Three 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-200-mm-200-mm_3">2. Physical Layout &amp; Area Budget (20.0 mm × 20.0 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>400.00 mm²</strong> (20.0 mm × 20.0 mm × 0.58 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 169.87 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 81.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 75.37 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 35.12 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 38.64 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_16">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (17 stages of 1:2 MMIs):</strong> L_split,ideal = <strong>51.18 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 17 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>14.10 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 51.18 dB + 14.10 dB = <strong>65.28 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>46.61 W Optical CW</strong> (+46.69 dBm)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>62.15 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_12">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 46.61 W Optical):</strong> 62.15 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 4.10 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 2.62 W</li>
+<li><strong>Optical Amplification Layer:</strong> 0.00 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 18.52 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>90.39 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_16">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 90.39 W / 400.0 mm² = <strong>0.2260 W/mm²</strong> (22.60 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>154.66 mJ/K</strong> (220.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (90.39 W × 5 µs) / 0.15466 J/K = <strong>0.00292°C</strong> = <strong>2.92 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_16">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">26,214.4 TMAC/s</td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">246.5 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">123.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">61.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">30.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">1,638.4 TMAC/s</td>
+<td style="text-align: left;">1,392.6 TMAC/s</td>
+<td style="text-align: left;">15.41 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_13">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 400.00 mm² (20.0 mm × 20.0 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 5 wafers per run (1 CMOS base + 4 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 28 Completed Accelerators per Wafer Set</strong> (conserving total active circuit area across the 5-wafer stack).</li>
+</ul>
+<hr />
+<h2 id="7-generation-6-5-stratum-3d-heterogeneous-silicon-photonics-hyperscale-datacenter-gen-6">7. Generation 6: 5-Stratum 3D Heterogeneous Silicon Photonics &amp; Hyperscale Datacenter (Gen-6)</h2>
+<p>Generation 6 represents the pinnacle of the JANUS roadmap: the <strong>Datacenter 32-Tile Master Flagship (Model 6A)</strong> deploying over <strong>1.006 Billion PCM switches</strong> on a single 640 mm² die across 5 vertical SiPh strata, and the <strong>Hyperscale Module (Model 6B)</strong> deploying over <strong>2.013 Billion switches</strong> across 64 tiles (1,280 mm²).</p>
+<h3 id="5-stratum-11-layer-monolithic-stack-architecture">5-Stratum 11-Layer Monolithic Stack Architecture</h3>
+<pre><code>==================================================================================
+  TOP: INTERLEAVED TWO-LAYER Ge/Si SAC²M APD DETECTOR BLOCK (10 µm)
+  - 2 Vertically Stacked Ge/Si Sub-Arrays (2 × 5 µm) Handling Alternating Odd/Even Waveguide Channels
+  - Dedicated Metal Routing Layers (Halved Pitch, Zero Crosstalk, Direct Contact to HS1)
+==================================================================================
+  LAYER 10: SiPh STRATUM 5 (30 µm)
+  - Dilated Beneš Routing Stages 13-15 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 9.5: INTER-STRATUM SiO2 BUFFER 4 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 9: SiPh STRATUM 4 (30 µm)
+  - Dilated Beneš Routing Stages 10-12 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 8.5: INTER-STRATUM SiO2 BUFFER 3 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 8: SiPh STRATUM 3 (30 µm)
+  - Dilated Beneš Routing Stages 7-9 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 7.5: INTER-STRATUM SiO2 BUFFER 2 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 7: SiPh STRATUM 2 (30 µm)
+  - Dilated Beneš Routing Stages 4-6 (Sb2S3 Switches, 0 W Static Hold)
+----------------------------------------------------------------------------------
+  LAYER 6.5: INTER-STRATUM SiO2 BUFFER 1 (50 µm)
+  - Inter-stratum thermal diffusion time: τ_diff,inter = 2.76 ms (552 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 6: SiPh STRATUM 1 (30 µm)
+  - LiTaO3 1x256 Pockels Input Modulators (50 aJ/switch @ 100 GHz)
+  - Passive 1064 nm MMI Splitting Tree &amp; Beneš Routing Stages 1-3
+----------------------------------------------------------------------------------
+  LAYER 2: MONOLITHIC PRIMARY SiO2 THERMAL BUFFER (250 µm)
+  - Thermal Diffusivity: α = 9.05 × 10⁻⁷ m²/s | Thermal Diffusion Time: τ_diff = 69.06 ms (13,812 JIR cycles)
+----------------------------------------------------------------------------------
+  LAYER 1: CMOS BASE LOGIC &amp; CRT RECONSTRUCTION SUBSTRATE (50 µm)
+  - StrongARM Regenerative Latches, RNS Encoders &amp; Pipelined CRT Engine
+==================================================================================
+  TOTAL BARE-DIE ACTIVE 3D STACK HEIGHT: 50 + 250 + 5×30 + 4×50 + 10 = 660 µm (0.66 mm)
+==================================================================================
+</code></pre>
+<hr />
+<h3 id="model-6a-janus-datacenter-32-tile-5-stratum-3d-stack-6400-mm2">Model 6A: JANUS Datacenter 32-Tile (5-Stratum 3D Stack 640.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count-from-table-xv-of-maintex">1. Hardware Architecture &amp; Device Count (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 32 independent optical residue tiles</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 128 × 128 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 128² = 16,384 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 32 × 16,384 = <strong>524,288 multipliers</strong></li>
+<li><strong>Waveguide Alphabet per Multiplier:</strong> 256 waveguides (One-Hot 8-bit residue representation)</li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 524,288 × 256 = <strong>134,217,728 channels</strong> (≈ 134.22 Million)</li>
+<li><strong>Beneš Routing Stages (S):</strong> 2·log₂(256) - 1 = <strong>15 stages</strong></li>
+<li><strong>Switches per Multiplier Fabric:</strong> (256/2) × 15 = 128 × 15 = <strong>1,920 switches</strong></li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 524,288 × 1,920 = <strong>1,006,632,960 switches</strong> (<strong>1.0066 Billion switches</strong>, ≈ 201.33M per stratum)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 134,217,728 detectors on dedicated 10 µm 2-layer detector block (≈ 134.22 Million)</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 524,288 active events (262,144 illuminated per 5 ps phase)</li>
+<li><strong>SiPh Strata Count:</strong> 5 Strata (30 µm each) + Four 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-2530-mm-2530-mm">2. Physical Layout &amp; Area Budget (25.30 mm × 25.30 mm)</h4>
+<ul>
+<li><strong>Die Footprint (A_die):</strong> <strong>640.00 mm²</strong> (25.30 mm × 25.30 mm × 0.66 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 271.80 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 140.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 120.60 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 56.20 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 51.40 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_17">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (18 stages of 1:2 MMIs for 262,144 branches):</strong> L_split,ideal = 10·log₁₀(2¹⁸) = <strong>54.19 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 18 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>14.40 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 54.19 dB + 14.40 dB = <strong>68.59 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>100.00 W Optical CW</strong> (+50.00 dBm, from Table XV of main.tex)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>133.33 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown-from-table-xv-of-maintex_4">4. Full-System Electrical Power Breakdown (From Table XV of main.tex)</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 100 W Optical):</strong> 133.33 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 8.19 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 5.24 W</li>
+<li><strong>Optical Amplification Layer:</strong> 0.00 W</li>
+<li><strong>PCM Routing Switches (Static Hold):</strong> 0.00 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 37.03 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 3.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>186.79 Watts</strong> (Operating band: 186.8–200.0 W)</li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_17">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 186.79 W / 640.0 mm² = <strong>0.2919 W/mm²</strong> (29.19 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>247.46 mJ/K</strong> (352.0 mg mass)</li>
+<li><strong>Main Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (186.79 W × 5 µs) / 0.24746 J/K = <strong>0.00377°C</strong> = <strong>3.77 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_17">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">52,428.8 TMAC/s</td>
+<td style="text-align: left;">44,564.5 TMAC/s</td>
+<td style="text-align: left;">238.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">26,214.4 TMAC/s</td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">119.3 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">59.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">29.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">3,276.8 TMAC/s</td>
+<td style="text-align: left;">2,785.3 TMAC/s</td>
+<td style="text-align: left;">14.91 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_14">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Die Footprint per Stacked Unit:</strong> 640.00 mm² (25.30 mm × 25.30 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 6 wafers per run (1 CMOS base + 5 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 14 Completed Hyperscale Accelerators per Wafer Set</strong> (conserving total active circuit area across the 6-wafer stack).</li>
+</ul>
+<hr />
+<h3 id="model-6b-janus-datacenter-64-tile-hyperscale-module-12800-mm2">Model 6B: JANUS Datacenter 64-Tile Hyperscale Module (1,280.0 mm²)</h3>
+<h4 id="1-hardware-architecture-device-count_17">1. Hardware Architecture &amp; Device Count</h4>
+<ul>
+<li><strong>Residue Tile Count (N_tiles):</strong> 64 independent optical residue tiles (Dual-Reticle Stitched)</li>
+<li><strong>Tile Matrix Dimension (N_dim):</strong> 128 × 128 matrix mesh per tile</li>
+<li><strong>Multiplier Count per Tile:</strong> 128² = 16,384 optical multipliers</li>
+<li><strong>Total Multipliers on Die:</strong> 64 × 16,384 = <strong>1,048,576 multipliers</strong> (<strong>1.048 Million multipliers</strong>)</li>
+<li><strong>Total Spatial Waveguide Channels:</strong> 1,048,576 × 256 = <strong>268,435,456 channels</strong> (≈ 268.44 Million)</li>
+<li><strong>Total Non-Volatile Sb2S3 Switches:</strong> 1,048,576 × 1,920 = <strong>2,013,265,920 switches</strong> (<strong>2.013 Billion switches</strong>, ≈ 402.65M per stratum)</li>
+<li><strong>Terminal Ge/Si SAC²M APD Pixels:</strong> 268,435,456 detectors on dedicated 10 µm 2-layer detector block (≈ 268.44 Million)</li>
+<li><strong>Active Detectors per 10 ps Cycle:</strong> 1,048,576 active events (524,288 illuminated per 5 ps phase)</li>
+<li><strong>SiPh Strata Count:</strong> 5 Strata (30 µm each) + Four 50 µm Inter-Stratum Buffers + 10 µm APD Block</li>
+</ul>
+<h4 id="2-physical-layout-area-budget-3578-mm-3578-mm">2. Physical Layout &amp; Area Budget (35.78 mm × 35.78 mm)</h4>
+<ul>
+<li><strong>Module Footprint (A_die):</strong> <strong>1,280.00 mm²</strong> (35.78 mm × 35.78 mm × 0.66 mm)</li>
+<li><strong>Switch Footprint per Stratum:</strong> 543.60 mm²</li>
+<li><strong>Routing Shuffles &amp; Interlayer Vias:</strong> 280.00 mm²</li>
+<li><strong>Active LiTaO₃ Input Routers (Stratum 1):</strong> 241.20 mm²</li>
+<li><strong>Passive MMI H-Tree &amp; APD Array:</strong> 112.40 mm²</li>
+<li><strong>Perimeter Cu Shunt, Guard Rings &amp; Dicing:</strong> 102.80 mm²</li>
+</ul>
+<h4 id="3-optical-link-budget-laser-requirement-1064-nm_18">3. Optical Link Budget &amp; Laser Requirement (1064 nm)</h4>
+<ul>
+<li><strong>Passive Split Tree (19 stages of 1:2 MMIs for 524,288 branches):</strong> L_split,ideal = 10·log₁₀(2¹⁹) = <strong>57.20 dB</strong></li>
+<li><strong>Excess Path Loss (L_excess):</strong> 19 × 0.30 dB (MMIs) + 7.50 dB (Beneš) + 1.50 dB (Interlayer/Prop) = <strong>14.70 dB</strong></li>
+<li><strong>Total Optical Distribution Loss (L_total):</strong> 57.20 dB + 14.70 dB = <strong>71.90 dB</strong></li>
+<li><strong>Delivered Receiver Power / Sensitivity:</strong> P_det = <strong>-18.59 dBm</strong> | P_sens = <strong>-23.20 dBm</strong> (Margin = <strong>+4.61 dB</strong>)</li>
+<li><strong>Master Laser Optical Power (P_laser,opt):</strong> <strong>214.08 W Optical CW</strong> (+53.31 dBm, or dual 107 W Yb-fiber sources)</li>
+<li><strong>Laser Wall-Plug Electrical Power (&gt;75% WPE):</strong> <strong>285.44 Watts</strong></li>
+</ul>
+<h4 id="4-full-system-electrical-power-breakdown_13">4. Full-System Electrical Power Breakdown</h4>
+<ul>
+<li><strong>1064 nm Master Laser (75% WPE, 214.08 W Optical):</strong> 285.44 W</li>
+<li><strong>LiTaO₃ Pockels Input Routers (100 GHz):</strong> 16.38 W</li>
+<li><strong>Ge/Si SAC²M APD + StrongARM Readout:</strong> 10.48 W</li>
+<li><strong>CMOS Encoders, CRT Adder Trees &amp; Adders:</strong> 74.06 W</li>
+<li><strong>JIR Scheduler &amp; Control Logic:</strong> 6.00 W</li>
+<li><strong>TOTAL SYSTEM ELECTRICAL POWER:</strong> <strong>392.36 Watts</strong></li>
+</ul>
+<h4 id="5-thermal-dissipation-buffer-physics_18">5. Thermal Dissipation &amp; Buffer Physics</h4>
+<ul>
+<li><strong>Surface Heat Flux Density (q″):</strong> 392.36 W / 1,280.0 mm² = <strong>0.3065 W/mm²</strong> (30.65 W/cm²)</li>
+<li><strong>Main SiO₂ Buffer Heat Capacity (C_SiO₂):</strong> <strong>494.91 mJ/K</strong> (704.0 mg mass)</li>
+<li><strong>Thermal Diffusion Time Constant (τ_diff):</strong> <strong>69.06 ms</strong> = <strong>13,812 JIR cycles</strong></li>
+<li><strong>Per-Cycle Temperature Rise (ΔT_cycle):</strong> (392.36 W × 5 µs) / 0.49491 J/K = <strong>0.00396°C</strong> = <strong>3.96 mK</strong></li>
+</ul>
+<h4 id="6-multi-precision-performance-matrix-100-ghz_18">6. Multi-Precision Performance Matrix (100 GHz)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Precision Target</th>
+<th style="text-align: left;">RNS Tiles (k)</th>
+<th style="text-align: left;">Peak Throughput</th>
+<th style="text-align: left;">Sustained (η=0.85)</th>
+<th style="text-align: left;">Energy Efficiency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>INT4 Direct</strong></td>
+<td style="text-align: left;">1 tile</td>
+<td style="text-align: left;">104,857.6 TMAC/s</td>
+<td style="text-align: left;">89,129.0 TMAC/s</td>
+<td style="text-align: left;">227.2 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT8 Exact</strong></td>
+<td style="text-align: left;">2 tiles</td>
+<td style="text-align: left;">52,428.8 TMAC/s</td>
+<td style="text-align: left;">44,564.5 TMAC/s</td>
+<td style="text-align: left;">113.6 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT16 Exact</strong></td>
+<td style="text-align: left;">4 tiles</td>
+<td style="text-align: left;">26,214.4 TMAC/s</td>
+<td style="text-align: left;">22,282.2 TMAC/s</td>
+<td style="text-align: left;">56.8 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT32 Exact</strong></td>
+<td style="text-align: left;">8 tiles</td>
+<td style="text-align: left;">13,107.2 TMAC/s</td>
+<td style="text-align: left;">11,141.1 TMAC/s</td>
+<td style="text-align: left;">28.4 TMAC/s/W</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>INT64 Exact</strong></td>
+<td style="text-align: left;">16 tiles</td>
+<td style="text-align: left;">6,553.6 TMAC/s</td>
+<td style="text-align: left;">5,570.6 TMAC/s</td>
+<td style="text-align: left;">14.20 TMAC/s/W</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-foundry-wafer-set-economics-300-mm-silicon-line_15">7. Foundry Wafer Set Economics (300 mm Silicon Line)</h4>
+<ul>
+<li><strong>Module Footprint per Stacked Unit:</strong> 1,280.00 mm² (35.78 mm × 35.78 mm)</li>
+<li><strong>Wafer Set Consumption:</strong> 6 wafers per run (1 CMOS base + 5 SiPh strata)</li>
+<li><strong>Effective Finished Chip Yield:</strong> <strong>≈ 7 Completed Hyperscale Modules per Wafer Set</strong> (conserving total active circuit area across the 6-wafer stack).</li>
+</ul>
+<hr />
+<p><em>Roadmap finalized and approved for engineering architecture, hardware realization, and patent portfolio alignment.</em></p>
+</body>
+</html>
