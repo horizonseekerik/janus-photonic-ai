@@ -1013,14 +1013,14 @@
     <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">☰</button>
 
     <nav class="nav-bar">
-      <button class="nav-btn active" id="nav-home" onclick="switchPage('home')">🏠 Overview</button>
-      <button class="nav-btn" id="nav-paper" onclick="switchPage('paper')">📄 Manuscript</button>
-      <button class="nav-btn" id="nav-simulation" onclick="switchPage('simulation')">⚡ Co-Simulation</button>
-      <button class="nav-btn" id="nav-codebase" onclick="switchPage('codebase')">💻 Codebase</button>
-      <button class="nav-btn" id="nav-roadmap" onclick="switchPage('roadmap')">🗺️ Roadmap</button>
-      <button class="nav-btn" id="nav-hardware" onclick="switchPage('hardware')">🔬 CMOS & 3D Stack</button>
-      <button class="nav-btn" id="nav-software" onclick="switchPage('software')">🧠 Software & JIR</button>
-      <button class="nav-btn" id="nav-about" onclick="switchPage('about')">👤 About Creator</button>
+      <button class="nav-btn active" id="nav-home" onclick="switchPage('home')">Overview</button>
+      <button class="nav-btn" id="nav-paper" onclick="switchPage('paper')">Manuscript</button>
+      <button class="nav-btn" id="nav-simulation" onclick="switchPage('simulation')">Co-Simulation</button>
+      <button class="nav-btn" id="nav-codebase" onclick="switchPage('codebase')">Codebase</button>
+      <button class="nav-btn" id="nav-roadmap" onclick="switchPage('roadmap')">Roadmap</button>
+      <button class="nav-btn" id="nav-hardware" onclick="switchPage('hardware')">CMOS & 3D Stack</button>
+      <button class="nav-btn" id="nav-software" onclick="switchPage('software')">Software & JIR</button>
+      <button class="nav-btn" id="nav-about" onclick="switchPage('about')">About Creator</button>
       
       <!-- Segmented Dual-Theme Switcher -->
       <div class="theme-switch-wrapper" style="display:inline-flex; align-items:center; background:var(--card-sub-bg); border:1px solid var(--card-border); border-radius:20px; padding:2px; margin-left:6px;">
@@ -1039,17 +1039,17 @@
       <!-- Hero Banner -->
       <div class="hero-banner">
         <div class="hero-tag">Breaking The Optical Computing Barrier</div>
-        <h1 class="hero-headline">104.8 PetaMAC/s Optical AI Computing with Up to Exact INT64 Precision</h1>
+        <h1 class="hero-headline">Janus: Spatial Residue Photonic Hardware for High-Throughput Deep Learning Acceleration</h1>
         <p class="hero-subhead">
-          Project JANUS replaces analog amplitude accumulation with <strong>Spatial One-Hot Residue Number System (RNS)</strong> routing, wide-bandgap <strong>Sb₂S₃</strong> phase-change switches, and an electro-optic <strong>50 fs ILO comb clock</strong>—scaling from 4-bit inference up to <strong>Exact INT64 deterministic precision</strong> while delivering <strong>104.8 PetaMAC/s at ~300W</strong> with zero static hold power.
+          Project JANUS replaces analog amplitude accumulation with <strong>Spatial One-Hot Residue Number System (RNS)</strong> routing, non-volatile <strong>Sb₂S₃</strong> phase-change switches, and an electro-optic <strong>50 fs ILO comb clock</strong>—scaling from 4-bit neural inference up to <strong>Exact INT64 deterministic precision</strong>. Modeled from a <strong>6.55 TMAC/s Planar MVP (Model 1A at 6.17 W)</strong> up to a <strong>104.8 PetaMAC/s Hyperscale 3D Module (Model 6B projection at ~392 W)</strong> with zero static hold power.
         </p>
 
         <div class="hero-actions">
-          <button class="btn-primary" onclick="switchPage('simulation')">⚡ Launch Co-Simulation Suite</button>
-          <button class="btn-outline" onclick="switchPage('paper'); switchPaper('manuscript');">📄 IEEE Architecture Paper</button>
-          <button class="btn-outline" onclick="switchPage('hardware')">🔬 CMOS & 3D Stack</button>
-          <button class="btn-outline" onclick="switchPage('codebase')">💻 Explore Codebase</button>
-          <button class="btn-outline" onclick="switchPage('roadmap')">🗺️ Roadmap</button>
+          <button class="btn-primary" onclick="switchPage('simulation')">Launch Co-Simulation Suite</button>
+          <button class="btn-outline" onclick="switchPage('paper'); switchPaper('manuscript');">Architectural Treatise (IEEEtran)</button>
+          <button class="btn-outline" onclick="switchPage('hardware')">CMOS & 3D Stack</button>
+          <button class="btn-outline" onclick="switchPage('codebase')">Explore Codebase</button>
+          <button class="btn-outline" onclick="switchPage('roadmap')">Roadmap</button>
         </div>
 
         <div class="kpi-grid">
@@ -1058,8 +1058,8 @@
             <div class="kpi-lbl">Clock Frequency</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-val" style="color:var(--accent-cyan);">104.8 PMAC/s</div>
-            <div class="kpi-lbl">Peak 4-Bit Throughput</div>
+            <div class="kpi-val" style="color:var(--accent-cyan);">104.8 PMAC/s (6B)</div>
+            <div class="kpi-lbl">Model 6B Projected Peak</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-val" style="color:var(--accent-green);">Up to INT64</div>
@@ -1070,8 +1070,8 @@
             <div class="kpi-lbl">Static Hold Power</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-val">≤ 10⁻¹⁸</div>
-            <div class="kpi-lbl">Target Raw BER</div>
+            <div class="kpi-val">≤ 10⁻¹²</div>
+            <div class="kpi-lbl">Link Budget Target BER</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-val" style="color:var(--accent-cyan);">+3.02 to +9.03 dB</div>
@@ -1157,20 +1157,20 @@
         <!-- DOCUMENT SWITCHER BUTTONS -->
         <div style="display:flex; gap:12px; margin-bottom:1.25rem; flex-wrap:wrap; border-bottom:1px solid var(--border-color); padding-bottom:1rem;">
           <button id="btn-paper-manu" class="btn-primary" onclick="switchPaper('manuscript')" style="cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:600; padding:8px 18px;">
-            📄 37-Page Architecture Manuscript
+            37-Page Architecture Treatise
           </button>
           <button id="btn-paper-sim" class="btn-outline" onclick="switchPaper('simulation')" style="cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:600; padding:8px 18px;">
-            📊 Mini 16-Tile Simulation & Sign-Off Report (IEEE)
+            Mini 16-Tile Co-Simulation Report (IEEEtran)
           </button>
           <button id="btn-paper-cmos" class="btn-outline" onclick="switchPaper('cmos')" style="cursor:pointer; display:flex; align-items:center; gap:8px; font-weight:600; padding:8px 18px;">
-            🔬 Mini 16-Tile CMOS Architecture Spec (IEEE)
+            Mini 16-Tile CMOS Architecture Spec (IEEEtran)
           </button>
         </div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
           <div>
-            <h2 id="paper-doc-title" style="font-size:1.35rem; color: var(--text-main); margin-bottom:0.25rem;">📄 IEEE Transactions on Architecture: Project JANUS</h2>
-            <p id="paper-doc-desc" style="color:var(--text-muted); font-size:0.88rem;">37-Page Formally Verified Manuscript • IEEEtran Standard Compilation • Zero Compilation Errors</p>
+            <h2 id="paper-doc-title" style="font-size:1.35rem; color: var(--text-main); margin-bottom:0.25rem;">Architectural Treatise: Project JANUS (IEEEtran Format)</h2>
+            <p id="paper-doc-desc" style="color:var(--text-muted); font-size:0.88rem;">37-Page Architectural Treatise • Self-Authored using IEEEtran Template • 5-Tier Co-Simulation Validation</p>
           </div>
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
             <a id="paper-open-btn" href="/JANUS_IEEE_Manuscript.pdf" target="_blank" class="btn-outline" style="display:flex; align-items:center; gap:6px; font-weight:500;">
@@ -1195,19 +1195,19 @@
     <!-- CO-SIMULATION SUB-TABS NAVIGATION BAR -->
     <div class="simulation-nav-container">
       <button class="sim-tab-btn active" id="btn-tab-rns" onclick="switchTab('rns')">
-        <span>🔢</span> One-Hot RNS & Waveguides
+        One-Hot RNS & Waveguides
       </button>
       <button class="sim-tab-btn" id="btn-tab-arch" onclick="switchTab('arch')">
-        <span>⚡</span> Architecture & Light Co-Design
+        Architecture & Optical Mesh
       </button>
       <button class="sim-tab-btn" id="btn-tab-ai" onclick="switchTab('ai')">
-        <span>🤖</span> AI Profiling & GPU vs JANUS
+        AI Workloads & GPU Comparison
       </button>
       <button class="sim-tab-btn" id="btn-tab-thermal" onclick="switchTab('thermal')">
-        <span>🌡️</span> 16-Tile Thermal & JIR Scheduler
+        16-Tile Thermal & JIR Scheduler
       </button>
       <button class="sim-tab-btn" id="btn-tab-matrix" onclick="switchTab('matrix')">
-        <span>✅</span> 16-Point Sign-Off Matrix
+        16-Point Validation Matrix
       </button>
     </div>
 
@@ -1370,7 +1370,42 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated via API -->
+                            <tr>
+                <td><b>QKV Projection</b></td>
+                <td>4096×4096×12288</td>
+                <td>201,326,592</td>
+                <td>16.11 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.099 µJ</b></td>
+                <td>112.5</td>
+              </tr>
+              <tr>
+                <td><b>O Projection</b></td>
+                <td>4096×4096×4096</td>
+                <td>67,108,864</td>
+                <td>5.37 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.033 µJ</b></td>
+                <td>112.5</td>
+              </tr>
+              <tr>
+                <td><b>Gate/Up Proj</b></td>
+                <td>4096×4096×28672</td>
+                <td>469,762,048</td>
+                <td>37.58 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.232 µJ</b></td>
+                <td>112.5</td>
+              </tr>
+              <tr>
+                <td><b>Down Proj</b></td>
+                <td>4096×14336×4096</td>
+                <td>234,881,024</td>
+                <td>18.79 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.116 µJ</b></td>
+                <td>112.5</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1390,7 +1425,42 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated via API -->
+                            <tr>
+                <td><b>c_attn (QKV)</b></td>
+                <td>768×768×2304</td>
+                <td>1,358,954,496</td>
+                <td>1.09 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.007 µJ</b></td>
+                <td>114.2</td>
+              </tr>
+              <tr>
+                <td><b>c_proj (Attn)</b></td>
+                <td>768×768×768</td>
+                <td>452,984,832</td>
+                <td>0.36 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.002 µJ</b></td>
+                <td>114.2</td>
+              </tr>
+              <tr>
+                <td><b>c_fc (MLP)</b></td>
+                <td>768×768×3072</td>
+                <td>1,811,939,328</td>
+                <td>1.45 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.009 µJ</b></td>
+                <td>114.2</td>
+              </tr>
+              <tr>
+                <td><b>c_proj (MLP)</b></td>
+                <td>768×3072×768</td>
+                <td>1,811,939,328</td>
+                <td>1.45 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.009 µJ</b></td>
+                <td>114.2</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1410,7 +1480,42 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated via API -->
+                            <tr>
+                <td><b>Patch Embedding</b></td>
+                <td>1024×768×1280</td>
+                <td>1,006,632,960</td>
+                <td>0.81 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.005 µJ</b></td>
+                <td>111.8</td>
+              </tr>
+              <tr>
+                <td><b>QKV Self-Attn</b></td>
+                <td>1024×1280×3840</td>
+                <td>5,033,164,800</td>
+                <td>4.03 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.025 µJ</b></td>
+                <td>111.8</td>
+              </tr>
+              <tr>
+                <td><b>Attn Output</b></td>
+                <td>1024×1280×1280</td>
+                <td>1,677,721,600</td>
+                <td>1.34 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.008 µJ</b></td>
+                <td>111.8</td>
+              </tr>
+              <tr>
+                <td><b>MLP Expansion</b></td>
+                <td>1024×1280×5120</td>
+                <td>6,710,886,400</td>
+                <td>5.37 ns</td>
+                <td><b style="color: var(--accent-cyan);">12.5 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">0.033 µJ</b></td>
+                <td>111.8</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1430,9 +1535,48 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated via API -->
+                            <tr style="background: rgba(0, 242, 254, 0.08); font-weight: bold;">
+                <td><b style="color: var(--accent-cyan);">JANUS Model 1A (MVP)</b></td>
+                <td>Spatial RNS Optical + 65nm CMOS (Model 1A)</td>
+                <td>100 mm²</td>
+                <td><b style="color: var(--accent-green);">6.17 W</b></td>
+                <td><b style="color: var(--accent-cyan);">6.55 TMAC/s</b></td>
+                <td><b style="color: var(--accent-green);">112.8 TMAC/s/W</b> <span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.7rem; margin-left:4px;">159.7x HIGHER</span></td>
+                <td>6.96 TMAC/s/mm²</td>
+              </tr>
+              <tr>
+                <td><b>NVIDIA H100 SXM5</b></td>
+                <td>Hopper 4th Gen Tensor Cores (TSMC 4N)</td>
+                <td>814 mm²</td>
+                <td><b style="color: #ef4444;">700 W</b></td>
+                <td><b style="color: var(--accent-cyan);">494 TMAC/s</b></td>
+                <td><b>0.7 TMAC/s/W</b></td>
+                <td>0.61 TMAC/s/mm²</td>
+              </tr>
+              <tr>
+                <td><b>NVIDIA B200 Blackwell</b></td>
+                <td>Blackwell 5th Gen Tensor Cores (TSMC 4NP)</td>
+                <td>1600 mm²</td>
+                <td><b style="color: #ef4444;">1000 W</b></td>
+                <td><b style="color: var(--accent-cyan);">1125 TMAC/s</b></td>
+                <td><b>1.1 TMAC/s/W</b></td>
+                <td>0.70 TMAC/s/mm²</td>
+              </tr>
+              <tr>
+                <td><b>Google TPU v5p</b></td>
+                <td>TPU v5p Tensor Core Matrix Engine</td>
+                <td>600 mm²</td>
+                <td><b style="color: #ef4444;">450 W</b></td>
+                <td><b style="color: var(--accent-cyan);">229.5 TMAC/s</b></td>
+                <td><b>0.5 TMAC/s/W</b></td>
+                <td>0.38 TMAC/s/mm²</td>
+              </tr>
             </tbody>
           </table>
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:0.75rem; line-height:1.5;">
+          <em>* Methodology Note: JANUS figures represent multi-physics simulated projections for the Model 1A 16-Tile Monolithic Architecture (6.17 W base TDP). GPU / TPU figures reflect manufacturer published datasheet specifications for production silicon (NVIDIA H100 SXM5 / B200 / Google TPU v5p).</em>
+        </div>
+        
         </div>
       </div>
 
@@ -1534,15 +1678,15 @@
         <div id="datacenter-metrics-banner" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--card-border);">
           <div class="stat-box" style="padding: 0.75rem;">
             <div class="stat-label">Total Compute Delivered</div>
-            <div id="dc-compute-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan);">-- PMACs</div>
+            <div id="dc-compute-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-cyan);">6.55 TMACs</div>
           </div>
           <div class="stat-box" style="padding: 0.75rem;">
             <div class="stat-label">Total Energy Consumed</div>
-            <div id="dc-energy-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-purple);">-- Wh</div>
+            <div id="dc-energy-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-purple);">1.71 Wh</div>
           </div>
           <div class="stat-box" style="padding: 0.75rem;">
             <div class="stat-label">Sb₂S₃ Thermal Headroom</div>
-            <div id="dc-headroom-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-green);">-- °C Margin</div>
+            <div id="dc-headroom-val" style="font-size: 1.2rem; font-weight: 700; color: var(--accent-green);">189.9 °C Margin</div>
           </div>
           <div class="stat-box" style="padding: 0.75rem;">
             <div class="stat-label">JIR Rotation Frequency</div>
@@ -1631,12 +1775,12 @@
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 1rem;">
           <div>
-            <div class="card-title" style="margin-bottom: 4px;">🔬 16-Point Multi-Physics Quantitative Verification Sign-Off Matrix</div>
-            <p style="color: var(--text-muted); font-size: 0.88rem;">Live Physics Solvers across Optical FDTD, Elmer FEM Thermal, Xyce Circuit, RTL, and Formal Z3 Proofs</p>
+            <div class="card-title" style="margin-bottom: 4px;">16-Point Multi-Physics Simulation Target Validation Matrix</div>
+            <p style="color: var(--text-muted); font-size: 0.88rem;">Multi-Physics Co-Simulation Target Assertions across Optical FDTD, Elmer FEM Thermal, Xyce SPICE, Verilog RTL, and Z3 SMT</p>
           </div>
           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
             <span class="status-badge" id="matrix-audit-badge" style="border-color: var(--accent-green); color: var(--accent-green); font-size: 0.85rem; padding: 4px 12px;">
-              ● 16/16 PASSED (100.0%)
+              ● 16/16 SIMULATION TARGETS MET
             </span>
             <button class="btn-primary" id="btn-run-full-cosim" onclick="loadMatrixData(true)" style="padding: 0.45rem 1rem; font-size: 0.85rem;">
               ⚡ Run Full 16-Test Co-Sim
@@ -1668,9 +1812,153 @@
               </tr>
             </thead>
             <tbody>
-              <!-- Populated via API -->
+                            <tr id="matrix-row-1">
+                <td style="font-weight:700; color:var(--text-muted);">1</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 1: Optics</span></td>
+                <td><b>Sb₂S₃ Switch Insertion Loss (Amorphous)</b></td>
+                <td><code>IL ≤ 0.50 dB</code></td>
+                <td><b style="color:var(--accent-green);">0.017 dB (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(1)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-2">
+                <td style="font-weight:700; color:var(--text-muted);">2</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 1: Optics</span></td>
+                <td><b>Dilated Beneš Extinction Ratio</b></td>
+                <td><code>ER ≥ 25.0 dB</code></td>
+                <td><b style="color:var(--accent-green);">28.5 dB (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(2)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-3">
+                <td style="font-weight:700; color:var(--text-muted);">3</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 1: Optics</span></td>
+                <td><b>Waveguide Crossing Insertion Loss</b></td>
+                <td><code>IL ≤ 0.025 dB</code></td>
+                <td><b style="color:var(--accent-green);">0.013 dB (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(3)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-4">
+                <td style="font-weight:700; color:var(--text-muted);">4</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 1: Optics</span></td>
+                <td><b>Waveguide Crossing Crosstalk Isolation</b></td>
+                <td><code>XT ≤ -38.0 dB</code></td>
+                <td><b style="color:var(--accent-green);">-41.06 dB (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(4)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-5">
+                <td style="font-weight:700; color:var(--text-muted);">5</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 2: Thermal</span></td>
+                <td><b>Peak Steady-State Die Temperature</b></td>
+                <td><code>T_peak ≤ 28.0°C</code></td>
+                <td><b style="color:var(--accent-green);">25.06°C (Simulated)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(5)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-6">
+                <td style="font-weight:700; color:var(--text-muted);">6</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 2: Thermal</span></td>
+                <td><b>Thermal Pulse Energy Conservation</b></td>
+                <td><code>Conserved = True</code></td>
+                <td><b style="color:var(--accent-green);">True (0 ppm residual)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(6)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-7">
+                <td style="font-weight:700; color:var(--text-muted);">7</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 2: Thermal</span></td>
+                <td><b>Thermal ROM R² Accuracy</b></td>
+                <td><code>R² ≥ 0.995</code></td>
+                <td><b style="color:var(--accent-green);">1.0000 (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(7)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-8">
+                <td style="font-weight:700; color:var(--text-muted);">8</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 2: Thermal</span></td>
+                <td><b>Total Thermal Resistance (R_total)</b></td>
+                <td><code>R_total ≤ 0.60 K/W</code></td>
+                <td><b style="color:var(--accent-green);">~0.488 K/W (Estimated)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(8)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-9">
+                <td style="font-weight:700; color:var(--text-muted);">9</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 3: Circuit</span></td>
+                <td><b>Optical Link Budget Margin</b></td>
+                <td><code>Margin ≥ 3.0 dB</code></td>
+                <td><b style="color:var(--accent-green);">+3.02 dB (Modeled)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(9)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-10">
+                <td style="font-weight:700; color:var(--text-muted);">10</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 3: Circuit</span></td>
+                <td><b>100 GHz Eye Opening Aperture</b></td>
+                <td><code>Opening ≥ 65%</code></td>
+                <td><b style="color:var(--accent-green);">71.5% (Simulated)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(10)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-11">
+                <td style="font-weight:700; color:var(--text-muted);">11</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 3: Circuit</span></td>
+                <td><b>Dynamic BER Target Floor</b></td>
+                <td><code>BER ≤ 1e-12</code></td>
+                <td><b style="color:var(--accent-green);">≤ 10⁻¹² (Target Met)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(11)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-12">
+                <td style="font-weight:700; color:var(--text-muted);">12</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 4: Digital</span></td>
+                <td><b>CRT Adder Tree Critical Path Delay</b></td>
+                <td><code>t_CRT ≤ 100 ps</code></td>
+                <td><b style="color:var(--accent-green);">80.0 ps (65nm Synth)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(12)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-13">
+                <td style="font-weight:700; color:var(--text-muted);">13</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 4: Digital</span></td>
+                <td><b>RTL Functional Verification</b></td>
+                <td><code>Errors = 0</code></td>
+                <td><b style="color:var(--accent-green);">0 Errors (Cocotb/VVP)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(13)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-14">
+                <td style="font-weight:700; color:var(--text-muted);">14</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 5: Formal</span></td>
+                <td><b>Z3 SMT Mathematical Precision Proofs</b></td>
+                <td><code>All 4 Proved</code></td>
+                <td><b style="color:var(--accent-green);">4/4 Proved (SMT Solved)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(14)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-15">
+                <td style="font-weight:700; color:var(--text-muted);">15</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 5: Formal</span></td>
+                <td><b>RRNS Self-Healing Correction Rate</b></td>
+                <td><code>Rate ≥ 99.9%</code></td>
+                <td><b style="color:var(--accent-green);">100.0% (500 Trials)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(15)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
+              <tr id="matrix-row-16">
+                <td style="font-weight:700; color:var(--text-muted);">16</td>
+                <td><span class="status-badge" style="color:var(--accent-cyan); border-color:var(--accent-cyan); font-size:0.75rem;">Tier 5: Formal</span></td>
+                <td><b>GEMM Exact Precision (INT4–INT64)</b></td>
+                <td><code>Bit-Exact = True</code></td>
+                <td><b style="color:var(--accent-green);">Bit-Exact (All Widths)</b></td>
+                <td><span class="status-badge" style="color:var(--accent-green); border-color:var(--accent-green); font-size:0.75rem;">✔ Target Met</span></td>
+                <td><button class="btn-outline" onclick="runSingleTest(16)" style="padding:2px 8px; font-size:0.75rem;">Re-verify</button></td>
+              </tr>
             </tbody>
           </table>
+        
         </div>
       </div>
     </div>
@@ -2437,6 +2725,7 @@
               </tr>
             </tbody>
           </table>
+        
         </div>
       </div>
     </section>
@@ -2730,6 +3019,7 @@
               </tr>
             </tbody>
           </table>
+        
         </div>
       </div>
 
@@ -2782,7 +3072,7 @@
               Architect & Principal Inventor of Project JANUS • Pioneer of Spatial Residue Optical Computing
             </p>
             <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7; margin-bottom:1.25rem;">
-              Deepanshu Bhardwaj conceived, formulated, mathematically proved, and architected <strong>Project JANUS</strong>—the world's first Spatial Residue Number System (RNS) photonic computing architecture capable of scaling from low-power INT4 neural inference up to <strong>Exact INT64 deterministic precision</strong> at 100 GHz with zero static hold power.
+              Deepanshu Bhardwaj conceived, formulated, mathematically proved, and architected <strong>Project JANUS</strong>—a novel Spatial Residue Number System (RNS) photonic computing architecture capable of scaling from low-power INT4 neural inference up to <strong>Exact INT64 deterministic precision</strong> at 100 GHz with zero static hold power.
             </p>
             
             <!-- KEY CREDENTIALS & BADGES -->
@@ -3012,7 +3302,7 @@
             <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;">
               <strong>Title:</strong> A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing and Monolithic 3D Heterogeneous Stacking<br>
               <strong>Inventor:</strong> Deepanshu Bhardwaj<br>
-              <strong>Status:</strong> Patent Pending • Approved for Implementation
+              <strong>Status:</strong> Patent Pending (Indian Patent Application No. 202611052791)
             </div>
           </div>
         </div>
@@ -3023,14 +3313,12 @@
             To cite Project JANUS and Deepanshu Bhardwaj's research in academic publications:
           </p>
           <div style="background: #0d1117; border:1px solid #30363d; border-radius:8px; padding:1rem; font-family:monospace; font-size:0.78rem; color: #c9d1d9; line-height:1.5; overflow-x:auto;">
-@article{bhardwaj2026janus,<br>
-&nbsp;&nbsp;author&nbsp;&nbsp;= {Deepanshu Bhardwaj},<br>
-&nbsp;&nbsp;title&nbsp;&nbsp;&nbsp;= {JANUS: A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing},<br>
-&nbsp;&nbsp;journal&nbsp;= {IEEE Transactions on Architecture},<br>
-&nbsp;&nbsp;year&nbsp;&nbsp;&nbsp;&nbsp;= {2026},<br>
-&nbsp;&nbsp;volume&nbsp;&nbsp;= {37},<br>
-&nbsp;&nbsp;pages&nbsp;&nbsp;&nbsp;= {1--37},<br>
-&nbsp;&nbsp;note&nbsp;&nbsp;&nbsp;&nbsp;= {Indian Patent App. 202611052791}<br>
+@misc{bhardwaj2026janus,<br>
+&nbsp;&nbsp;author&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {Deepanshu Bhardwaj},<br>
+&nbsp;&nbsp;title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {JANUS: A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing},<br>
+&nbsp;&nbsp;howpublished = {Preprint / Architectural Treatise (IEEEtran Format)},<br>
+&nbsp;&nbsp;year&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {2026},<br>
+&nbsp;&nbsp;note&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {Indian Patent Application 202611052791. 37-page architectural specification}<br>
 }
           </div>
         </div>
@@ -4931,8 +5219,8 @@
 
       if (type === 'simulation') {
         iframe.src = '/JANUS_Mini16_Simulation_Report.pdf#toolbar=1&navpanes=1&scrollbar=1';
-        title.innerHTML = '📊 IEEE Simulation & Verification Report: Mini 16-Tile Prototype';
-        desc.innerHTML = '6-Page Multi-Physics Co-Simulation, Physical Component Modeling & 16-Point Sign-Off Verification';
+        title.innerHTML = '📊 Multi-Physics Co-Simulation & Modeling Report: Mini 16-Tile Prototype (IEEEtran Format)';
+        desc.innerHTML = '6-Page Multi-Physics Co-Simulation, Physical Component Modeling & 16-Point Target Verification';
         openBtn.href = '/JANUS_Mini16_Simulation_Report.pdf';
         dlBtn.href = '/JANUS_Mini16_Simulation_Report.pdf';
         dlBtn.setAttribute('download', 'JANUS_Mini16_Simulation_Report.pdf');
@@ -4942,7 +5230,7 @@
         if (btnCmos) btnCmos.className = 'btn-outline';
       } else if (type === 'cmos') {
         iframe.src = '/JANUS_Mini16_CMOS_Architecture.pdf#toolbar=1&navpanes=1&scrollbar=1';
-        title.innerHTML = '🔬 IEEE Transactions on VLSI / Solid-State Circuits: Project JANUS Mini-16 CMOS Backend';
+        title.innerHTML = '🔬 CMOS Digital Backend Architecture Specification (IEEEtran Format)';
         desc.innerHTML = '65nm Digital CMOS Backend Blueprint: 1:32 Polyphase 3.125 GHz Deserializer, Dual-LUT 1.5MB SRAM, 32-Lane SIMD Array & 3D TDV Stacking';
         openBtn.href = '/JANUS_Mini16_CMOS_Architecture.pdf';
         dlBtn.href = '/JANUS_Mini16_CMOS_Architecture.pdf';
@@ -4953,8 +5241,8 @@
         btnSim.className = 'btn-outline';
       } else {
         iframe.src = '/JANUS_IEEE_Manuscript.pdf#toolbar=1&navpanes=1&scrollbar=1';
-        title.innerHTML = '📄 IEEE Transactions on Architecture: Project JANUS';
-        desc.innerHTML = '37-Page Formally Verified Manuscript • IEEEtran Standard Compilation • Zero Compilation Errors';
+        title.innerHTML = 'Architectural Treatise: Project JANUS (IEEEtran Format)';
+        desc.innerHTML = '37-Page Architectural Treatise • Self-Authored using IEEEtran Template • 5-Tier Co-Simulation Validation';
         openBtn.href = '/JANUS_IEEE_Manuscript.pdf';
         dlBtn.href = '/JANUS_IEEE_Manuscript.pdf';
         dlBtn.setAttribute('download', 'JANUS_IEEE_Manuscript.pdf');

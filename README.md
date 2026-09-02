@@ -1,10 +1,10 @@
-﻿# Project JANUS: Spatial Optical RNS Photonic AI Computing Architecture
+# Project JANUS: Spatial Optical RNS Photonic AI Computing Architecture
 
-[![IEEE Manuscript](https://img.shields.io/badge/IEEE%20Manuscript-37%20Pages%20Verified-blue.svg)](./JANUS_IEEE_Manuscript.pdf)
+[![Architecture Treatise](https://img.shields.io/badge/Architecture%20Treatise-37%20Pages%20(IEEEtran)-blue.svg)](./JANUS_IEEE_Manuscript.pdf)
 [![Patent Pending](https://img.shields.io/badge/Indian%20Patent-App%20202611052791-gold.svg)](#patent--intellectual-property)
-[![TRL Readiness](https://img.shields.io/badge/TRL-4.0%20(Co--Sim%20Sign--Off)-green.svg)](#technology-readiness-level-trl-matrix)
-[![Verification Matrix](https://img.shields.io/badge/Sign--Off%20Matrix-16%2F16%20Passed%20(100%25)-brightgreen.svg)](#-16-point-multi-physics-sign-off-matrix)
-[![Energy Efficiency](https://img.shields.io/badge/Efficiency-112.8%20TMAC%2Fs%2FW%20(159.7x%20H100)-cyan.svg)](#-ai-workload-benchmarks--gpu-comparison)
+[![TRL Readiness](https://img.shields.io/badge/TRL-4.0%20(Co--Sim%20Validated)-green.svg)](#technology-readiness-level-trl-matrix)
+[![Simulation Matrix](https://img.shields.io/badge/Simulation%20Targets-16%2F16%20Met%20(TRL%204)-brightgreen.svg)](#-16-point-multi-physics-sign-off-matrix)
+[![Modeled Efficiency](https://img.shields.io/badge/Modeled%20Efficiency-112.8%20TMAC%2Fs%2FW-cyan.svg)](#-ai-workload-benchmarks--gpu-comparison)
 [![Static Power](https://img.shields.io/badge/Static%20Hold%20Power-0%20Watts-purple.svg)](#-architectural-pillars)
 
 ---
@@ -275,6 +275,8 @@ Project JANUS scales from an entry **Alpha Single-Stratum Monolithic MVP (6.17 W
 | NVIDIA B200 (Blackwell) | 4NP Silicon Electronic GPU | 1,000 W | 1,125.0 TMAC/s | 1.125 TMAC/s/W | **100.3x JANUS Advantage** |
 | Google TPU v5p | 4nm Electronic TPU | 450 W | 459.0 TMAC/s | 1.020 TMAC/s/W | **110.6x JANUS Advantage** |
 
+> **Note on Methodology:** JANUS metrics represent multi-physics simulated projections for the Model 1A 16-Tile Monolithic Architecture (6.17 W base TDP). GPU / TPU figures reflect manufacturer published datasheet specifications for production silicon (NVIDIA H100 SXM5 / B200 / Google TPU v5p).
+
 ---
 
 ## 💻 Quick Start & Developer Instructions
@@ -365,14 +367,12 @@ The algorithms, spatial residue mapping architectures, circuit topologies, and t
 To cite Project JANUS and Deepanshu Bhardwaj's research in academic publications:
 
 ```bibtex
-@article{bhardwaj2026janus,
-  author  = {Deepanshu Bhardwaj},
-  title   = {JANUS: A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing},
-  journal = {IEEE Transactions on Architecture},
-  year    = {2026},
-  volume  = {37},
-  pages   = {1--37},
-  note    = {Indian Patent Application 202611052791}
+@misc{bhardwaj2026janus,
+  author       = {Deepanshu Bhardwaj},
+  title        = {JANUS: A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing},
+  howpublished = {Preprint / Architectural Treatise (IEEEtran Format)},
+  year         = {2026},
+  note         = {Indian Patent Application 202611052791. 37-page architectural specification}
 }
 ```
 
