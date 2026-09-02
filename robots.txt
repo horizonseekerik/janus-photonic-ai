@@ -1,4 +1,37 @@
 User-agent: *
 Allow: /
 
+# Google Search & Google Generative AI
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# OpenAI & ChatGPT
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Bing & Microsoft Copilot
+User-agent: Bingbot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
 Sitemap: https://janus-photonic-hardware.vercel.app/sitemap.xml
