@@ -1,5 +1,6 @@
 # Project JANUS: Spatial Optical RNS Photonic AI Computing Architecture
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22210334.svg)](https://doi.org/10.5281/zenodo.22210334)
 [![Architecture Treatise](https://img.shields.io/badge/Architecture%20Treatise-37%20Pages%20(IEEEtran)-blue.svg)](./JANUS_IEEE_Manuscript.pdf)
 [![Patent Pending](https://img.shields.io/badge/Indian%20Patent-App%20202611052791-gold.svg)](#patent--intellectual-property)
 [![TRL Readiness](https://img.shields.io/badge/TRL-4.0%20(Co--Sim%20Validated)-green.svg)](#technology-readiness-level-trl-matrix)
@@ -370,8 +371,11 @@ To cite Project JANUS and Deepanshu Bhardwaj's research in academic publications
 @misc{bhardwaj2026janus,
   author       = {Deepanshu Bhardwaj},
   title        = {JANUS: A Spatial Residue Number System Photonic AI Architecture with Non-Volatile Phase-Change Routing},
-  howpublished = {Preprint / Architectural Treatise (IEEEtran Format)},
+  howpublished = {Zenodo Architectural Treatise / Preprint (IEEEtran Format)},
   year         = {2026},
+  month        = {September},
+  doi          = {10.5281/zenodo.22210334},
+  url          = {https://doi.org/10.5281/zenodo.22210334},
   note         = {Indian Patent Application 202611052791. 37-page architectural specification}
 }
 ```
