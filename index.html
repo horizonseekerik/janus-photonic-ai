@@ -713,6 +713,10 @@
       }
 
       /* --- TAB 2 (ARCH & LIGHT) MOBILE REFINEMENTS --- */
+      #tab-arch .card {
+        overflow: hidden !important;
+        max-width: 100% !important;
+      }
       #tab-arch .card-title {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -731,16 +735,22 @@
       #arch-mode-select {
         grid-column: 1 / -1 !important;
         width: 100% !important;
+        max-width: 100% !important;
         height: 38px !important;
-        font-size: 0.82rem !important;
+        font-size: 0.85rem !important;
         margin-bottom: 2px !important;
+        box-sizing: border-box !important;
       }
-      .arch-controls-cluster button {
-        min-height: 40px !important;
+      .arch-controls-cluster button,
+      .arch-controls-cluster .btn-action,
+      .arch-controls-cluster .btn-outline {
+        min-height: 38px !important;
         padding: 4px 6px !important;
         font-size: 0.78rem !important;
         justify-content: center !important;
         text-align: center !important;
+        box-sizing: border-box !important;
+        touch-action: manipulation;
       }
       .arch-status-row {
         flex-direction: column !important;
@@ -805,12 +815,14 @@
 
       /* --- Canvas elements --- */
       #archCanvas {
-        height: 280px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
       }
       #thermalCanvas {
         height: 180px !important;
       }
-      canvas {
+      canvas:not(#archCanvas) {
         height: 200px;
       }
 
@@ -964,7 +976,9 @@
 
       /* --- Canvas smaller --- */
       #archCanvas {
-        height: 220px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
       }
       #thermalCanvas {
         height: 150px !important;
@@ -1259,27 +1273,27 @@
     <!-- TAB 2: ARCHITECTURE & LIGHT PROPAGATION CO-DESIGN -->
     <div id="tab-arch" class="tab-content">
       <!-- Architecture Interactive Controls -->
-      <div class="card">
+      <div class="card" style="overflow: hidden; max-width: 100%;">
         <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
           <span>🔬 3D Heterogeneous Electro-Optic Stack & Light Propagation Engine</span>
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;" class="arch-controls-cluster">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 100%;" class="arch-controls-cluster">
             <label style="font-size: 0.8rem; color: var(--text-muted);" class="arch-mode-label">Co-Operation Mode:</label>
-            <select id="arch-mode-select" class="input-box" style="padding: 3px 8px; height: 30px; font-size: 0.8rem;" onchange="setArchMode(this.value)">
+            <select id="arch-mode-select" class="input-box" style="padding: 3px 8px; height: 32px; font-size: 0.85rem; max-width: 100%; box-sizing: border-box;" onchange="setArchMode(this.value)">
               <option value="gemm" selected>High-Speed 100 GHz Matrix Multiplication (Optical Compute)</option>
               <option value="jir">JIR Dynamic Modulus Permutation (Thermal Swap Rotation)</option>
               <option value="sb2s3">Sb₂S₃ Non-Volatile Phase-Change Programming (ON/OFF State)</option>
             </select>
-            <button class="btn-action" id="arch-play-btn" onclick="toggleArchAnimation()" style="padding: 4px 12px; height: 30px; font-size: 0.8rem;">⏸ Pause</button>
-            <button class="btn-outline" onclick="stepArchAnimation()" style="padding: 4px 10px; height: 30px; font-size: 0.8rem; border-radius: 6px; cursor: pointer;">⏭ Step</button>
-            <button class="btn-outline" onclick="toggleArchSpeed()" id="arch-speed-btn" style="padding: 4px 10px; height: 30px; font-size: 0.8rem; border-radius: 6px; cursor: pointer;">Speed: 1x</button>
-            <button class="btn-outline" onclick="resetArchAnimation()" style="padding: 4px 10px; height: 30px; font-size: 0.8rem; border-radius: 6px; cursor: pointer;">🔄 Reset</button>
+            <button type="button" class="btn-action" id="arch-play-btn" onclick="toggleArchAnimation()" style="padding: 4px 12px; height: 32px; font-size: 0.8rem; touch-action: manipulation;">⏸ Pause</button>
+            <button type="button" class="btn-outline" onclick="stepArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">⏭ Step</button>
+            <button type="button" class="btn-outline" onclick="toggleArchSpeed()" id="arch-speed-btn" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">Speed: 1x</button>
+            <button type="button" class="btn-outline" onclick="resetArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">🔄 Reset</button>
           </div>
         </div>
         
         <!-- Interactive Live 3D Architecture Canvas -->
-        <canvas id="archCanvas" style="height: 440px; width: 100%; margin-top: 4px;"></canvas>
+        <canvas id="archCanvas" style="height: 440px; width: 100%; max-width: 100%; margin-top: 4px; display: block;"></canvas>
 
-        <div class="arch-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border);">
+        <div class="arch-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border); flex-wrap: wrap; gap: 8px;">
           <span id="arch-status-banner"><b style="color: var(--accent-cyan);">● LIVE PHOTON PROPAGATION:</b> <span id="arch-status-text">Light pulse traversing LiTaO<sub>3</sub> modulators into 32 × 32 Benes crossbar...</span></span>
           <span style="color: var(--accent-green); font-family: monospace;">Time-of-Flight: ~10.4 ps | Latency: 0.08 ns</span>
         </div>
@@ -3716,17 +3730,27 @@
     function resizeArchCanvas() {
       const canvas = document.getElementById('archCanvas');
       if (!canvas || !canvas.parentElement) return { w: 800, h: 440, dpr: 1 };
-      const dpr = window.devicePixelRatio || 1;
-      const parentW = (canvas.parentElement.clientWidth > 60) ? canvas.parentElement.clientWidth : 840;
-      const cssWidth = Math.max(280, parentW - 20);
-      const cssHeight = (parentW < 600) ? 380 : 440;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      if (canvas.width !== Math.round(cssWidth * dpr) || canvas.height !== Math.round(cssHeight * dpr)) {
-        canvas.width = Math.round(cssWidth * dpr);
-        canvas.height = Math.round(cssHeight * dpr);
-        canvas.style.width = `${cssWidth}px`;
-        canvas.style.height = `${cssHeight}px`;
+      const parentRect = canvas.parentElement.getBoundingClientRect();
+      const parentStyle = window.getComputedStyle(canvas.parentElement);
+      const padLeft = parseFloat(parentStyle.paddingLeft) || 0;
+      const padRight = parseFloat(parentStyle.paddingRight) || 0;
+      const availableWidth = Math.floor(parentRect.width - padLeft - padRight);
+      const cssWidth = Math.max(280, availableWidth || 800);
+      const cssHeight = 440;
+
+      const targetPixelW = Math.round(cssWidth * dpr);
+      const targetPixelH = Math.round(cssHeight * dpr);
+
+      if (canvas.width !== targetPixelW || canvas.height !== targetPixelH) {
+        canvas.width = targetPixelW;
+        canvas.height = targetPixelH;
       }
+      canvas.style.width = '100%';
+      canvas.style.maxWidth = '100%';
+      canvas.style.height = `${cssHeight}px`;
+
       return { w: cssWidth, h: cssHeight, dpr: dpr };
     }
 
@@ -3944,17 +3968,17 @@
       });
 
       if (archMode === 'gemm') {
-        ctx.fillStyle = 'var(--accent-green)';
-        ctx.font = '10px monospace';
-        ctx.fillText('⚡ 10 ps Optical Compute In-Flight: r_out = (<i>r</i><sub><i>A</i></sub> &times; <i>r</i><sub><i>B</i></sub>) mod <i>m</i><sub><i>i</i></sub>', o_ben_x + 8, 335);
+        ctx.fillStyle = dark ? '#22d3ee' : '#0284c7';
+        ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
+        ctx.fillText('⚡ 10 ps Optical Compute: r_out = (r_A × r_B) mod m_i', Math.min(o_ben_x + 8, w - 240), 335);
       } else if (archMode === 'jir') {
         ctx.fillStyle = '#ef4444';
-        ctx.font = '10px monospace';
-        ctx.fillText('🔄 JIR Modulus Swap Active: Hot center tiles <-> Cold perimeter tiles', o_sb_x - 40 * scaleX, 335);
+        ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
+        ctx.fillText('🔄 JIR Modulus Swap Active: Hot center tiles <-> Cold perimeter tiles', Math.max(25, Math.min(o_sb_x - 120, w - 280)), 335);
       } else if (archMode === 'sb2s3') {
-        ctx.fillStyle = '#fbbf24';
-        ctx.font = '10px monospace';
-        ctx.fillText('💾 Non-Volatile State: Crystalline (ON, n=3.3) vs Amorphous (OFF, n=2.7)', o_sb_x, 335);
+        ctx.fillStyle = dark ? '#fbbf24' : '#d97706';
+        ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
+        ctx.fillText('💾 Sb₂S₃ Non-Volatile: Crystalline (ON, n=3.3) vs Amorphous (OFF, n=2.7)', Math.max(25, Math.min(o_sb_x - 120, w - 280)), 335);
       }
 
       ctx.restore();
@@ -5083,6 +5107,7 @@
       window.addEventListener('resize', () => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
+        if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
       });
 
       // Rich density (80 to 140 particles) for filled optical backdrop
