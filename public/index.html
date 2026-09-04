@@ -1504,7 +1504,7 @@
             <div class="arch-webgl-wrapper" id="archWebglWrapper">
               <div class="arch-video-overlay-badge" id="arch-webgl-badge">
                 <span class="video-indicator-dot"></span>
-                <span id="webgl-state-text">0% • Assembled Monolithic Package</span>
+                <span id="webgl-state-text">85% • Exploded Strata Inspection</span>
               </div>
               <div class="webgl-hint-overlay">
                 <span>🖱️ Drag to Orbit 360°</span>
@@ -1520,23 +1520,23 @@
             <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
               <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 <button type="button" class="btn-action" id="webgl-explode-btn" onclick="toggleWebGLExplode()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
-                  💥 Explode Strata
+                  📦 Assemble Package
                 </button>
                 <button type="button" class="btn-outline" id="webgl-autorotate-btn" onclick="toggleWebGLAutoRotate()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
-                  🔄 Auto-Rotate: ON
+                  🔄 Auto-Rotate: OFF
                 </button>
                 <button type="button" class="btn-outline" onclick="resetWebGLCamera()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
                   🔍 Reset View
                 </button>
                 <div style="margin-left: auto; font-size: 0.84rem; font-family: monospace; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;" id="webgl-explode-readout">
-                  Separation: 0%
+                  Separation: 85%
                 </div>
               </div>
 
               <!-- Strata Explosion Separation Range Slider -->
               <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
                 <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Assembled (0%)</span>
-                <input type="range" id="arch-webgl-slider" min="0" max="100" step="1" value="0" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onWebGLExplosionInput(this.value)">
+                <input type="range" id="arch-webgl-slider" min="0" max="100" step="1" value="85" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onWebGLExplosionInput(this.value)">
                 <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Exploded (100%)</span>
               </div>
             </div>
@@ -1549,7 +1549,7 @@
                 <span class="video-indicator-dot"></span>
                 <span id="video-state-text">0.0s • Assembled Monolithic Package</span>
               </div>
-              <video id="janusDemoVideo" playsinline loop muted preload="auto" poster="janus_mini16_poster.jpg" ontimeupdate="onDemoVideoTimeUpdate()" onended="onDemoVideoEnded()">
+              <video id="janusDemoVideo" autoplay loop muted playsinline preload="auto" poster="janus_mini16_poster.jpg" ontimeupdate="onDemoVideoTimeUpdate()" onended="onDemoVideoEnded()">
                 <source src="JANUS_Mini16_Demonstration.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
@@ -1559,7 +1559,7 @@
             <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
               <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                 <button type="button" class="btn-action" id="arch-video-play-btn" onclick="toggleDemoVideoPlay()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
-                  ▶ Play
+                  ⏸ Pause
                 </button>
                 <button type="button" class="btn-outline" onclick="jumpDemoVideo(5.2)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
                   💥 Exploded Strata (5.2s)
@@ -4172,28 +4172,80 @@
       } else {
         if (containerWebgl) containerWebgl.style.display = 'none';
         if (containerVideo) containerVideo.style.display = 'block';
+        const vid = document.getElementById('janusDemoVideo');
+        if (vid) {
+          vid.play().then(() => {
+            updateVideoPlayBtn(true);
+          }).catch(err => {
+            console.warn('Video switch autoplay:', err);
+          });
+        }
       }
     }
 
     // --- THREE.JS INTERACTIVE 3D EXPLODED STRATA MODEL ---
     let webglScene, webglCamera, webglRenderer, webglControls;
     let webglStrataGroups = {}; // { hs2, hs1, siph, sio2, cmos }
+    let hs1PillarMesh = null;
     let webglHighlightMesh = null;
-    let targetExplosion = 0.0;
-    let currentExplosion = 0.0;
-    let isWebglAutoRotate = true;
+    let targetExplosion = 0.85;
+    let currentExplosion = 0.85;
+    let isWebglAutoRotate = false;
     let webglInitialized = false;
     let webglAnimFrameId = null;
     let cameraTargetLerp = null;
     let cameraTargetCurrent = null;
 
     const STRATA_LAYOUT = {
-      hs2:  { baseY: 1.25, explodeDir: 1.0,  maxOffset: 4.8, focusY: 5.5,  color: 0x38bdf8, name: 'HS2 Slim-Lid' },
-      hs1:  { baseY: 0.65, explodeDir: 0.5,  maxOffset: 2.4, focusY: 2.8,  color: 0xf59e0b, name: 'HS1 Cu Matrix' },
-      siph: { baseY: 0.00, explodeDir: 0.0,  maxOffset: 0.0, focusY: 0.0,  color: 0x00f2fe, name: 'SiPh Stratum' },
-      sio2: { baseY: -0.65, explodeDir: -0.5, maxOffset: -2.4, focusY: -2.8, color: 0xa855f7, name: 'SiO₂ Buffer' },
-      cmos: { baseY: -1.25, explodeDir: -1.0, maxOffset: -4.8, focusY: -5.5, color: 0x10b981, name: 'CMOS Base Die' }
+      hs2:  { baseY: 0.22, explodeDir: 1.0,  maxOffset: 5.6, focusY: 5.8,  color: 0x38bdf8, name: 'HS2 Slim-Lid', label: 'HS2: 250 um Convective Microchannel Slim-Lid' },
+      hs1:  { baseY: 0.11, explodeDir: 0.5,  maxOffset: 2.8, focusY: 2.9,  color: 0xf59e0b, name: 'HS1 Cu Matrix', label: 'HS1: 30 um Cu-Pillar Dense Thermal Micro-Matrix' },
+      siph: { baseY: 0.00, explodeDir: 0.0,  maxOffset: 0.0, focusY: 0.0,  color: 0x00f2fe, name: 'SiPh Stratum', label: 'SiPh Stratum: 30 um (16 Photonic Tiles & SAC2M APDs)' },
+      sio2: { baseY: -0.20, explodeDir: -0.5, maxOffset: -2.7, focusY: -2.7, color: 0xa855f7, name: 'SiO₂ Buffer', label: 'SiO2 Buffer: 250 um (Vertical Cu TDV Interconnects)' },
+      cmos: { baseY: -0.45, explodeDir: -1.0, maxOffset: -5.5, focusY: -5.6, color: 0x10b981, name: 'CMOS Base Die', label: 'CMOS Base Die: 50 um (65nm Logic & SIMD Datapaths)' }
     };
+
+    // Helper: Create floating 3D text sprite with outer glow matching video rendering
+    function createStrataTextSprite(text, glowColor = '#00f2fe') {
+      const canvas = document.createElement('canvas');
+      canvas.width = 1024;
+      canvas.height = 128;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return null;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Clean, bold typography matching the video CAD labels
+      ctx.font = 'bold 32px "Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      // 1. Soft glowing outer bloom
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+      // 2. Intense crisp white inner core
+      ctx.shadowBlur = 4;
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
+
+      const spriteMat = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        opacity: 0.95,
+        depthTest: false,
+        depthWrite: false
+      });
+
+      const sprite = new THREE.Sprite(spriteMat);
+      sprite.scale.set(9.2, 1.15, 1.0);
+      return sprite;
+    }
 
     function initWebGLStrata() {
       if (webglInitialized) return;
@@ -4204,54 +4256,54 @@
       const width = wrapper.clientWidth || 800;
       const height = wrapper.clientHeight || 520;
 
-      // 1. Scene & Background
+      // 1. Scene & Background (Dark space background matching video)
       webglScene = new THREE.Scene();
       const dark = isDarkTheme();
       webglScene.background = new THREE.Color(dark ? 0x030712 : 0xf8fafc);
 
-      // 2. Camera
-      webglCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-      webglCamera.position.set(16, 12, 18);
+      // 2. Camera (Low frontal-isometric view matching CAD video demonstration)
+      webglCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
+      webglCamera.position.set(0, 4.2, 27.0);
 
-      cameraTargetCurrent = new THREE.Vector3(0, 0, 0);
-      cameraTargetLerp = new THREE.Vector3(0, 0, 0);
+      cameraTargetCurrent = new THREE.Vector3(0, -0.2, 0);
+      cameraTargetLerp = new THREE.Vector3(0, -0.2, 0);
 
-      // 3. Renderer
+      // 3. Renderer with high performance & ACES tone mapping
       webglRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
       webglRenderer.setSize(width, height);
       webglRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       webglRenderer.shadowMap.enabled = true;
       webglRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
       webglRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-      webglRenderer.toneMappingExposure = 1.1;
+      webglRenderer.toneMappingExposure = 1.15;
 
-      // 4. Controls
+      // 4. Orbit Controls
       if (typeof THREE.OrbitControls !== 'undefined') {
         webglControls = new THREE.OrbitControls(webglCamera, canvas);
         webglControls.enableDamping = true;
         webglControls.dampingFactor = 0.05;
-        webglControls.maxDistance = 50;
+        webglControls.maxDistance = 60;
         webglControls.minDistance = 6;
         webglControls.maxPolarAngle = Math.PI * 0.85;
-        webglControls.target.set(0, 0, 0);
+        webglControls.target.set(0, -0.2, 0);
       }
 
-      // 5. Lighting
-      const ambientLight = new THREE.AmbientLight(dark ? 0x1e293b : 0xe2e8f0, dark ? 1.8 : 2.2);
+      // 5. Lighting (Studio key light + rim cyan + SiPh point emitter)
+      const ambientLight = new THREE.AmbientLight(dark ? 0x0a101d : 0xe2e8f0, dark ? 2.2 : 2.0);
       webglScene.add(ambientLight);
 
-      const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.0);
-      dirLight1.position.set(20, 30, 20);
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.4);
+      dirLight1.position.set(15, 30, 18);
       dirLight1.castShadow = true;
       dirLight1.shadow.mapSize.width = 1024;
       dirLight1.shadow.mapSize.height = 1024;
       webglScene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0x00f2fe, 1.2);
-      dirLight2.position.set(-20, -10, -15);
+      const dirLight2 = new THREE.DirectionalLight(0x00f2fe, 1.4);
+      dirLight2.position.set(-18, -8, -12);
       webglScene.add(dirLight2);
 
-      const siphGlow = new THREE.PointLight(0x00f2fe, 2.5, 20);
+      const siphGlow = new THREE.PointLight(0x00f2fe, 3.8, 25);
       siphGlow.position.set(0, 0, 0);
       webglScene.add(siphGlow);
 
@@ -4259,10 +4311,10 @@
       buildStrataMeshes();
 
       // 7. Highlight bounding box helper
-      const boxGeo = new THREE.BoxGeometry(10.6, 0.7, 10.6);
+      const boxGeo = new THREE.BoxGeometry(10.8, 0.7, 10.8);
       const edges = new THREE.EdgesGeometry(boxGeo);
       webglHighlightMesh = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x00f2fe, linewidth: 2, transparent: true, opacity: 0.85 }));
-      webglHighlightMesh.visible = true;
+      webglHighlightMesh.visible = false;
       webglScene.add(webglHighlightMesh);
 
       // 8. Event listeners
@@ -4280,27 +4332,60 @@
       // ----------------------------------------------------
       const hs2Group = new THREE.Group();
       const hs2Mat = new THREE.MeshStandardMaterial({
-        color: 0x94a3b8,
+        color: 0x334155,
         metalness: 0.85,
-        roughness: 0.25
+        roughness: 0.28
       });
-      const hs2Slab = new THREE.Mesh(new THREE.BoxGeometry(10, 0.4, 10), hs2Mat);
+      const hs2Slab = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.22, 10.2), hs2Mat);
       hs2Slab.castShadow = true;
       hs2Slab.receiveShadow = true;
       hs2Group.add(hs2Slab);
 
-      const finMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.9, roughness: 0.2 });
+      // Copper perimeter rim
+      const hs2Rim = new THREE.Mesh(
+        new THREE.BoxGeometry(10.5, 0.08, 10.5),
+        new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.92, roughness: 0.22 })
+      );
+      hs2Rim.position.y = -0.07;
+      hs2Group.add(hs2Rim);
+
+      // Microchannel cooling fins on top surface
+      const finMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.88, roughness: 0.2 });
       const channelMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
       for (let i = 0; i < 9; i++) {
         const z = -3.8 + i * 0.95;
-        const fin = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.3), finMat);
-        fin.position.set(0, 0.24, z);
+        const fin = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.12, 0.25), finMat);
+        fin.position.set(0, 0.17, z);
         hs2Group.add(fin);
 
-        const channelLine = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.02, 0.15), channelMat);
-        channelLine.position.set(0, 0.21, z + 0.45);
+        const channelLine = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.03, 0.14), channelMat);
+        channelLine.position.set(0, 0.13, z + 0.45);
         hs2Group.add(channelLine);
       }
+
+      // Golden dual-port microfluidic manifold on top-right corner (matches video CAD model)
+      const manifoldMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.18 });
+      const manifoldBlock = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.65, 0.85), manifoldMat);
+      manifoldBlock.position.set(3.9, 0.42, -3.9);
+      hs2Group.add(manifoldBlock);
+
+      const portMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.95, roughness: 0.12 });
+      const port1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.55, 16), portMat);
+      port1.position.set(3.6, 0.78, -3.9);
+      hs2Group.add(port1);
+
+      const port2 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.55, 16), portMat);
+      port2.position.set(4.2, 0.78, -3.9);
+      hs2Group.add(port2);
+
+      // Floating 3D text label billboard
+      const hs2Sprite = createStrataTextSprite(STRATA_LAYOUT.hs2.label, '#38bdf8');
+      if (hs2Sprite) {
+        hs2Sprite.position.set(0, 0.0, 5.6);
+        hs2Group.add(hs2Sprite);
+        hs2Group.userData.textSprite = hs2Sprite;
+      }
+
       hs2Group.position.y = STRATA_LAYOUT.hs2.baseY;
       webglScene.add(hs2Group);
       webglStrataGroups.hs2 = hs2Group;
@@ -4309,25 +4394,25 @@
       // Stratum 2: HS1 Cu-Pillar Dense Thermal Micro-Matrix
       // ----------------------------------------------------
       const hs1Group = new THREE.Group();
-      const hs1Plate = new THREE.Mesh(
-        new THREE.BoxGeometry(9.8, 0.08, 9.8),
-        new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.9, roughness: 0.3 })
+      const hs1Carrier = new THREE.Mesh(
+        new THREE.BoxGeometry(9.8, 0.05, 9.8),
+        new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.92, roughness: 0.25 })
       );
-      hs1Plate.position.y = 0.22;
-      hs1Group.add(hs1Plate);
+      hs1Carrier.position.y = 1.35;
+      hs1Group.add(hs1Carrier);
 
-      // 12 × 12 Copper Micro-Pillars (144 instances via InstancedMesh)
-      const pillarCount = 144;
-      const pillarGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.44, 10);
-      const pillarMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+      // 14 × 14 Dense Copper Micro-Pillars (196 instances via InstancedMesh spanning vertically)
+      const pillarCount = 196;
+      const pillarGeo = new THREE.CylinderGeometry(0.035, 0.035, 2.7, 8);
+      const pillarMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.18 });
       const pillarMesh = new THREE.InstancedMesh(pillarGeo, pillarMat, pillarCount);
       pillarMesh.castShadow = true;
       const dummy = new THREE.Object3D();
       let idx = 0;
-      for (let r = 0; r < 12; r++) {
-        for (let c = 0; c < 12; c++) {
-          const px = -4.125 + c * 0.75;
-          const pz = -4.125 + r * 0.75;
+      for (let r = 0; r < 14; r++) {
+        for (let c = 0; c < 14; c++) {
+          const px = -4.2 + c * (8.4 / 13);
+          const pz = -4.2 + r * (8.4 / 13);
           dummy.position.set(px, 0, pz);
           dummy.updateMatrix();
           pillarMesh.setMatrixAt(idx++, dummy.matrix);
@@ -4335,6 +4420,16 @@
       }
       pillarMesh.instanceMatrix.needsUpdate = true;
       hs1Group.add(pillarMesh);
+      hs1PillarMesh = pillarMesh;
+
+      // Floating 3D text label billboard
+      const hs1Sprite = createStrataTextSprite(STRATA_LAYOUT.hs1.label, '#f59e0b');
+      if (hs1Sprite) {
+        hs1Sprite.position.set(0, 0.2, 5.6);
+        hs1Group.add(hs1Sprite);
+        hs1Group.userData.textSprite = hs1Sprite;
+      }
+
       hs1Group.position.y = STRATA_LAYOUT.hs1.baseY;
       webglScene.add(hs1Group);
       webglStrataGroups.hs1 = hs1Group;
@@ -4344,33 +4439,81 @@
       // ----------------------------------------------------
       const siphGroup = new THREE.Group();
       const siphSlab = new THREE.Mesh(
-        new THREE.BoxGeometry(10, 0.35, 10),
-        new THREE.MeshStandardMaterial({ color: 0x090d16, metalness: 0.75, roughness: 0.25 })
+        new THREE.BoxGeometry(10.2, 0.18, 10.2),
+        new THREE.MeshStandardMaterial({ color: 0x070b14, metalness: 0.85, roughness: 0.18 })
       );
       siphSlab.castShadow = true;
       siphSlab.receiveShadow = true;
       siphGroup.add(siphSlab);
 
-      // 16 Coprime Residue Tiles (4 × 4 grid)
-      const tileBorderMat = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.55 });
-      const wgMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      // Left-edge fiber coupler ribbon protrusion block (matches video CAD model)
+      const couplerBlock = new THREE.Mesh(
+        new THREE.BoxGeometry(0.9, 0.14, 3.0),
+        new THREE.MeshStandardMaterial({ color: 0x92400e, metalness: 0.9, roughness: 0.25 })
+      );
+      couplerBlock.position.set(-5.55, 0.0, 0);
+      siphGroup.add(couplerBlock);
+
+      // Optical fiber ribbon connector dots
+      const fiberMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      for (let f = 0; f < 8; f++) {
+        const fiberDot = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.16), fiberMat);
+        fiberDot.position.set(-5.95, 0.0, -1.2 + f * 0.34);
+        siphGroup.add(fiberDot);
+      }
+
+      // 16 Coprime Residue Tiles (4 × 4 grid) with glowing cyan waveguides & rings
+      const tileBorderMat = new THREE.LineBasicMaterial({ color: 0x0ea5e9, transparent: true, opacity: 0.75 });
+      const wgMatH = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      const wgMatV = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+      const ringGeo = new THREE.RingGeometry(0.12, 0.20, 16);
+      const ringMat = new THREE.MeshBasicMaterial({ color: 0x22d3ee, side: THREE.DoubleSide });
+
       for (let tr = 0; tr < 4; tr++) {
         for (let tc = 0; tc < 4; tc++) {
           const tx = -3.75 + tc * 2.5;
           const tz = -3.75 + tr * 2.5;
 
-          const tileEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, 0.02, 2.3));
+          const tileEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(2.2, 0.02, 2.2));
           const tileFrame = new THREE.LineSegments(tileEdges, tileBorderMat);
-          tileFrame.position.set(tx, 0.18, tz);
+          tileFrame.position.set(tx, 0.10, tz);
           siphGroup.add(tileFrame);
 
+          // Horizontal wave-pipelined waveguides
           for (let w = 0; w < 4; w++) {
-            const wgH = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.03, 0.06), wgMat);
-            wgH.position.set(tx, 0.19, tz - 0.75 + w * 0.5);
+            const wgH = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.025, 0.045), wgMatH);
+            wgH.position.set(tx, 0.11, tz - 0.75 + w * 0.5);
             siphGroup.add(wgH);
           }
+
+          // Vertical cross waveguides
+          for (let v = 0; v < 2; v++) {
+            const wgV = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.025, 1.8), wgMatV);
+            wgV.position.set(tx - 0.45 + v * 0.9, 0.11, tz);
+            siphGroup.add(wgV);
+          }
+
+          // Photonic microring resonator / switch
+          const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+          ringMesh.rotation.x = -Math.PI / 2;
+          ringMesh.position.set(tx, 0.115, tz);
+          siphGroup.add(ringMesh);
         }
       }
+
+      // Dynamic central photonic glow emitter
+      const siphCoreLight = new THREE.PointLight(0x00f2fe, 3.8, 25);
+      siphCoreLight.position.set(0, 0.25, 0);
+      siphGroup.add(siphCoreLight);
+
+      // Floating 3D text label billboard
+      const siphSprite = createStrataTextSprite(STRATA_LAYOUT.siph.label, '#00f2fe');
+      if (siphSprite) {
+        siphSprite.position.set(0, 0.0, 5.6);
+        siphGroup.add(siphSprite);
+        siphGroup.userData.textSprite = siphSprite;
+      }
+
       siphGroup.position.y = STRATA_LAYOUT.siph.baseY;
       webglScene.add(siphGroup);
       webglStrataGroups.siph = siphGroup;
@@ -4380,60 +4523,129 @@
       // ----------------------------------------------------
       const sio2Group = new THREE.Group();
       const sio2Mat = new THREE.MeshStandardMaterial({
-        color: 0xc7d2fe,
+        color: 0x93c5fd,
         transparent: true,
-        opacity: 0.42,
-        roughness: 0.1,
-        metalness: 0.1
+        opacity: 0.36,
+        roughness: 0.08,
+        metalness: 0.12
       });
-      const sio2Slab = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.5, 9.8), sio2Mat);
+      const sio2Slab = new THREE.Mesh(new THREE.BoxGeometry(10.0, 0.38, 10.0), sio2Mat);
       sio2Group.add(sio2Slab);
 
-      const tdvGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.52, 10);
-      const tdvMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 });
-      for (let vr = 0; vr < 4; vr++) {
-        for (let vc = 0; vc < 4; vc++) {
-          const vx = -3.6 + vc * 2.4;
-          const vz = -3.6 + vr * 2.4;
+      // Copper perimeter edge rim
+      const sio2Rim = new THREE.Mesh(
+        new THREE.BoxGeometry(10.3, 0.06, 10.3),
+        new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.9, roughness: 0.25 })
+      );
+      sio2Group.add(sio2Rim);
+
+      // 6 × 6 Through-Dielectric Copper Vias (36 TDVs)
+      const tdvGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.42, 10);
+      const tdvMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+      for (let vr = 0; vr < 6; vr++) {
+        for (let vc = 0; vc < 6; vc++) {
+          const vx = -3.8 + vc * (7.6 / 5);
+          const vz = -3.8 + vr * (7.6 / 5);
           const tdv = new THREE.Mesh(tdvGeo, tdvMat);
           tdv.position.set(vx, 0, vz);
           sio2Group.add(tdv);
         }
       }
+
+      // Floating 3D text label billboard
+      const sio2Sprite = createStrataTextSprite(STRATA_LAYOUT.sio2.label, '#a855f7');
+      if (sio2Sprite) {
+        sio2Sprite.position.set(0, -0.05, 5.6);
+        sio2Group.add(sio2Sprite);
+        sio2Group.userData.textSprite = sio2Sprite;
+      }
+
       sio2Group.position.y = STRATA_LAYOUT.sio2.baseY;
       webglScene.add(sio2Group);
       webglStrataGroups.sio2 = sio2Group;
 
       // ----------------------------------------------------
-      // Stratum 5: CMOS Base Die (7nm FinFET Logic Layer)
+      // Stratum 5: CMOS Base Die (65nm Logic & SIMD Datapaths)
       // ----------------------------------------------------
       const cmosGroup = new THREE.Group();
-      const cmosMat = new THREE.MeshStandardMaterial({ color: 0x022c22, metalness: 0.7, roughness: 0.35 });
-      const cmosSlab = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.5, 10.2), cmosMat);
+      const cmosMat = new THREE.MeshStandardMaterial({ color: 0x05101a, metalness: 0.72, roughness: 0.35 });
+      const cmosSlab = new THREE.Mesh(new THREE.BoxGeometry(11.8, 0.42, 11.8), cmosMat);
       cmosSlab.castShadow = true;
       cmosSlab.receiveShadow = true;
       cmosGroup.add(cmosSlab);
 
-      const circuitMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.65 });
-      const circuitEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(9.8, 0.02, 9.8));
+      // Recessed central logic die cavity
+      const cavityMat = new THREE.MeshStandardMaterial({ color: 0x061e17, metalness: 0.65, roughness: 0.3 });
+      const cavity = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.06, 9.6), cavityMat);
+      cavity.position.y = 0.22;
+      cmosGroup.add(cavity);
+
+      // Central Chinese Remainder Theorem (CRT) reconstruction engine block
+      const crtMat = new THREE.MeshStandardMaterial({ color: 0xca8a04, metalness: 0.85, roughness: 0.2 });
+      const crtBlock = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.06, 2.4), crtMat);
+      crtBlock.position.set(0, 0.25, 0);
+      cmosGroup.add(crtBlock);
+
+      // 4 SIMD ALU datapath clusters around the CRT block
+      const simdMat = new THREE.MeshStandardMaterial({ color: 0x064e3b, metalness: 0.7, roughness: 0.28 });
+      const simdPositions = [
+        [-2.5, 0.25, -2.5],
+        [ 2.5, 0.25, -2.5],
+        [-2.5, 0.25,  2.5],
+        [ 2.5, 0.25,  2.5]
+      ];
+      simdPositions.forEach(pos => {
+        const simdBlock = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.04, 1.8), simdMat);
+        simdBlock.position.set(pos[0], pos[1], pos[2]);
+        cmosGroup.add(simdBlock);
+      });
+
+      // Circuit boundary grid lines
+      const circuitMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.75 });
+      const circuitEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(9.4, 0.02, 9.4));
       const circuitGrid = new THREE.LineSegments(circuitEdges, circuitMat);
       circuitGrid.position.y = 0.26;
       cmosGroup.add(circuitGrid);
 
-      // Gold BGA interconnect ball array on bottom
+      // Perimeter gold wire-bond I/O pads (48 pads around package rim)
+      const padGeo = new THREE.BoxGeometry(0.35, 0.06, 0.35);
+      const padMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.95, roughness: 0.15 });
+      const padMesh = new THREE.InstancedMesh(padGeo, padMat, 48);
+      let pIdx = 0;
+      for (let i = 0; i < 12; i++) {
+        const offset = -5.1 + i * 0.92;
+        // North & South edges
+        dummy.position.set(offset, 0.23, -5.2); dummy.updateMatrix(); padMesh.setMatrixAt(pIdx++, dummy.matrix);
+        dummy.position.set(offset, 0.23,  5.2); dummy.updateMatrix(); padMesh.setMatrixAt(pIdx++, dummy.matrix);
+        // West & East edges
+        dummy.position.set(-5.2, 0.23, offset); dummy.updateMatrix(); padMesh.setMatrixAt(pIdx++, dummy.matrix);
+        dummy.position.set( 5.2, 0.23, offset); dummy.updateMatrix(); padMesh.setMatrixAt(pIdx++, dummy.matrix);
+      }
+      padMesh.instanceMatrix.needsUpdate = true;
+      cmosGroup.add(padMesh);
+
+      // Gold BGA solder balls array on bottom (64 balls)
       const ballGeo = new THREE.SphereGeometry(0.12, 8, 8);
-      const ballMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.95, roughness: 0.2 });
+      const ballMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9, roughness: 0.2 });
       const ballMesh = new THREE.InstancedMesh(ballGeo, ballMat, 64);
       let bIdx = 0;
       for (let br = 0; br < 8; br++) {
         for (let bc = 0; bc < 8; bc++) {
-          dummy.position.set(-4.2 + bc * 1.2, -0.28, -4.2 + br * 1.2);
+          dummy.position.set(-4.2 + bc * 1.2, -0.26, -4.2 + br * 1.2);
           dummy.updateMatrix();
           ballMesh.setMatrixAt(bIdx++, dummy.matrix);
         }
       }
       ballMesh.instanceMatrix.needsUpdate = true;
       cmosGroup.add(ballMesh);
+
+      // Floating 3D text label billboard
+      const cmosSprite = createStrataTextSprite(STRATA_LAYOUT.cmos.label, '#10b981');
+      if (cmosSprite) {
+        cmosSprite.position.set(0, 0.18, 6.4);
+        cmosGroup.add(cmosSprite);
+        cmosGroup.userData.textSprite = cmosSprite;
+      }
 
       cmosGroup.position.y = STRATA_LAYOUT.cmos.baseY;
       webglScene.add(cmosGroup);
@@ -4454,6 +4666,20 @@
         }
       }
 
+      // Vertical stretching of Cu-pillars as separation expands
+      if (hs1PillarMesh) {
+        hs1PillarMesh.scale.set(1.0, Math.max(0.04, currentExplosion), 1.0);
+      }
+
+      // Smoothly adjust text sprite opacity and visibility based on separation distance
+      const labelAlpha = Math.min(1.0, Math.max(0.0, (currentExplosion - 0.15) / 0.25));
+      for (const [key, grp] of Object.entries(webglStrataGroups)) {
+        if (grp && grp.userData && grp.userData.textSprite) {
+          grp.userData.textSprite.material.opacity = labelAlpha * 0.95;
+          grp.userData.textSprite.visible = labelAlpha > 0.01;
+        }
+      }
+
       // Update highlight mesh position
       if (webglHighlightMesh && currentArchLayer && STRATA_LAYOUT[currentArchLayer]) {
         const layout = STRATA_LAYOUT[currentArchLayer];
@@ -4468,10 +4694,10 @@
         if (webglControls) webglControls.target.copy(cameraTargetCurrent);
       }
 
-      // Auto-rotation (smooth 60fps orbit)
+      // Auto-rotation (smooth subtle orbit if enabled)
       if (webglControls) {
         webglControls.autoRotate = isWebglAutoRotate;
-        webglControls.autoRotateSpeed = 0.8;
+        webglControls.autoRotateSpeed = 0.4;
         webglControls.update();
       }
 
@@ -4506,7 +4732,7 @@
 
     function toggleWebGLExplode() {
       if (targetExplosion < 0.5) {
-        setWebGLExplosion(1.0);
+        setWebGLExplosion(0.85);
       } else {
         setWebGLExplosion(0.0);
       }
@@ -4519,7 +4745,7 @@
       const badgeText = document.getElementById('webgl-state-text');
       if (badgeText) {
         if (pct === 0) badgeText.innerText = '0% • Assembled Monolithic Package';
-        else if (pct === 100) badgeText.innerText = '100% • Fully Exploded Strata Inspection';
+        else if (pct >= 85) badgeText.innerText = `${pct}% • Exploded Strata Inspection`;
         else badgeText.innerText = `${pct}% • Partially Separated Strata`;
       }
       const btn = document.getElementById('webgl-explode-btn');
@@ -4538,10 +4764,10 @@
 
     function resetWebGLCamera() {
       if (!webglCamera || !webglControls) return;
-      webglCamera.position.set(16, 12, 18);
-      if (cameraTargetLerp) cameraTargetLerp.set(0, 0, 0);
-      if (cameraTargetCurrent) cameraTargetCurrent.set(0, 0, 0);
-      webglControls.target.set(0, 0, 0);
+      webglCamera.position.set(0, 4.2, 27.0);
+      if (cameraTargetLerp) cameraTargetLerp.set(0, -0.2, 0);
+      if (cameraTargetCurrent) cameraTargetCurrent.set(0, -0.2, 0);
+      webglControls.target.set(0, -0.2, 0);
       webglControls.update();
     }
 
@@ -4549,10 +4775,10 @@
       if (!STRATA_LAYOUT[layerKey]) return;
       const layout = STRATA_LAYOUT[layerKey];
       if (autoSeparate && targetExplosion < 0.35) {
-        setWebGLExplosion(0.70);
+        setWebGLExplosion(0.85);
       }
       if (cameraTargetLerp) {
-        cameraTargetLerp.set(0, layout.focusY * (targetExplosion > 0.1 ? targetExplosion : 0.2), 0);
+        cameraTargetLerp.set(0, (layout.focusY * (targetExplosion > 0.1 ? targetExplosion : 0.2)) - 0.2, 0);
       }
     }
 
