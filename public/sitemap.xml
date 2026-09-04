@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
   <url>
     <loc>https://janus-photonic-hardware.vercel.app/</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <video:video>
+      <video:thumbnail_loc>https://janus-photonic-hardware.vercel.app/janus_mini16_poster.jpg</video:thumbnail_loc>
+      <video:title>Project JANUS: 3D Heterogeneous Photonic Accelerator Stack</video:title>
+      <video:description>Exploded 3D physical architecture demonstration of Project JANUS Mini-16 Monolithic Photonic Accelerator showing the 250um microchannel lid, copper thermal matrix, silicon photonic stratum, and 65nm CMOS logic die.</video:description>
+      <video:content_loc>https://janus-photonic-hardware.vercel.app/JANUS_Mini16_Demonstration.mp4</video:content_loc>
+      <video:player_loc>https://janus-photonic-hardware.vercel.app/#page-simulation</video:player_loc>
+      <video:duration>10</video:duration>
+      <video:publication_date>2026-09-04T00:00:00+00:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+    </video:video>
   </url>
   <url>
     <loc>https://janus-photonic-hardware.vercel.app/JANUS_IEEE_Manuscript.pdf</loc>

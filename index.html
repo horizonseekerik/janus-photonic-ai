@@ -25,6 +25,24 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
   <meta name="google-site-verification" content="0cvrWvMl9qnHAJ4kDpLUMmj6bmZQsPd1c1wrOu9bo1k" />
+
+  <!-- VideoObject Schema.org JSON-LD for Google Video Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Project JANUS: 3D Heterogeneous Photonic Accelerator Stack",
+    "description": "Exploded 3D physical architecture demonstration of Project JANUS Mini-16 Monolithic Photonic Accelerator showing the 250um microchannel lid, copper thermal matrix, silicon photonic stratum, and 65nm CMOS logic die.",
+    "thumbnailUrl": [
+      "https://janus-photonic-hardware.vercel.app/janus_mini16_poster.jpg",
+      "https://janus-photonic-hardware.vercel.app/og-image.png"
+    ],
+    "uploadDate": "2026-09-04T00:00:00Z",
+    "duration": "PT10S",
+    "contentUrl": "https://janus-photonic-hardware.vercel.app/JANUS_Mini16_Demonstration.mp4",
+    "embedUrl": "https://janus-photonic-hardware.vercel.app/#page-simulation"
+  }
+  </script>
   <!-- Typography: Italian / Classical Roman Serif for Brand & Inter for UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -522,6 +540,103 @@
       font-weight: 800 !important;
       box-shadow: 0 4px 14px rgba(0, 242, 254, 0.45) !important;
       transform: translateY(-1px);
+    }
+
+    /* 3D Physical Architecture Subview & Video Player Styles */
+    #arch-view-btns .sim-tab-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #arch-view-btns .sim-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)) !important;
+      color: #ffffff !important;
+      border-color: var(--accent-cyan) !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 14px rgba(0, 242, 254, 0.45) !important;
+      transform: translateY(-1px);
+    }
+
+    .arch-video-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000000;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .arch-video-wrapper video {
+      width: 100%;
+      display: block;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #000000;
+      max-height: 520px;
+    }
+    .arch-video-overlay-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(10, 15, 30, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 242, 254, 0.4);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-family: monospace;
+      pointer-events: none;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .video-indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .layer-pill-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: var(--card-sub-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-color);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: manipulation;
+      text-align: left;
+      min-height: 48px;
+    }
+    .layer-pill-btn:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.05);
+      transform: translateY(-1px);
+    }
+    .layer-pill-btn.active {
+      background: rgba(0, 242, 254, 0.12) !important;
+      border-color: var(--accent-cyan) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.25) !important;
+    }
+    .pill-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 8px currentColor;
     }
 
     /* =========================================================
@@ -1272,30 +1387,173 @@
 
     <!-- TAB 2: ARCHITECTURE & LIGHT PROPAGATION CO-DESIGN -->
     <div id="tab-arch" class="tab-content">
-      <!-- Architecture Interactive Controls -->
-      <div class="card" style="overflow: hidden; max-width: 100%;">
-        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-          <span>🔬 3D Heterogeneous Electro-Optic Stack & Light Propagation Engine</span>
-          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 100%;" class="arch-controls-cluster">
-            <label style="font-size: 0.8rem; color: var(--text-muted);" class="arch-mode-label">Co-Operation Mode:</label>
-            <select id="arch-mode-select" class="input-box" style="padding: 3px 8px; height: 32px; font-size: 0.85rem; max-width: 100%; box-sizing: border-box;" onchange="setArchMode(this.value)">
-              <option value="gemm" selected>High-Speed 100 GHz Matrix Multiplication (Optical Compute)</option>
-              <option value="jir">JIR Dynamic Modulus Permutation (Thermal Swap Rotation)</option>
-              <option value="sb2s3">Sb₂S₃ Non-Volatile Phase-Change Programming (ON/OFF State)</option>
-            </select>
-            <button type="button" class="btn-action" id="arch-play-btn" onclick="toggleArchAnimation()" style="padding: 4px 12px; height: 32px; font-size: 0.8rem; touch-action: manipulation;">⏸ Pause</button>
-            <button type="button" class="btn-outline" onclick="stepArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">⏭ Step</button>
-            <button type="button" class="btn-outline" onclick="toggleArchSpeed()" id="arch-speed-btn" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">Speed: 1x</button>
-            <button type="button" class="btn-outline" onclick="resetArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">🔄 Reset</button>
+      
+      <!-- Sub-View Switcher: 3D Physical Silicon Stack vs 2D Waveguide Mesh -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 1.25rem;">
+        <div style="display: flex; gap: 8px; background: var(--nav-bg); padding: 4px; border-radius: 10px; border: 1px solid var(--card-border); flex-wrap: wrap;" id="arch-view-btns">
+          <button class="sim-tab-btn active" id="btn-arch-subview-3d" onclick="switchArchSubView('3d')">
+            🎥 3D Physical Silicon Stack (Exploded Strata)
+          </button>
+          <button class="sim-tab-btn" id="btn-arch-subview-2d" onclick="switchArchSubView('2d')">
+            ⚡ 2D Electro-Optic Waveguide Mesh (Logical Co-Sim)
+          </button>
+        </div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green);"></span>
+          Heterogeneous 3D Monolithic Co-Integration
+        </div>
+      </div>
+
+      <!-- SUBVIEW 1: 3D Physical Silicon Stack & Interactive Strata Explorer -->
+      <div id="arch-subview-3d" class="arch-subview-panel" style="display: block;">
+        <div class="card" style="overflow: hidden; max-width: 100%; margin-bottom: 1.5rem;">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span>🔬 3D Exploded Hardware Demonstration & Heterogeneous Strata Inspection</span>
+            <span style="font-size: 0.78rem; color: var(--accent-cyan); font-family: monospace; font-weight: normal;">60 FPS • 1080p Monolithic 3D Render</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: -6px; margin-bottom: 12px; line-height: 1.5;">
+            Interactive structural breakdown of the <b>Project JANUS Mini-16 coprocessor</b>. Observe the 250 µm convective microchannel slim-lid, electroplated copper thermal pillars, silicon photonic mesh, and 65nm CMOS logic die. Scrub the timeline or click any stratum below to isolate cross-sectional physics.
+          </p>
+
+          <!-- 3D Video Player Viewport -->
+          <div class="arch-video-wrapper">
+            <div class="arch-video-overlay-badge" id="arch-video-badge">
+              <span class="video-indicator-dot"></span>
+              <span id="video-state-text">0.0s • Assembled Monolithic Package</span>
+            </div>
+            <video id="janusDemoVideo" playsinline loop muted preload="auto" poster="janus_mini16_poster.jpg" ontimeupdate="onDemoVideoTimeUpdate()" onended="onDemoVideoEnded()">
+              <source src="JANUS_Mini16_Demonstration.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <!-- Video Controls & Interactive Transport Bar -->
+          <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn-action" id="arch-video-play-btn" onclick="toggleDemoVideoPlay()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
+                ▶ Play
+              </button>
+              <button type="button" class="btn-outline" onclick="jumpDemoVideo(5.2)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                💥 Exploded Strata (5.2s)
+              </button>
+              <button type="button" class="btn-outline" onclick="jumpDemoVideo(0.0)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                📦 Assembled Package (0.0s)
+              </button>
+              <button type="button" class="btn-outline" onclick="replayDemoVideo()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                ↺ Replay Loop (10s)
+              </button>
+              <div style="margin-left: auto; font-size: 0.84rem; font-family: monospace; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;" id="video-time-readout">
+                0.00s / 10.00s
+              </div>
+            </div>
+
+            <!-- Scrubbing Timeline Slider -->
+            <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">0s</span>
+              <input type="range" id="arch-video-scrubber" min="0" max="10" step="0.05" value="0" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onDemoVideoScrub(this.value)">
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">10s</span>
+            </div>
+          </div>
+
+          <!-- Interactive Strata Selection Grid -->
+          <div style="margin-top: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+              <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                📑 Inspect Physical Strata (Top to Bottom):
+              </span>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Click any stratum to isolate parameters & jump to exploded state</span>
+            </div>
+            <div class="layer-pills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px;">
+              <button class="layer-pill-btn" id="pill-layer-hs2" onclick="selectArchLayer('hs2')">
+                <span class="pill-dot" style="background: #38bdf8; color: #38bdf8;"></span>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem;">1. HS2 Slim-Lid</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">250 µm Microchannels</div>
+                </div>
+              </button>
+              <button class="layer-pill-btn" id="pill-layer-hs1" onclick="selectArchLayer('hs1')">
+                <span class="pill-dot" style="background: #f59e0b; color: #f59e0b;"></span>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem;">2. HS1 Cu Matrix</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">30 µm Cu-Pillars (60% Fill)</div>
+                </div>
+              </button>
+              <button class="layer-pill-btn active" id="pill-layer-siph" onclick="selectArchLayer('siph')">
+                <span class="pill-dot" style="background: #00f2fe; color: #00f2fe;"></span>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem;">3. SiPh Stratum</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">30 µm 16 Residue Tiles</div>
+                </div>
+              </button>
+              <button class="layer-pill-btn" id="pill-layer-sio2" onclick="selectArchLayer('sio2')">
+                <span class="pill-dot" style="background: #a855f7; color: #a855f7;"></span>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem;">4. SiO₂ Buffer</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">250 µm Isolation + TDVs</div>
+                </div>
+              </button>
+              <button class="layer-pill-btn" id="pill-layer-cmos" onclick="selectArchLayer('cmos')">
+                <span class="pill-dot" style="background: #10b981; color: #10b981;"></span>
+                <div>
+                  <div style="font-weight: 700; font-size: 0.82rem;">5. CMOS Base Die</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">50 µm Logic & CRT Tree</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Stratum Specification Inspector Box -->
+          <div id="arch-layer-details-box" style="margin-top: 1.5rem; background: var(--card-sub-bg); border: 1px solid var(--card-border); border-radius: 10px; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span id="arch-layer-badge-dot" style="width: 12px; height: 12px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe; display: inline-block;"></span>
+                <div>
+                  <h4 id="arch-layer-title" style="margin: 0; font-size: 1.05rem; color: var(--text-main); font-weight: 800;">SiPh Stratum: 16 Residue Optical Mesh</h4>
+                  <div id="arch-layer-subtitle" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">Stratum 3 of 5 (Co-Integrated Silicon Photonic Compute Core)</div>
+                </div>
+              </div>
+              <span style="font-size: 0.75rem; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); color: var(--accent-cyan); padding: 4px 8px; border-radius: 4px; font-family: monospace;">SPECIFICATION SHEET</span>
+            </div>
+
+            <!-- 4-Box Key Metrics Grid -->
+            <div id="arch-layer-metrics" class="grid-4" style="margin-bottom: 1.25rem;">
+              <!-- Populated by JS -->
+            </div>
+
+            <!-- Deep Architectural Rationale & Physics -->
+            <div id="arch-layer-desc" style="font-size: 0.85rem; line-height: 1.7; color: var(--text-main); text-align: left;">
+              <!-- Populated by JS -->
+            </div>
           </div>
         </div>
-        
-        <!-- Interactive Live 3D Architecture Canvas -->
-        <canvas id="archCanvas" style="height: 440px; width: 100%; max-width: 100%; margin-top: 4px; display: block;"></canvas>
+      </div>
 
-        <div class="arch-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border); flex-wrap: wrap; gap: 8px;">
-          <span id="arch-status-banner"><b style="color: var(--accent-cyan);">● LIVE PHOTON PROPAGATION:</b> <span id="arch-status-text">Light pulse traversing LiTaO<sub>3</sub> modulators into 32 × 32 Benes crossbar...</span></span>
-          <span style="color: var(--accent-green); font-family: monospace;">Time-of-Flight: ~10.4 ps | Latency: 0.08 ns</span>
+      <!-- SUBVIEW 2: 2D Electro-Optic Waveguide Mesh (Logical Co-Sim) -->
+      <div id="arch-subview-2d" class="arch-subview-panel" style="display: none;">
+        <div class="card" style="overflow: hidden; max-width: 100%; margin-bottom: 1.5rem;">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <span>🔬 2D Electro-Optic Waveguide Mesh & Logic Propagation Engine</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap; max-width: 100%;" class="arch-controls-cluster">
+              <label style="font-size: 0.8rem; color: var(--text-muted);" class="arch-mode-label">Co-Operation Mode:</label>
+              <select id="arch-mode-select" class="input-box" style="padding: 3px 8px; height: 32px; font-size: 0.85rem; max-width: 100%; box-sizing: border-box;" onchange="setArchMode(this.value)">
+                <option value="gemm" selected>High-Speed 100 GHz Matrix Multiplication (Optical Compute)</option>
+                <option value="jir">JIR Dynamic Modulus Permutation (Thermal Swap Rotation)</option>
+                <option value="sb2s3">Sb₂S₃ Non-Volatile Phase-Change Programming (ON/OFF State)</option>
+              </select>
+              <button type="button" class="btn-action" id="arch-play-btn" onclick="toggleArchAnimation()" style="padding: 4px 12px; height: 32px; font-size: 0.8rem; touch-action: manipulation;">⏸ Pause</button>
+              <button type="button" class="btn-outline" onclick="stepArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">⏭ Step</button>
+              <button type="button" class="btn-outline" onclick="toggleArchSpeed()" id="arch-speed-btn" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">Speed: 1x</button>
+              <button type="button" class="btn-outline" onclick="resetArchAnimation()" style="padding: 4px 10px; height: 32px; font-size: 0.8rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">🔄 Reset</button>
+            </div>
+          </div>
+          
+          <!-- Interactive Live Architecture Canvas -->
+          <canvas id="archCanvas" style="height: 440px; width: 100%; max-width: 100%; margin-top: 4px; display: block;"></canvas>
+
+          <div class="arch-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 0.82rem; background: rgba(0, 242, 254, 0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--card-border); flex-wrap: wrap; gap: 8px;">
+            <span id="arch-status-banner"><b style="color: var(--accent-cyan);">● LIVE PHOTON PROPAGATION:</b> <span id="arch-status-text">Light pulse traversing LiTaO<sub>3</sub> modulators into 32 × 32 Benes crossbar...</span></span>
+            <span style="color: var(--accent-green); font-family: monospace;">Time-of-Flight: ~10.4 ps | Latency: 0.08 ns</span>
+          </div>
         </div>
       </div>
 
@@ -3475,8 +3733,11 @@
         if (typeof loadAIData === 'function') loadAIData();
       } else if (tabId === 'arch') {
         setTimeout(() => {
-          if (typeof initArchAnimation === 'function') initArchAnimation();
-          if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
+          if (typeof selectArchLayer === 'function') selectArchLayer(currentArchLayer, false);
+          if (currentArchSubView === '2d') {
+            if (typeof initArchAnimation === 'function') initArchAnimation();
+            if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
+          }
         }, 50);
       } else if (tabId === 'thermal') {
         setTimeout(() => {
@@ -3656,6 +3917,248 @@
           </div>
         `;
       });
+    }
+
+    // --- TAB 2: 3D ARCHITECTURE PHYSICAL STRATA DATA & CONTROLS ---
+    const ARCH_LAYERS_DATA = {
+      hs2: {
+        id: 'hs2',
+        name: 'HS2: Convective Microchannel Slim-Lid',
+        subtitle: 'Stratum 1 of 5 (Top Cover & Active Coolant Loop)',
+        badgeColor: '#38bdf8',
+        thickness: '250 µm',
+        material: 'Micro-Milled OFHC Cu / High-Resistivity Si',
+        kValue: '400 W/(m·K)',
+        role: 'Primary heat dissipation stratum with micro-channel fluid flow directly over photonic tiles.',
+        metrics: [
+          { label: 'Layer Thickness', value: '250 µm', sub: 'Micro-milled slim-lid' },
+          { label: 'Thermal Conductivity', value: '400 W/m·K', sub: 'OFHC Copper / Monolithic Si' },
+          { label: 'Thermal Resistance', value: 'R_lid = 0.08 K/W', sub: 'Convective fluid interface' },
+          { label: 'Max Surface ΔT', value: '< 3.2 K', sub: 'Under continuous 100 GHz load' }
+        ],
+        description: `The <b>HS2 Microchannel Slim-Lid</b> represents the uppermost physical boundary of the JANUS package. It integrates micro-scale convective liquid cooling channels directly above the photonic stratum. By maintaining an aggressive thermal resistance of <i>R</i><sub>lid</sub> = 0.08 K/W and a convective heat transfer coefficient exceeding 50,000 W/(m²·K), HS2 rapidly evacuates thermo-optic dissipation generated during continuous optical matrix operations, clamping die temperatures strictly below the critical 40.0°C threshold without requiring external chiller over-provisioning.`
+      },
+      hs1: {
+        id: 'hs1',
+        name: 'HS1: Cu-Pillar Dense Thermal Micro-Matrix',
+        subtitle: 'Stratum 2 of 5 (Intermediate High-Conductance Thermal Bridge)',
+        badgeColor: '#f59e0b',
+        thickness: '30 µm',
+        material: 'Electroplated Pure Copper (Cu) Micro-Pillars',
+        kValue: '400 W/(m·K)',
+        role: 'Vertical thermal conduction matrix bridging the silicon photonic stratum to the slim-lid.',
+        metrics: [
+          { label: 'Layer Thickness', value: '30 µm', sub: 'Vertical micro-pillar gap' },
+          { label: 'Pillar Pitch & Diam.', value: '20 µm / 15 µm', sub: '>60% Cu fill factor' },
+          { label: 'Vertical Resistance', value: 'R_th < 0.015 K/W', sub: 'Near-zero thermal gradient' },
+          { label: 'Thermo-Mechanical', value: 'CTE Compliant', sub: 'Relieves shear stress' }
+        ],
+        description: `The <b>HS1 Dense Thermal Micro-Matrix</b> acts as an ultra-high-conductivity vertical conduit. Comprising an array of 15 µm diameter electroplated copper pillars arranged at a dense 20 µm pitch, HS1 achieves a copper fill factor greater than 60%. This yields a vertical thermal resistance of less than 0.015 K/W, eliminating interfacial thermal bottlenecks between the active optical switching stratum and the convective heat lid while accommodating coefficient of thermal expansion (CTE) mismatches across silicon-copper interfaces.`
+      },
+      siph: {
+        id: 'siph',
+        name: 'SiPh Stratum: 16 Residue Optical Mesh',
+        subtitle: 'Stratum 3 of 5 (Co-Integrated Silicon Photonic Compute Core)',
+        badgeColor: '#00f2fe',
+        thickness: '30 µm',
+        material: 'Thin-Film LiTaO₃ & Sb₂S₃ on SOI Waveguides',
+        kValue: '148 W/(m·K) (Si core)',
+        role: '16 residue computing tiles (r₀..r₁₅) performing 100 GHz zero-dynamic-power optical GEMM.',
+        metrics: [
+          { label: 'Optical Modulators', value: '100 GHz LiTaO₃', sub: 'V_π·L = 1.2 V·cm' },
+          { label: 'Phase-Change Routing', value: 'Sb₂S₃ PCM', sub: '0 W static holding power' },
+          { label: 'Mesh Time-of-Flight', value: '10.4 ps', sub: '32 × 32 Benes crossbar' },
+          { label: 'Photodetection', value: 'Ge/Si SAC²M APD', sub: '>45 GHz, 0.85 A/W' }
+        ],
+        description: `The <b>SiPh Stratum</b> is the optical compute heart of Project JANUS. Fabricated on a 30 µm thinned silicon-on-insulator platform, it hosts 16 independent coprime residue tiles. Each tile houses a 32 × 32 Benes optical crossbar switched by non-volatile <b>Sb₂S₃ phase-change material</b> directional couplers requiring <b>0 W holding power</b>. Light pulses are modulated at <b>100 GHz</b> via thin-film Lithium Tantalate (LiTaO₃) Pockels modulators, traversing the optical mesh in just <b>10.4 ps</b> with zero dynamic charging loss before being detected by high-speed avalanche photodiodes.`
+      },
+      sio2: {
+        id: 'sio2',
+        name: 'SiO₂ Thermal Decoupling Buffer & Cu TDVs',
+        subtitle: 'Stratum 4 of 5 (Thermal Low-Pass Filter & Vertical Interconnect)',
+        badgeColor: '#a855f7',
+        thickness: '250 µm',
+        material: 'Plasma-Enhanced TEOS SiO₂ & Shielded Cu TDVs',
+        kValue: '1.4 W/(m·K) (Dielectric Buffer)',
+        role: 'Physical thermal isolation buffer preventing CMOS digital heat spikes from disturbing optical switches.',
+        metrics: [
+          { label: 'Buffer Thickness', value: '250 µm', sub: 'Dense TEOS dielectric' },
+          { label: 'Thermal Time Const.', value: 'τ = 69.06 ms', sub: 'R_th · C_th low-pass filter' },
+          { label: 'Through Vias (TDVs)', value: '10 µm Cu Coaxial', sub: '< 0.15 dB loss @ 100 GHz' },
+          { label: 'Noise Rejection', value: '> 99.4% Spikes', sub: 'Decouples CMOS hotspots' }
+        ],
+        description: `The <b>SiO₂ Decoupling Buffer</b> provides critical physical separation between the heat-generating digital CMOS die and the temperature-sensitive optical waveguides. Because SiO₂ possesses a low thermal conductivity of 1.4 W/(m·K), this 250 µm thick layer acts as a <b>thermal low-pass filter with a time constant τ = 69.06 ms</b>. Sudden digital switching spikes from the CMOS layer are damped by over 99.4% before reaching the photonic tier. Vertical signal transmission is routed through shielded 10 µm copper Through-Dielectric Vias (TDVs), delivering 100 GHz drive signals with less than 0.15 dB insertion loss.`
+      },
+      cmos: {
+        id: 'cmos',
+        name: 'CMOS Base Die: Logic, Drivers & CRT Reconstruction',
+        subtitle: 'Stratum 5 of 5 (Bottom Digital Processing & Controller Layer)',
+        badgeColor: '#10b981',
+        thickness: '50 µm',
+        material: '65nm LP / FinFET Silicon Digital Process',
+        kValue: '148 W/(m·K) (Bulk Si)',
+        role: 'Residue decomposition, E-O mod drivers, StrongARM latches, and single-cycle CRT adder tree.',
+        metrics: [
+          { label: 'Logic Process', value: '65nm / FinFET', sub: '50 µm thinned base die' },
+          { label: 'Dynamic Latches', value: '3.5 ps StrongARM', sub: 'Regenerative sensing' },
+          { label: 'CRT Reconstructor', value: '80 ps Mixed-Radix', sub: 'Noise-free integer output' },
+          { label: 'Thermal Management', value: 'JIR Controller', sub: '214.5 ms modulus rotation' }
+        ],
+        description: `The <b>CMOS Base Die</b> provides the electronic foundation for the hybrid processor. It houses parallel modulo lookup generators that decompose incoming 64-bit tensors into 16 coprime residue streams in sub-nanosecond cycles. High-speed drivers send modulation pulses through the vertical TDVs to the photonic stratum, while ultra-fast <b>StrongARM dynamic sense amplifiers latch APD photocurrents in 3.5 ps</b>. Finally, a single-cycle <b>80 ps mixed-radix CRT adder tree</b> reconstructs 64-bit full-precision integers without analog accumulation drift, while real-time thermal monitors feed the JIR closed-loop tile permutation scheduler.`
+      }
+    };
+
+    let currentArchLayer = 'siph';
+    let currentArchSubView = '3d';
+
+    function switchArchSubView(subViewId) {
+      currentArchSubView = subViewId;
+      document.querySelectorAll('#arch-view-btns .sim-tab-btn').forEach(b => b.classList.remove('active'));
+      const btn = document.getElementById('btn-arch-subview-' + subViewId);
+      if (btn) btn.classList.add('active');
+
+      const panel3d = document.getElementById('arch-subview-3d');
+      const panel2d = document.getElementById('arch-subview-2d');
+
+      if (subViewId === '3d') {
+        if (panel3d) panel3d.style.display = 'block';
+        if (panel2d) panel2d.style.display = 'none';
+      } else {
+        if (panel3d) panel3d.style.display = 'none';
+        if (panel2d) panel2d.style.display = 'block';
+        setTimeout(() => {
+          if (typeof initArchAnimation === 'function') initArchAnimation();
+          if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
+        }, 30);
+      }
+    }
+
+    function selectArchLayer(layerKey, jumpToExploded = true) {
+      if (!ARCH_LAYERS_DATA[layerKey]) return;
+      currentArchLayer = layerKey;
+      const data = ARCH_LAYERS_DATA[layerKey];
+
+      // Update pill buttons
+      document.querySelectorAll('.layer-pill-btn').forEach(p => p.classList.remove('active'));
+      const activePill = document.getElementById('pill-layer-' + layerKey);
+      if (activePill) activePill.classList.add('active');
+
+      // Update details card
+      const titleEl = document.getElementById('arch-layer-title');
+      const subtitleEl = document.getElementById('arch-layer-subtitle');
+      const descEl = document.getElementById('arch-layer-desc');
+      const metricsGrid = document.getElementById('arch-layer-metrics');
+      const badgeDot = document.getElementById('arch-layer-badge-dot');
+
+      if (titleEl) titleEl.textContent = data.name;
+      if (subtitleEl) subtitleEl.textContent = data.subtitle;
+      if (descEl) descEl.innerHTML = data.description;
+      if (badgeDot) {
+        badgeDot.style.background = data.badgeColor;
+        badgeDot.style.boxShadow = `0 0 12px ${data.badgeColor}`;
+      }
+
+      if (metricsGrid && data.metrics) {
+        metricsGrid.innerHTML = data.metrics.map(m => `
+          <div class="stat-box" style="padding: 12px; margin-bottom: 0;">
+            <div class="stat-label" style="font-size: 0.75rem;">${m.label}</div>
+            <div class="stat-value" style="font-size: 1.15rem; color: ${data.badgeColor}; margin: 4px 0;">${m.value}</div>
+            <div class="stat-sub" style="font-size: 0.72rem;">${m.sub}</div>
+          </div>
+        `).join('');
+      }
+
+      // If user intentionally clicked, and video is assembled, jump to 5.2s exploded view so user sees the layers
+      if (jumpToExploded) {
+        const vid = document.getElementById('janusDemoVideo');
+        if (vid && (vid.paused || vid.currentTime < 2.0 || vid.currentTime > 8.0)) {
+          jumpDemoVideo(5.2);
+        }
+      }
+    }
+
+    function jumpDemoVideo(timeSec) {
+      const vid = document.getElementById('janusDemoVideo');
+      if (!vid) return;
+      vid.currentTime = Math.min(Math.max(timeSec, 0), vid.duration || 10.0);
+      vid.pause();
+      updateVideoPlayBtn(false);
+      updateVideoUI(vid.currentTime, vid.duration || 10.0);
+    }
+
+    function toggleDemoVideoPlay() {
+      const vid = document.getElementById('janusDemoVideo');
+      if (!vid) return;
+      if (vid.paused) {
+        vid.play().then(() => {
+          updateVideoPlayBtn(true);
+        }).catch(err => {
+          console.warn('Video autoplay hindered:', err);
+        });
+      } else {
+        vid.pause();
+        updateVideoPlayBtn(false);
+      }
+    }
+
+    function replayDemoVideo() {
+      const vid = document.getElementById('janusDemoVideo');
+      if (!vid) return;
+      vid.currentTime = 0;
+      vid.play().then(() => {
+        updateVideoPlayBtn(true);
+      }).catch(err => {
+        console.warn('Video replay play issue:', err);
+      });
+    }
+
+    function updateVideoPlayBtn(isPlaying) {
+      const btn = document.getElementById('arch-video-play-btn');
+      if (!btn) return;
+      btn.innerHTML = isPlaying ? '⏸ Pause' : '▶ Play';
+    }
+
+    function onDemoVideoScrub(val) {
+      const vid = document.getElementById('janusDemoVideo');
+      if (!vid) return;
+      vid.currentTime = parseFloat(val);
+      updateVideoUI(vid.currentTime, vid.duration || 10.0);
+    }
+
+    function onDemoVideoTimeUpdate() {
+      const vid = document.getElementById('janusDemoVideo');
+      if (!vid) return;
+      updateVideoUI(vid.currentTime, vid.duration || 10.0);
+    }
+
+    function onDemoVideoEnded() {
+      updateVideoPlayBtn(false);
+    }
+
+    function updateVideoUI(curTime, dur) {
+      const scrubber = document.getElementById('arch-video-scrubber');
+      const readout = document.getElementById('video-time-readout');
+      const badgeText = document.getElementById('video-state-text');
+
+      if (scrubber && !scrubber.matches(':active')) {
+        scrubber.value = curTime;
+      }
+      if (readout) {
+        readout.textContent = `${curTime.toFixed(2)}s / ${(dur || 10.0).toFixed(2)}s`;
+      }
+
+      // State label based on timing
+      if (badgeText) {
+        if (curTime < 1.5) {
+          badgeText.textContent = `${curTime.toFixed(1)}s • Assembled Monolithic Package`;
+        } else if (curTime < 4.5) {
+          badgeText.textContent = `${curTime.toFixed(1)}s • Vertical Strata Separation`;
+        } else if (curTime < 7.5) {
+          badgeText.textContent = `${curTime.toFixed(1)}s • Fully Exploded Strata Inspection`;
+        } else {
+          badgeText.textContent = `${curTime.toFixed(1)}s • Re-Assembly Sequence`;
+        }
+      }
     }
 
     // --- TAB 2: INTERACTIVE ARCHITECTURE CANVAS ANIMATION ---
@@ -5296,6 +5799,8 @@
       runCustomThermalSim();
       loadMatrixData(false);
       selectRoadmapModel('1A');
+      selectArchLayer('siph', false);
+      updateVideoUI(0, 10.0);
 
       // Active Heartbeat to keep backend server alive during interactive simulation
       setInterval(() => {
