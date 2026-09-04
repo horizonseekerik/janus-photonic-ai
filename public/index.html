@@ -4167,7 +4167,7 @@
     let archSpeed = 1.0;
     let archAnimFrameId = null;
     let archPhotons = [];
-    let archElectrons = [];
+    let archSwitchStates = []; // Sb₂S₃ ON/OFF per Benes node
     let archTick = 0;
 
     function setArchMode(mode) {
@@ -4210,23 +4210,29 @@
 
     function initArchParticles() {
       archPhotons = [];
-      archElectrons = [];
-      for (let i = 0; i < 18; i++) {
+      const NUM_LANES = 4;
+      const NUM_PHOTONS = 16;
+      for (let i = 0; i < NUM_PHOTONS; i++) {
         archPhotons.push({
-          x: Math.random() * 800,
-          y: 290 + (i % 4) * 25,
-          speed: (2.5 + Math.random() * 1.0),
-          lane: i % 4,
-          color: (i % 2 === 0 ? '#00f2fe' : '#fbbf24')
+          lane: i % NUM_LANES,
+          progress: Math.random(),  // 0.0 = at modulator, 1.0 = at APD
+          speed: 0.003 + Math.random() * 0.002,
+          color: (i % 2 === 0 ? '#00f2fe' : '#38bdf8'),
+          active: true,
+          detFlash: 0 // APD detection flash counter
         });
       }
-      for (let j = 0; j < 14; j++) {
-        archElectrons.push({
-          x: 180 + (j * 50),
-          y: 110 + Math.random() * 90,
-          dir: j % 2 === 0 ? 1 : -1,
-          speed: 1.5 + Math.random() * 0.8
-        });
+      // Initialize Sb₂S₃ switch states: 5 stages × 2 switch pairs = 10 nodes
+      archSwitchStates = [];
+      for (let s = 0; s < 5; s++) {
+        for (let p = 0; p < 2; p++) {
+          archSwitchStates.push({
+            stage: s, pair: p,
+            on: true,                      // Crystalline = ON
+            phaseAnim: 0,                  // For Sb₂S₃ mode animation
+            swapAnim: 0                    // For JIR mode animation
+          });
+        }
       }
     }
 
@@ -4285,11 +4291,11 @@
 
       archTick += (isStep ? 2.0 : 1.0) * archSpeed;
 
-      // Background - Clean Canvas Background
+      // ===== BACKGROUND =====
       ctx.fillStyle = dark ? '#030712' : '#ffffff';
       ctx.fillRect(0, 0, w, h);
 
-      // Section Backgrounds: CMOS Tier vs Silicon Photonic Tier
+      // ===== TIER 1: CMOS DIGITAL LAYER (y: 12–130) — kept as-is =====
       ctx.fillStyle = dark ? '#0b1120' : '#f8fafc';
       ctx.fillRect(15, 12, w - 30, 118);
       ctx.strokeStyle = dark ? '#6366f1' : '#818cf8';
@@ -4306,98 +4312,15 @@
       ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 12px sans-serif';
       ctx.fillText(isMobile ? '⚡ TIER 1: 7nm CMOS DIGITAL & CONTROLLER' : '⚡ TIER 1: 7nm FinFET CMOS DIGITAL & HYBRID CONTROLLER LAYER', 32, 35);
 
-      // Intermediate 3D Heterogeneous TSV & Micro-Pillar Interconnect Tier
-      ctx.fillStyle = dark ? '#090d16' : '#f1f5f9';
-      ctx.fillRect(15, 136, w - 30, 56);
-      ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(15, 136, w - 30, 56);
-
-      // 1. Draw Copper Vertical Micro-Pillars & TSVs with metallic shading & signal pulses
-      const numPillars = isMobile ? 8 : 12;
-      for (let k = 0; k < numPillars; k++) {
-        const bx = 45 + k * (w - 90) / (numPillars - 1);
-        // Copper pillar body
-        const copperGrad = ctx.createLinearGradient(bx - 5, 134, bx + 5, 134);
-        copperGrad.addColorStop(0, '#78350f');
-        copperGrad.addColorStop(0.5, '#d97706');
-        copperGrad.addColorStop(1, '#92400e');
-        ctx.fillStyle = copperGrad;
-        ctx.fillRect(bx - 4, 134, 8, 60);
-        ctx.strokeStyle = dark ? '#fde68a' : '#b45309';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(bx - 4, 134, 8, 60);
-
-        // Animated bi-directional signal pulses
-        if (k % 2 === 0) {
-          // Downward high-speed CMOS E-O drive pulse (Cyan)
-          const pulseY = 134 + ((archTick * 1.6 + k * 14) % 56);
-          ctx.fillStyle = dark ? '#00f2fe' : '#0284c7';
-          ctx.shadowColor = dark ? '#00f2fe' : '#0284c7';
-          ctx.shadowBlur = 6;
-          ctx.beginPath();
-          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        } else {
-          // Upward APD StrongARM feedback pulse (Amber)
-          const pulseY = 190 - ((archTick * 1.6 + k * 14) % 56);
-          ctx.fillStyle = dark ? '#fbbf24' : '#d97706';
-          ctx.shadowColor = dark ? '#fbbf24' : '#d97706';
-          ctx.shadowBlur = 6;
-          ctx.beginPath();
-          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
-      }
-
-      // 2. Draw Title Badge ON TOP of Copper Bars with crisp drop-shadow so it is NEVER hidden
-      const badgeW = Math.min(560, w - 50);
-      ctx.save();
-      ctx.shadowColor = dark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.15)';
-      ctx.shadowBlur = 8;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 2;
-
-      ctx.fillStyle = dark ? '#1c0f05' : '#fef3c7';
-      ctx.fillRect(25, 142, badgeW, 22);
-      ctx.strokeStyle = dark ? '#fbbf24' : '#d97706';
-      ctx.lineWidth = 1.2;
-      ctx.strokeRect(25, 142, badgeW, 22);
-      ctx.restore();
-
-      ctx.fillStyle = dark ? '#fef08a' : '#92400e';
-      ctx.font = isMobile ? 'bold 9.5px monospace' : 'bold 11px monospace';
-      ctx.fillText(isMobile ? '↕ 3D COPPER TSVs (100 GHz Drive & APD)' : '↕ 3D HETEROGENEOUS COPPER MICRO-PILLARS & TSVs (100 GHz Drive & APD Feedback)', 32, 157);
-
-      ctx.fillStyle = dark ? '#03141f' : '#f0fdf4';
-      ctx.fillRect(15, 198, w - 30, 230);
-      ctx.strokeStyle = dark ? '#00f2fe' : '#0284c7';
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(15, 198, w - 30, 230);
-
-      const tier2BadgeW = Math.min(520, w - 50);
-      ctx.fillStyle = dark ? '#083344' : '#cffafe';
-      ctx.fillRect(25, 206, tier2BadgeW, 22);
-      ctx.strokeStyle = dark ? '#22d3ee' : '#06b6d4';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(25, 206, tier2BadgeW, 22);
-      ctx.fillStyle = dark ? '#ffffff' : '#0e7490';
-      ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 12px sans-serif';
-      ctx.fillText(isMobile ? '🌊 TIER 2: 220nm SILICON PHOTONIC SUBSTRATE' : '🌊 TIER 2: 220nm SOI SILICON PHOTONIC SUBSTRATE (Light-Speed Compute)', 32, 221);
-
       function drawArchBox(x, y, bw, bh, title, sub, bgCol, borderCol, titleCol, subCol) {
         ctx.fillStyle = bgCol;
         ctx.fillRect(x, y, bw, bh);
         ctx.strokeStyle = borderCol;
         ctx.lineWidth = 1.5;
         ctx.strokeRect(x, y, bw, bh);
-
         ctx.fillStyle = titleCol || (dark ? '#ffffff' : '#0f172a');
         ctx.font = isMobile ? (bw < 80 ? 'bold 8.5px sans-serif' : 'bold 9.5px sans-serif') : 'bold 12px sans-serif';
         ctx.fillText(title, x + (isMobile ? 4 : 8), y + (isMobile ? 18 : 20));
-
         ctx.fillStyle = subCol || (dark ? '#38bdf8' : '#0284c7');
         ctx.font = isMobile ? (bw < 80 ? '7.5px monospace' : '8.5px monospace') : 'bold 10.5px monospace';
         ctx.fillText(sub, x + (isMobile ? 4 : 8), y + (isMobile ? 34 : 38));
@@ -4406,7 +4329,6 @@
       const availableW = w - 60;
       const boxGap = Math.max(4, isMobile ? 4 : 12);
       const boxW = (availableW - (3 * boxGap)) / 4;
-
       const b_rns_x = 30;
       const b_ilo_x = 30 + (boxW + boxGap);
       const b_lat_x = 30 + 2 * (boxW + boxGap);
@@ -4422,66 +4344,502 @@
       drawArchBox(b_lat_x, 52, boxW, 64, isMobile ? '3. StrongARM' : '3. StrongARM Dynamic', isMobile ? '3.5ps Bit' : '3.5 ps Bit Digitization', cmosBg, cmosBorder, cmosTitle, cmosSub);
       drawArchBox(b_jir_x, 52, boxW, 64, isMobile ? '4. JIR Loop' : '4. JIR Thermal Engine', isMobile ? '<10ns Swap' : 'Sub-10ns Modulus Swap', cmosBg, '#ef4444', cmosTitle, '#ef4444');
 
-      const o_mod_x = b_rns_x;
-      const o_ben_x = b_ilo_x;
-      const o_apd_x = b_lat_x;
-      const o_sb_x = b_jir_x;
+      // ===== INTERCONNECT: COPPER TSV MICRO-PILLARS (y: 136–192) — kept as-is =====
+      ctx.fillStyle = dark ? '#090d16' : '#f1f5f9';
+      ctx.fillRect(15, 136, w - 30, 56);
+      ctx.strokeStyle = dark ? '#475569' : '#cbd5e1';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(15, 136, w - 30, 56);
 
-      const siphBg = dark ? '#042f2e' : '#e0f2fe';
-      const siphBorder = dark ? '#2dd4bf' : '#0284c7';
-      const siphTitle = dark ? '#ffffff' : '#0369a1';
-      const siphSub = dark ? '#5eead4' : '#0284c7';
+      const numPillars = isMobile ? 8 : 12;
+      for (let k = 0; k < numPillars; k++) {
+        const bx = 45 + k * (w - 90) / (numPillars - 1);
+        const copperGrad = ctx.createLinearGradient(bx - 5, 134, bx + 5, 134);
+        copperGrad.addColorStop(0, '#78350f');
+        copperGrad.addColorStop(0.5, '#d97706');
+        copperGrad.addColorStop(1, '#92400e');
+        ctx.fillStyle = copperGrad;
+        ctx.fillRect(bx - 4, 134, 8, 60);
+        ctx.strokeStyle = dark ? '#fde68a' : '#b45309';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(bx - 4, 134, 8, 60);
 
-      drawArchBox(o_mod_x, 240, boxW, 72, isMobile ? '1. LiTaO₃' : '1. LiTaO₃ Modulators', isMobile ? '100GHz EO' : '100 GHz E-O Pockels Drive', siphBg, siphBorder, siphTitle, siphSub);
-      drawArchBox(o_ben_x, 240, boxW, 72, isMobile ? '2. 32x32 Benes' : '2. 32 × 32 Benes Mesh', isMobile ? '10.4ps ToF' : '10.4 ps Time-of-Flight', siphBg, siphBorder, siphTitle, siphSub);
-      drawArchBox(o_apd_x, 240, boxW, 72, isMobile ? '3. Ge/Si APD' : '3. Ge/Si SAC²M APDs', isMobile ? '1-Bit Binary' : '1-Bit Binary Detection', siphBg, siphBorder, siphTitle, siphSub);
-      
-      const pcmBg = dark ? '#451a03' : '#fef3c7';
-      const pcmBorder = dark ? '#fbbf24' : '#d97706';
-      const pcmTitle = dark ? '#ffffff' : '#92400e';
-      const pcmSub = dark ? '#fde047' : '#b45309';
-      drawArchBox(o_sb_x, 240, boxW, 72, isMobile ? '4. Sb₂S₃ PCM' : '4. Sb₂S₃ PCM Matrix', isMobile ? '0W Static' : '0W Static Hold Switches', pcmBg, pcmBorder, pcmTitle, pcmSub);
-
-
-
-      archPhotons.forEach(p => {
-        p.x += p.speed * (isStep ? 2.0 : 1.0) * archSpeed;
-        if (p.x > w - 40) {
-          p.x = 40;
-          p.lane = Math.floor(Math.random() * 4);
+        if (k % 2 === 0) {
+          const pulseY = 134 + ((archTick * 1.6 + k * 14) % 56);
+          ctx.fillStyle = dark ? '#00f2fe' : '#0284c7';
+          ctx.shadowColor = dark ? '#00f2fe' : '#0284c7';
+          ctx.shadowBlur = 6;
+          ctx.beginPath();
+          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          const pulseY = 190 - ((archTick * 1.6 + k * 14) % 56);
+          ctx.fillStyle = dark ? '#fbbf24' : '#d97706';
+          ctx.shadowColor = dark ? '#fbbf24' : '#d97706';
+          ctx.shadowBlur = 6;
+          ctx.beginPath();
+          ctx.arc(bx, pulseY, 3, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.shadowBlur = 0;
         }
-        const py = 250 + p.lane * 24;
+      }
 
-        const grad = ctx.createRadialGradient(p.x, py, 1, p.x, py, 6);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.4, p.color);
-        grad.addColorStop(1, 'rgba(0, 242, 254, 0)');
+      // TSV badge on top
+      const tsvBadgeW = Math.min(560, w - 50);
+      ctx.save();
+      ctx.shadowColor = dark ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.15)';
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = dark ? '#1c0f05' : '#fef3c7';
+      ctx.fillRect(25, 142, tsvBadgeW, 22);
+      ctx.strokeStyle = dark ? '#fbbf24' : '#d97706';
+      ctx.lineWidth = 1.2;
+      ctx.strokeRect(25, 142, tsvBadgeW, 22);
+      ctx.restore();
+      ctx.fillStyle = dark ? '#fef08a' : '#92400e';
+      ctx.font = isMobile ? 'bold 9.5px monospace' : 'bold 11px monospace';
+      ctx.fillText(isMobile ? '↕ 3D COPPER TSVs (100 GHz Drive & APD)' : '↕ 3D HETEROGENEOUS COPPER MICRO-PILLARS & TSVs (100 GHz Drive & APD Feedback)', 32, 157);
 
-        ctx.fillStyle = grad;
+      // ===== TIER 2: SILICON PHOTONIC SUBSTRATE — COMPLETE REWRITE =====
+      const tier2Top = 198;
+      const tier2H = 230;
+      ctx.fillStyle = dark ? '#03141f' : '#f0fdf4';
+      ctx.fillRect(15, tier2Top, w - 30, tier2H);
+      ctx.strokeStyle = dark ? '#00f2fe' : '#0284c7';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(15, tier2Top, w - 30, tier2H);
+
+      // Tier 2 title badge
+      const tier2BadgeW = Math.min(520, w - 50);
+      ctx.fillStyle = dark ? '#083344' : '#cffafe';
+      ctx.fillRect(25, tier2Top + 8, tier2BadgeW, 22);
+      ctx.strokeStyle = dark ? '#22d3ee' : '#06b6d4';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(25, tier2Top + 8, tier2BadgeW, 22);
+      ctx.fillStyle = dark ? '#ffffff' : '#0e7490';
+      ctx.font = isMobile ? 'bold 10px sans-serif' : 'bold 12px sans-serif';
+      ctx.fillText(isMobile ? '🌊 TIER 2: 220nm SOI SILICON PHOTONIC' : '🌊 TIER 2: 220nm SOI SILICON PHOTONIC SUBSTRATE (Light-Speed Compute)', 32, tier2Top + 23);
+
+      // === 3-COLUMN SIGNAL FLOW LAYOUT ===
+      const NUM_LANES = 4;
+      const flowTop = tier2Top + 36;
+      const flowH = tier2H - 68;
+      const headerH = isMobile ? 30 : 34;
+      const laneAreaH = flowH - headerH;
+      const laneSpacing = laneAreaH / NUM_LANES;
+      const laneYs = [];
+      for (let i = 0; i < NUM_LANES; i++) {
+        laneYs.push(flowTop + headerH + laneSpacing * (i + 0.5));
+      }
+
+      // Column geometry
+      const modW = isMobile ? 65 : 95;    // LiTaO₃ modulator column
+      const apdW = isMobile ? 60 : 85;    // APD column
+      const colMargin = 25;
+      const modX = colMargin;
+      const apdX = w - colMargin - apdW;
+      const meshX1 = modX + modW + (isMobile ? 8 : 16);  // Benes mesh start X
+      const meshX2 = apdX - (isMobile ? 8 : 16);         // Benes mesh end X
+
+      // === COLUMN 1: LiTaO₃ MODULATOR ARRAY ===
+      const modBg = dark ? '#042f2e' : '#e0f2fe';
+      ctx.fillStyle = modBg;
+      ctx.fillRect(modX, flowTop, modW, flowH);
+      ctx.strokeStyle = dark ? '#2dd4bf' : '#0284c7';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(modX, flowTop, modW, flowH);
+
+      ctx.fillStyle = dark ? '#ffffff' : '#0369a1';
+      ctx.font = isMobile ? 'bold 8.5px sans-serif' : 'bold 10.5px sans-serif';
+      ctx.fillText(isMobile ? 'LiTaO₃ Mod' : 'LiTaO₃ Pockels', modX + 5, flowTop + 14);
+      ctx.fillStyle = dark ? '#5eead4' : '#0284c7';
+      ctx.font = isMobile ? '7px monospace' : 'bold 8.5px monospace';
+      ctx.fillText(isMobile ? '100GHz EO' : '100 GHz Drive', modX + 5, flowTop + 26);
+
+      // Modulator slot indicators per lane
+      for (let i = 0; i < NUM_LANES; i++) {
+        const ly = laneYs[i];
+        // Modulator slot rectangle
+        ctx.fillStyle = dark ? 'rgba(0, 242, 254, 0.12)' : 'rgba(2, 132, 199, 0.08)';
+        ctx.fillRect(modX + 3, ly - 8, modW - 6, 16);
+        ctx.strokeStyle = dark ? 'rgba(0, 242, 254, 0.4)' : 'rgba(2, 132, 199, 0.3)';
+        ctx.lineWidth = 0.8;
+        ctx.strokeRect(modX + 3, ly - 8, modW - 6, 16);
+        // Animated modulation pulse inside slot
+        const pulsePhase = (archTick * 0.04 + i * 0.7) % 1.0;
+        const pulseX = modX + 6 + pulsePhase * (modW - 12);
+        ctx.fillStyle = dark ? '#00f2fe' : '#0284c7';
+        ctx.shadowColor = dark ? '#00f2fe' : '#0284c7';
+        ctx.shadowBlur = 5;
         ctx.beginPath();
-        ctx.arc(p.x, py, 6, 0, 2 * Math.PI);
+        ctx.arc(pulseX, ly, 3, 0, 2 * Math.PI);
         ctx.fill();
+        ctx.shadowBlur = 0;
+      }
 
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = 2.0;
-        ctx.beginPath();
-        ctx.moveTo(p.x - 14, py);
-        ctx.lineTo(p.x, py);
-        ctx.stroke();
+      // === COLUMN 3: Ge/Si SAC²M APD ARRAY ===
+      const apdBg = dark ? '#1a0a2e' : '#f5f3ff';
+      ctx.fillStyle = apdBg;
+      ctx.fillRect(apdX, flowTop, apdW, flowH);
+      ctx.strokeStyle = dark ? '#a855f7' : '#7c3aed';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(apdX, flowTop, apdW, flowH);
+
+      ctx.fillStyle = dark ? '#ffffff' : '#5b21b6';
+      ctx.font = isMobile ? 'bold 8.5px sans-serif' : 'bold 10.5px sans-serif';
+      ctx.fillText(isMobile ? 'Ge/Si APD' : 'Ge/Si SAC²M', apdX + 5, flowTop + 14);
+      ctx.fillStyle = dark ? '#c4b5fd' : '#7c3aed';
+      ctx.font = isMobile ? '7px monospace' : 'bold 8.5px monospace';
+      ctx.fillText(isMobile ? '1-Bit Det' : '1-Bit Binary', apdX + 5, flowTop + 26);
+
+      // APD detection slots per lane
+      for (let i = 0; i < NUM_LANES; i++) {
+        const ly = laneYs[i];
+        ctx.fillStyle = dark ? 'rgba(168, 85, 247, 0.12)' : 'rgba(124, 58, 237, 0.08)';
+        ctx.fillRect(apdX + 3, ly - 8, apdW - 6, 16);
+        ctx.strokeStyle = dark ? 'rgba(168, 85, 247, 0.4)' : 'rgba(124, 58, 237, 0.3)';
+        ctx.lineWidth = 0.8;
+        ctx.strokeRect(apdX + 3, ly - 8, apdW - 6, 16);
+      }
+
+      // === COLUMN 2: BENES MESH WITH Sb₂S₃ SWITCH NODES ===
+      const meshW = meshX2 - meshX1;
+      // Mesh background
+      ctx.fillStyle = dark ? 'rgba(0, 40, 50, 0.5)' : 'rgba(224, 242, 254, 0.4)';
+      ctx.fillRect(meshX1, flowTop, meshW, flowH);
+      ctx.strokeStyle = dark ? 'rgba(0, 242, 254, 0.3)' : 'rgba(2, 132, 199, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(meshX1, flowTop, meshW, flowH);
+      ctx.setLineDash([]);
+
+      // Benes mesh label in header region
+      ctx.fillStyle = dark ? 'rgba(0, 242, 254, 0.85)' : 'rgba(2, 132, 199, 0.85)';
+      ctx.font = isMobile ? 'bold 8px sans-serif' : 'bold 10px sans-serif';
+      ctx.fillText(isMobile ? '32×32 Beneš (Sb₂S₃ Nodes)' : '32 × 32 Dilated Beneš Permutation Fabric (Sb₂S₃ Directional Couplers)', meshX1 + 6, flowTop + 14);
+
+      // Benes switch stages
+      const NUM_STAGES = 5;
+      const stageSpacing = meshW / (NUM_STAGES + 1);
+      const stageXs = [];
+      for (let s = 0; s < NUM_STAGES; s++) stageXs.push(meshX1 + stageSpacing * (s + 1));
+
+      // Update Sb₂S₃ switch states for modes
+      archSwitchStates.forEach((sw, idx) => {
+        if (archMode === 'sb2s3') {
+          // Cascading programming wave
+          const wavePos = (archTick * 0.012) % (NUM_STAGES + 2);
+          const dist = Math.abs(sw.stage - wavePos);
+          sw.phaseAnim = Math.max(0, 1 - dist * 0.5);
+          sw.on = (sw.stage + sw.pair) % 2 === (Math.floor(archTick * 0.015) % 2);
+        } else if (archMode === 'jir') {
+          sw.on = true;
+          sw.swapAnim = (sw.pair === 0 && (sw.stage === 1 || sw.stage === 2))
+            ? 0.5 + 0.5 * Math.sin(archTick * 0.06) : 0;
+        } else {
+          sw.on = true;
+          sw.phaseAnim = 0;
+          sw.swapAnim = 0;
+        }
       });
 
+      // --- Draw waveguide paths (horizontal bus lines) ---
+      for (let i = 0; i < NUM_LANES; i++) {
+        const ly = laneYs[i];
+        const isJirHot = archMode === 'jir' && (i === 1 || i === 2);
+        const isJirCold = archMode === 'jir' && (i === 0 || i === 3);
+
+        // Modulator → mesh entry waveguide
+        ctx.strokeStyle = dark
+          ? (isJirHot ? 'rgba(239, 68, 68, 0.5)' : isJirCold ? 'rgba(16, 185, 129, 0.5)' : 'rgba(0, 242, 254, 0.25)')
+          : (isJirHot ? 'rgba(239, 68, 68, 0.4)' : isJirCold ? 'rgba(16, 185, 129, 0.4)' : 'rgba(2, 132, 199, 0.2)');
+        ctx.lineWidth = isMobile ? 1.5 : 2;
+        ctx.beginPath();
+        ctx.moveTo(modX + modW, ly);
+        ctx.lineTo(meshX1, ly);
+        ctx.stroke();
+
+        // Mesh exit → APD waveguide
+        ctx.beginPath();
+        ctx.moveTo(meshX2, ly);
+        ctx.lineTo(apdX, ly);
+        ctx.stroke();
+
+        // Horizontal waveguides through mesh (between stages)
+        for (let s = -1; s < NUM_STAGES; s++) {
+          const sx = (s < 0) ? meshX1 : stageXs[s];
+          const ex = (s + 1 < NUM_STAGES) ? stageXs[s + 1] : meshX2;
+          ctx.strokeStyle = dark
+            ? (isJirHot ? 'rgba(239, 68, 68, 0.35)' : 'rgba(0, 242, 254, 0.18)')
+            : (isJirHot ? 'rgba(239, 68, 68, 0.25)' : 'rgba(2, 132, 199, 0.12)');
+          ctx.lineWidth = isMobile ? 1 : 1.5;
+          ctx.beginPath();
+          ctx.moveTo(sx, ly);
+          ctx.lineTo(ex, ly);
+          ctx.stroke();
+        }
+      }
+
+      // --- Draw Benes butterfly cross-connections & Sb₂S₃ switch diamonds ---
+      for (let s = 0; s < NUM_STAGES; s++) {
+        const sx = stageXs[s];
+        // Each stage has crossing pairs: (lane0↔lane1), (lane2↔lane3)
+        const pairs = [[0, 1], [2, 3]];
+        // For middle stages, also cross (lane1↔lane2) for true butterfly
+        if (s === 1 || s === 3) {
+          pairs.length = 0;
+          pairs.push([0, 1], [1, 2], [2, 3]);
+        } else if (s === 2) {
+          pairs.length = 0;
+          pairs.push([0, 2], [1, 3]);
+        }
+
+        pairs.forEach((pair, pIdx) => {
+          const y1 = laneYs[pair[0]];
+          const y2 = laneYs[pair[1]];
+          const midY = (y1 + y2) / 2;
+          const swIdx = s * 2 + Math.min(pIdx, 1);
+          const sw = archSwitchStates[swIdx] || { on: true, phaseAnim: 0, swapAnim: 0 };
+
+          // Cross-connection waveguides (butterfly diagonals)
+          const crossAlpha = sw.on ? 0.35 : 0.08;
+          ctx.strokeStyle = dark
+            ? `rgba(0, 242, 254, ${crossAlpha})`
+            : `rgba(2, 132, 199, ${crossAlpha * 0.8})`;
+          ctx.lineWidth = isMobile ? 1 : 1.5;
+          // Upper-to-lower cross
+          ctx.beginPath();
+          ctx.moveTo(sx - stageSpacing * 0.25, y1);
+          ctx.lineTo(sx, midY);
+          ctx.lineTo(sx + stageSpacing * 0.25, y2);
+          ctx.stroke();
+          // Lower-to-upper cross
+          ctx.beginPath();
+          ctx.moveTo(sx - stageSpacing * 0.25, y2);
+          ctx.lineTo(sx, midY);
+          ctx.lineTo(sx + stageSpacing * 0.25, y1);
+          ctx.stroke();
+
+          // === Sb₂S₃ DIRECTIONAL COUPLER DIAMOND NODE ===
+          const dSize = isMobile ? 6 : 9;
+          ctx.save();
+          ctx.translate(sx, midY);
+          ctx.rotate(Math.PI / 4);
+
+          // Node fill based on mode
+          let nodeFill, nodeStroke, nodeGlow;
+          if (archMode === 'sb2s3') {
+            if (sw.on) {
+              // Crystalline ON — amber
+              nodeFill = dark ? '#fbbf24' : '#f59e0b';
+              nodeStroke = '#fde047';
+              nodeGlow = '#fbbf24';
+            } else {
+              // Amorphous OFF — dim grey
+              nodeFill = dark ? '#374151' : '#9ca3af';
+              nodeStroke = dark ? '#6b7280' : '#d1d5db';
+              nodeGlow = '#6b7280';
+            }
+            // Phase-change programming pulse glow
+            if (sw.phaseAnim > 0.1) {
+              ctx.shadowColor = '#fbbf24';
+              ctx.shadowBlur = 12 * sw.phaseAnim;
+            }
+          } else if (archMode === 'jir') {
+            const isSwapNode = sw.swapAnim > 0.1;
+            nodeFill = isSwapNode
+              ? `rgba(239, 68, 68, ${0.5 + 0.5 * sw.swapAnim})`
+              : (dark ? 'rgba(0, 242, 254, 0.6)' : 'rgba(2, 132, 199, 0.5)');
+            nodeStroke = isSwapNode ? '#ef4444' : (dark ? '#00f2fe' : '#0284c7');
+            nodeGlow = isSwapNode ? '#ef4444' : '#00f2fe';
+            if (isSwapNode) {
+              ctx.shadowColor = '#ef4444';
+              ctx.shadowBlur = 8 * sw.swapAnim;
+            }
+          } else {
+            // GEMM — all ON, cyan
+            const pulse = 0.5 + 0.3 * Math.sin(archTick * 0.03 + s * 1.2 + pIdx * 0.5);
+            nodeFill = dark ? `rgba(0, 242, 254, ${pulse})` : `rgba(2, 132, 199, ${pulse * 0.8})`;
+            nodeStroke = dark ? '#00f2fe' : '#0284c7';
+            nodeGlow = '#00f2fe';
+            ctx.shadowColor = nodeGlow;
+            ctx.shadowBlur = 4 + 3 * Math.sin(archTick * 0.05 + s);
+          }
+
+          ctx.fillStyle = nodeFill;
+          ctx.fillRect(-dSize / 2, -dSize / 2, dSize, dSize);
+          ctx.strokeStyle = nodeStroke;
+          ctx.lineWidth = 1.2;
+          ctx.strokeRect(-dSize / 2, -dSize / 2, dSize, dSize);
+          ctx.shadowBlur = 0;
+          ctx.restore();
+
+          // Sb₂S₃ mode: show refractive index labels
+          if (archMode === 'sb2s3' && !isMobile) {
+            ctx.fillStyle = sw.on ? (dark ? '#fde047' : '#92400e') : (dark ? '#9ca3af' : '#6b7280');
+            ctx.font = 'bold 7px monospace';
+            ctx.fillText(sw.on ? 'n=3.3' : 'n=2.7', sx - 12, midY + dSize + 10);
+          }
+        });
+      }
+
+      // --- JIR mode: HOT/COLD lane labels and swap arrows ---
+      if (archMode === 'jir') {
+        const hotLanes = [1, 2];
+        const coldLanes = [0, 3];
+        hotLanes.forEach(li => {
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+          ctx.fillRect(meshX1 + 2, laneYs[li] - laneSpacing * 0.35, meshW - 4, laneSpacing * 0.7);
+          if (!isMobile) {
+            ctx.fillStyle = '#ef4444';
+            ctx.font = 'bold 9px sans-serif';
+            ctx.fillText('🔥 HOT', meshX2 - 48, laneYs[li] + 4);
+          }
+        });
+        coldLanes.forEach(li => {
+          ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+          ctx.fillRect(meshX1 + 2, laneYs[li] - laneSpacing * 0.35, meshW - 4, laneSpacing * 0.7);
+          if (!isMobile) {
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 9px sans-serif';
+            ctx.fillText('❄ COLD', meshX2 - 52, laneYs[li] + 4);
+          }
+        });
+
+        // Animated swap arrows between hot↔cold
+        const arrowX = meshX1 + meshW * 0.5;
+        const arrowAlpha = 0.5 + 0.5 * Math.sin(archTick * 0.08);
+        ctx.strokeStyle = `rgba(239, 68, 68, ${arrowAlpha})`;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        // Arrow from lane 1 → lane 0
+        ctx.beginPath();
+        ctx.moveTo(arrowX, laneYs[1] - 4);
+        ctx.lineTo(arrowX, laneYs[0] + 4);
+        ctx.stroke();
+        // Arrow from lane 2 → lane 3
+        ctx.beginPath();
+        ctx.moveTo(arrowX + 20, laneYs[2] + 4);
+        ctx.lineTo(arrowX + 20, laneYs[3] - 4);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // === PHOTON PARTICLE ANIMATION (path-following) ===
+      archPhotons.forEach(p => {
+        // Advance progress
+        p.progress += p.speed * (isStep ? 2.0 : 1.0) * archSpeed;
+
+        // Check if blocked in Sb₂S₃ mode
+        if (archMode === 'sb2s3') {
+          const stageProgress = p.progress * (NUM_STAGES + 2); // map to stages
+          const currentStage = Math.floor(stageProgress - 1);
+          if (currentStage >= 0 && currentStage < NUM_STAGES) {
+            const swIdx = currentStage * 2 + (p.lane >= 2 ? 1 : 0);
+            const sw = archSwitchStates[swIdx];
+            if (sw && !sw.on) {
+              // Photon fades at OFF switch
+              p.active = false;
+            }
+          }
+        } else {
+          p.active = true;
+        }
+
+        // Reset at APD end
+        if (p.progress >= 1.0) {
+          p.detFlash = 8; // trigger detection flash
+          p.progress = 0;
+          p.lane = Math.floor(Math.random() * NUM_LANES);
+          p.active = true;
+          p.speed = 0.003 + Math.random() * 0.002;
+        }
+
+        // Map progress to X position along the signal path
+        const totalPathLen = (meshX1 - modX - modW) + meshW + (apdX - meshX2);
+        const modOutX = modX + modW;
+        let px, py;
+
+        if (p.progress < 0.08) {
+          // Inside modulator
+          px = modOutX - modW + (p.progress / 0.08) * modW;
+          py = laneYs[p.lane];
+        } else if (p.progress < 0.92) {
+          // Through mesh region
+          const meshProgress = (p.progress - 0.08) / 0.84;
+          px = modOutX + (meshX1 - modOutX) * (meshProgress < 0.05 ? meshProgress / 0.05 : 1)
+            + (meshProgress >= 0.05 ? (meshProgress - 0.05) / 0.9 * (meshX2 - meshX1) : 0);
+          px = Math.min(px, meshX2);
+          py = laneYs[p.lane];
+
+          // Subtle lane-crossing wobble inside mesh
+          if (meshProgress > 0.1 && meshProgress < 0.9) {
+            const wobble = Math.sin(meshProgress * NUM_STAGES * Math.PI + p.lane * 1.5) * (isMobile ? 3 : 5);
+            py += wobble;
+          }
+        } else {
+          // Mesh exit → APD
+          const exitProgress = (p.progress - 0.92) / 0.08;
+          px = meshX2 + exitProgress * (apdX - meshX2);
+          py = laneYs[p.lane];
+        }
+
+        if (!p.active) {
+          // Faded/blocked photon in Sb₂S₃ OFF mode
+          ctx.globalAlpha = 0.15;
+        }
+
+        // Photon glow
+        const photonColor = (archMode === 'jir' && (p.lane === 1 || p.lane === 2))
+          ? '#ef4444' : p.color;
+
+        const grad = ctx.createRadialGradient(px, py, 1, px, py, isMobile ? 5 : 7);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.35, photonColor);
+        grad.addColorStop(1, 'rgba(0, 242, 254, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(px, py, isMobile ? 5 : 7, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // Comet trail
+        ctx.strokeStyle = photonColor;
+        ctx.lineWidth = isMobile ? 1.5 : 2;
+        ctx.globalAlpha = p.active ? 0.6 : 0.08;
+        ctx.beginPath();
+        ctx.moveTo(px - (isMobile ? 10 : 16), py);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+
+        // APD detection flash
+        if (p.detFlash > 0) {
+          p.detFlash -= (isStep ? 2 : 1);
+          ctx.save();
+          ctx.shadowColor = '#a855f7';
+          ctx.shadowBlur = 12;
+          ctx.fillStyle = `rgba(168, 85, 247, ${p.detFlash / 8})`;
+          ctx.beginPath();
+          ctx.arc(apdX + apdW / 2, laneYs[p.lane], 10, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.restore();
+        }
+      });
+
+      // === MODE STATUS TEXT ===
+      const statusY = tier2Top + tier2H - 10;
       if (archMode === 'gemm') {
         ctx.fillStyle = dark ? '#22d3ee' : '#0284c7';
         ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
-        ctx.fillText('⚡ 10 ps Optical Compute: r_out = (r_A × r_B) mod m_i', Math.min(o_ben_x + 8, w - 240), 335);
+        ctx.fillText('⚡ 10 ps Optical Compute: r_out = (r_A × r_B) mod m_i', 30, statusY);
       } else if (archMode === 'jir') {
         ctx.fillStyle = '#ef4444';
         ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
-        ctx.fillText('🔄 JIR Modulus Swap Active: Hot center tiles <-> Cold perimeter tiles', Math.max(25, Math.min(o_sb_x - 120, w - 280)), 335);
+        ctx.fillText('🔄 JIR Modulus Swap: Hot center tiles ↔ Cold perimeter tiles (214.5 ms cycle)', 30, statusY);
       } else if (archMode === 'sb2s3') {
         ctx.fillStyle = dark ? '#fbbf24' : '#d97706';
         ctx.font = isMobile ? 'bold 9px monospace' : 'bold 11px monospace';
-        ctx.fillText('💾 Sb₂S₃ Non-Volatile: Crystalline (ON, n=3.3) vs Amorphous (OFF, n=2.7)', Math.max(25, Math.min(o_sb_x - 120, w - 280)), 335);
+        ctx.fillText('💾 Sb₂S₃ Programming: Crystalline (ON, n=3.3) ↔ Amorphous (OFF, n=2.7) | 0W Hold', 30, statusY);
       }
 
       ctx.restore();
