@@ -49,13 +49,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- Highlight.js for Codebase Syntax Highlighting -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">
-    // --- Auto-Initialize on Load ---
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof loadData === 'function') loadData();
-    });
-
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <!-- Three.js & OrbitControls for Interactive 3D WebGL Strata Model -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <script>
     // Set theme immediately to avoid flash of dark content
     (function() {
@@ -553,6 +550,86 @@
       font-weight: 800 !important;
       box-shadow: 0 4px 14px rgba(0, 242, 254, 0.45) !important;
       transform: translateY(-1px);
+    }
+
+    .arch-mode-pill-toggle {
+      display: inline-flex;
+      background: var(--nav-bg);
+      padding: 3px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+    .arch-mode-pill-btn {
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .arch-mode-pill-btn:hover {
+      color: var(--text-main);
+    }
+    .arch-mode-pill-btn.active {
+      background: var(--accent-cyan) !important;
+      color: #030712 !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 8px rgba(0, 242, 254, 0.3);
+    }
+
+    .arch-webgl-wrapper {
+      position: relative;
+      width: 100%;
+      height: 520px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #020617;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      touch-action: none;
+    }
+    .arch-webgl-wrapper canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      outline: none;
+    }
+    .webgl-hint-overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(10, 15, 30, 0.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      z-index: 2;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 600px) {
+      .arch-webgl-wrapper {
+        height: 380px;
+      }
+      .webgl-hint-overlay {
+        font-size: 0.65rem;
+        padding: 4px 8px;
+        bottom: 8px;
+        left: 8px;
+      }
     }
 
     .arch-video-wrapper {
@@ -1409,49 +1486,101 @@
         <div class="card" style="overflow: hidden; max-width: 100%; margin-bottom: 1.5rem;">
           <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
             <span>🔬 3D Exploded Hardware Demonstration & Heterogeneous Strata Inspection</span>
-            <span style="font-size: 0.78rem; color: var(--accent-cyan); font-family: monospace; font-weight: normal;">60 FPS • 1080p Monolithic 3D Render</span>
+            <div class="arch-mode-pill-toggle">
+              <button type="button" class="arch-mode-pill-btn active" id="btn-3dmode-webgl" onclick="switch3DRenderMode('webgl')">
+                🕹️ Interactive 3D (WebGL)
+              </button>
+              <button type="button" class="arch-mode-pill-btn" id="btn-3dmode-video" onclick="switch3DRenderMode('video')">
+                🎥 60 FPS Video Render
+              </button>
+            </div>
           </div>
           <p style="font-size: 0.84rem; color: var(--text-muted); margin-top: -6px; margin-bottom: 12px; line-height: 1.5;">
-            Interactive structural breakdown of the <b>Project JANUS Mini-16 coprocessor</b>. Observe the 250 µm convective microchannel slim-lid, electroplated copper thermal pillars, silicon photonic mesh, and 65nm CMOS logic die. Scrub the timeline or click any stratum below to isolate cross-sectional physics.
+            Interactive structural breakdown of the <b>Project JANUS Mini-16 coprocessor</b>. Observe the 250 µm convective microchannel slim-lid, electroplated copper thermal pillars, silicon photonic mesh, and 65nm CMOS logic die. Drag to orbit 360°, scroll to zoom, adjust the explosion slider, or click any stratum below to isolate cross-sectional physics.
           </p>
 
-          <!-- 3D Video Player Viewport -->
-          <div class="arch-video-wrapper">
-            <div class="arch-video-overlay-badge" id="arch-video-badge">
-              <span class="video-indicator-dot"></span>
-              <span id="video-state-text">0.0s • Assembled Monolithic Package</span>
+          <!-- 3D WebGL Real-Time Interactive Viewport -->
+          <div id="arch-webgl-container">
+            <div class="arch-webgl-wrapper" id="archWebglWrapper">
+              <div class="arch-video-overlay-badge" id="arch-webgl-badge">
+                <span class="video-indicator-dot"></span>
+                <span id="webgl-state-text">0% • Assembled Monolithic Package</span>
+              </div>
+              <div class="webgl-hint-overlay">
+                <span>🖱️ Drag to Orbit 360°</span>
+                <span>•</span>
+                <span>📜 Scroll/Pinch to Zoom</span>
+                <span>•</span>
+                <span>↔ Right-Click to Pan</span>
+              </div>
+              <canvas id="archWebglCanvas"></canvas>
             </div>
-            <video id="janusDemoVideo" playsinline loop muted preload="auto" poster="janus_mini16_poster.jpg" ontimeupdate="onDemoVideoTimeUpdate()" onended="onDemoVideoEnded()">
-              <source src="JANUS_Mini16_Demonstration.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
 
-          <!-- Video Controls & Interactive Transport Bar -->
-          <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-              <button type="button" class="btn-action" id="arch-video-play-btn" onclick="toggleDemoVideoPlay()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
-                ▶ Play
-              </button>
-              <button type="button" class="btn-outline" onclick="jumpDemoVideo(5.2)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
-                💥 Exploded Strata (5.2s)
-              </button>
-              <button type="button" class="btn-outline" onclick="jumpDemoVideo(0.0)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
-                📦 Assembled Package (0.0s)
-              </button>
-              <button type="button" class="btn-outline" onclick="replayDemoVideo()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
-                ↺ Replay Loop (10s)
-              </button>
-              <div style="margin-left: auto; font-size: 0.84rem; font-family: monospace; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;" id="video-time-readout">
-                0.00s / 10.00s
+            <!-- WebGL Controls & Interactive Strata Explosion Slider -->
+            <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-action" id="webgl-explode-btn" onclick="toggleWebGLExplode()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
+                  💥 Explode Strata
+                </button>
+                <button type="button" class="btn-outline" id="webgl-autorotate-btn" onclick="toggleWebGLAutoRotate()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                  🔄 Auto-Rotate: ON
+                </button>
+                <button type="button" class="btn-outline" onclick="resetWebGLCamera()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                  🔍 Reset View
+                </button>
+                <div style="margin-left: auto; font-size: 0.84rem; font-family: monospace; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;" id="webgl-explode-readout">
+                  Separation: 0%
+                </div>
+              </div>
+
+              <!-- Strata Explosion Separation Range Slider -->
+              <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Assembled (0%)</span>
+                <input type="range" id="arch-webgl-slider" min="0" max="100" step="1" value="0" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onWebGLExplosionInput(this.value)">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">Exploded (100%)</span>
               </div>
             </div>
+          </div>
 
-            <!-- Scrubbing Timeline Slider -->
-            <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">0s</span>
-              <input type="range" id="arch-video-scrubber" min="0" max="10" step="0.05" value="0" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onDemoVideoScrub(this.value)">
-              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">10s</span>
+          <!-- 3D Pre-rendered Video Container (Secondary View) -->
+          <div id="arch-video-container" style="display: none;">
+            <div class="arch-video-wrapper">
+              <div class="arch-video-overlay-badge" id="arch-video-badge">
+                <span class="video-indicator-dot"></span>
+                <span id="video-state-text">0.0s • Assembled Monolithic Package</span>
+              </div>
+              <video id="janusDemoVideo" playsinline loop muted preload="auto" poster="janus_mini16_poster.jpg" ontimeupdate="onDemoVideoTimeUpdate()" onended="onDemoVideoEnded()">
+                <source src="JANUS_Mini16_Demonstration.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+
+            <!-- Video Controls & Interactive Transport Bar -->
+            <div style="margin-top: 12px; background: rgba(0, 242, 254, 0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--card-border); display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-action" id="arch-video-play-btn" onclick="toggleDemoVideoPlay()" style="padding: 6px 16px; height: 36px; font-size: 0.85rem; touch-action: manipulation; display: flex; align-items: center; gap: 6px;">
+                  ▶ Play
+                </button>
+                <button type="button" class="btn-outline" onclick="jumpDemoVideo(5.2)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                  💥 Exploded Strata (5.2s)
+                </button>
+                <button type="button" class="btn-outline" onclick="jumpDemoVideo(0.0)" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                  📦 Assembled Package (0.0s)
+                </button>
+                <button type="button" class="btn-outline" onclick="replayDemoVideo()" style="padding: 6px 14px; height: 36px; font-size: 0.85rem; border-radius: 6px; cursor: pointer; touch-action: manipulation;">
+                  ↺ Replay Loop (10s)
+                </button>
+                <div style="margin-left: auto; font-size: 0.84rem; font-family: monospace; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px;" id="video-time-readout">
+                  0.00s / 10.00s
+                </div>
+              </div>
+
+              <!-- Scrubbing Timeline Slider -->
+              <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">0s</span>
+                <input type="range" id="arch-video-scrubber" min="0" max="10" step="0.05" value="0" style="flex: 1; cursor: pointer; accent-color: var(--accent-cyan); height: 6px;" oninput="onDemoVideoScrub(this.value)">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: monospace;">10s</span>
+              </div>
             </div>
           </div>
 
@@ -3665,6 +3794,10 @@
       if (typeof renderThermalGrid === 'function' && typeof currentTileTemps !== 'undefined') {
         renderThermalGrid(currentTileTemps, currentTileStates);
       }
+      if (typeof webglScene !== 'undefined' && webglScene && typeof THREE !== 'undefined') {
+        const isDark = theme === 'dark';
+        webglScene.background = new THREE.Color(isDark ? 0x030712 : 0xf8fafc);
+      }
     }
 
     // Initialize theme state on DOM load
@@ -3734,6 +3867,10 @@
       } else if (tabId === 'arch') {
         setTimeout(() => {
           if (typeof selectArchLayer === 'function') selectArchLayer(currentArchLayer, false);
+          if (currentArchSubView === '3d' && current3DRenderMode === 'webgl') {
+            if (typeof initWebGLStrata === 'function') initWebGLStrata();
+            if (typeof resizeWebGLCanvas === 'function') resizeWebGLCanvas();
+          }
           if (currentArchSubView === '2d') {
             if (typeof initArchAnimation === 'function') initArchAnimation();
             if (typeof resizeArchCanvas === 'function') resizeArchCanvas();
@@ -4010,6 +4147,414 @@
 
     let currentArchLayer = 'siph';
     let currentArchSubView = '3d';
+    let current3DRenderMode = 'webgl'; // 'webgl' or 'video'
+
+    // --- 3D RENDER MODE SWITCHER (WebGL vs Video) ---
+    function switch3DRenderMode(mode) {
+      current3DRenderMode = mode;
+      const btnWebgl = document.getElementById('btn-3dmode-webgl');
+      const btnVideo = document.getElementById('btn-3dmode-video');
+      const containerWebgl = document.getElementById('arch-webgl-container');
+      const containerVideo = document.getElementById('arch-video-container');
+
+      if (btnWebgl && btnVideo) {
+        btnWebgl.classList.toggle('active', mode === 'webgl');
+        btnVideo.classList.toggle('active', mode === 'video');
+      }
+
+      if (mode === 'webgl') {
+        if (containerWebgl) containerWebgl.style.display = 'block';
+        if (containerVideo) containerVideo.style.display = 'none';
+        const vid = document.getElementById('janusDemoVideo');
+        if (vid && !vid.paused) vid.pause();
+        initWebGLStrata();
+        setTimeout(resizeWebGLCanvas, 40);
+      } else {
+        if (containerWebgl) containerWebgl.style.display = 'none';
+        if (containerVideo) containerVideo.style.display = 'block';
+      }
+    }
+
+    // --- THREE.JS INTERACTIVE 3D EXPLODED STRATA MODEL ---
+    let webglScene, webglCamera, webglRenderer, webglControls;
+    let webglStrataGroups = {}; // { hs2, hs1, siph, sio2, cmos }
+    let webglHighlightMesh = null;
+    let targetExplosion = 0.0;
+    let currentExplosion = 0.0;
+    let isWebglAutoRotate = true;
+    let webglInitialized = false;
+    let webglAnimFrameId = null;
+    let cameraTargetLerp = null;
+    let cameraTargetCurrent = null;
+
+    const STRATA_LAYOUT = {
+      hs2:  { baseY: 1.25, explodeDir: 1.0,  maxOffset: 4.8, focusY: 5.5,  color: 0x38bdf8, name: 'HS2 Slim-Lid' },
+      hs1:  { baseY: 0.65, explodeDir: 0.5,  maxOffset: 2.4, focusY: 2.8,  color: 0xf59e0b, name: 'HS1 Cu Matrix' },
+      siph: { baseY: 0.00, explodeDir: 0.0,  maxOffset: 0.0, focusY: 0.0,  color: 0x00f2fe, name: 'SiPh Stratum' },
+      sio2: { baseY: -0.65, explodeDir: -0.5, maxOffset: -2.4, focusY: -2.8, color: 0xa855f7, name: 'SiO₂ Buffer' },
+      cmos: { baseY: -1.25, explodeDir: -1.0, maxOffset: -4.8, focusY: -5.5, color: 0x10b981, name: 'CMOS Base Die' }
+    };
+
+    function initWebGLStrata() {
+      if (webglInitialized) return;
+      const canvas = document.getElementById('archWebglCanvas');
+      const wrapper = document.getElementById('archWebglWrapper');
+      if (!canvas || !wrapper || typeof THREE === 'undefined') return;
+
+      const width = wrapper.clientWidth || 800;
+      const height = wrapper.clientHeight || 520;
+
+      // 1. Scene & Background
+      webglScene = new THREE.Scene();
+      const dark = isDarkTheme();
+      webglScene.background = new THREE.Color(dark ? 0x030712 : 0xf8fafc);
+
+      // 2. Camera
+      webglCamera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+      webglCamera.position.set(16, 12, 18);
+
+      cameraTargetCurrent = new THREE.Vector3(0, 0, 0);
+      cameraTargetLerp = new THREE.Vector3(0, 0, 0);
+
+      // 3. Renderer
+      webglRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
+      webglRenderer.setSize(width, height);
+      webglRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      webglRenderer.shadowMap.enabled = true;
+      webglRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      webglRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+      webglRenderer.toneMappingExposure = 1.1;
+
+      // 4. Controls
+      if (typeof THREE.OrbitControls !== 'undefined') {
+        webglControls = new THREE.OrbitControls(webglCamera, canvas);
+        webglControls.enableDamping = true;
+        webglControls.dampingFactor = 0.05;
+        webglControls.maxDistance = 50;
+        webglControls.minDistance = 6;
+        webglControls.maxPolarAngle = Math.PI * 0.85;
+        webglControls.target.set(0, 0, 0);
+      }
+
+      // 5. Lighting
+      const ambientLight = new THREE.AmbientLight(dark ? 0x1e293b : 0xe2e8f0, dark ? 1.8 : 2.2);
+      webglScene.add(ambientLight);
+
+      const dirLight1 = new THREE.DirectionalLight(0xffffff, 2.0);
+      dirLight1.position.set(20, 30, 20);
+      dirLight1.castShadow = true;
+      dirLight1.shadow.mapSize.width = 1024;
+      dirLight1.shadow.mapSize.height = 1024;
+      webglScene.add(dirLight1);
+
+      const dirLight2 = new THREE.DirectionalLight(0x00f2fe, 1.2);
+      dirLight2.position.set(-20, -10, -15);
+      webglScene.add(dirLight2);
+
+      const siphGlow = new THREE.PointLight(0x00f2fe, 2.5, 20);
+      siphGlow.position.set(0, 0, 0);
+      webglScene.add(siphGlow);
+
+      // 6. Build the 5 Strata Geometries
+      buildStrataMeshes();
+
+      // 7. Highlight bounding box helper
+      const boxGeo = new THREE.BoxGeometry(10.6, 0.7, 10.6);
+      const edges = new THREE.EdgesGeometry(boxGeo);
+      webglHighlightMesh = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x00f2fe, linewidth: 2, transparent: true, opacity: 0.85 }));
+      webglHighlightMesh.visible = true;
+      webglScene.add(webglHighlightMesh);
+
+      // 8. Event listeners
+      window.addEventListener('resize', resizeWebGLCanvas);
+
+      webglInitialized = true;
+      animateWebGL();
+    }
+
+    function buildStrataMeshes() {
+      webglStrataGroups = {};
+
+      // ----------------------------------------------------
+      // Stratum 1: HS2 Convective Microchannel Slim-Lid
+      // ----------------------------------------------------
+      const hs2Group = new THREE.Group();
+      const hs2Mat = new THREE.MeshStandardMaterial({
+        color: 0x94a3b8,
+        metalness: 0.85,
+        roughness: 0.25
+      });
+      const hs2Slab = new THREE.Mesh(new THREE.BoxGeometry(10, 0.4, 10), hs2Mat);
+      hs2Slab.castShadow = true;
+      hs2Slab.receiveShadow = true;
+      hs2Group.add(hs2Slab);
+
+      const finMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.9, roughness: 0.2 });
+      const channelMat = new THREE.MeshBasicMaterial({ color: 0x0284c7 });
+      for (let i = 0; i < 9; i++) {
+        const z = -3.8 + i * 0.95;
+        const fin = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.12, 0.3), finMat);
+        fin.position.set(0, 0.24, z);
+        hs2Group.add(fin);
+
+        const channelLine = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.02, 0.15), channelMat);
+        channelLine.position.set(0, 0.21, z + 0.45);
+        hs2Group.add(channelLine);
+      }
+      hs2Group.position.y = STRATA_LAYOUT.hs2.baseY;
+      webglScene.add(hs2Group);
+      webglStrataGroups.hs2 = hs2Group;
+
+      // ----------------------------------------------------
+      // Stratum 2: HS1 Cu-Pillar Dense Thermal Micro-Matrix
+      // ----------------------------------------------------
+      const hs1Group = new THREE.Group();
+      const hs1Plate = new THREE.Mesh(
+        new THREE.BoxGeometry(9.8, 0.08, 9.8),
+        new THREE.MeshStandardMaterial({ color: 0xb45309, metalness: 0.9, roughness: 0.3 })
+      );
+      hs1Plate.position.y = 0.22;
+      hs1Group.add(hs1Plate);
+
+      // 12 × 12 Copper Micro-Pillars (144 instances via InstancedMesh)
+      const pillarCount = 144;
+      const pillarGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.44, 10);
+      const pillarMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.15 });
+      const pillarMesh = new THREE.InstancedMesh(pillarGeo, pillarMat, pillarCount);
+      pillarMesh.castShadow = true;
+      const dummy = new THREE.Object3D();
+      let idx = 0;
+      for (let r = 0; r < 12; r++) {
+        for (let c = 0; c < 12; c++) {
+          const px = -4.125 + c * 0.75;
+          const pz = -4.125 + r * 0.75;
+          dummy.position.set(px, 0, pz);
+          dummy.updateMatrix();
+          pillarMesh.setMatrixAt(idx++, dummy.matrix);
+        }
+      }
+      pillarMesh.instanceMatrix.needsUpdate = true;
+      hs1Group.add(pillarMesh);
+      hs1Group.position.y = STRATA_LAYOUT.hs1.baseY;
+      webglScene.add(hs1Group);
+      webglStrataGroups.hs1 = hs1Group;
+
+      // ----------------------------------------------------
+      // Stratum 3: SiPh Stratum (16 Residue Optical Mesh)
+      // ----------------------------------------------------
+      const siphGroup = new THREE.Group();
+      const siphSlab = new THREE.Mesh(
+        new THREE.BoxGeometry(10, 0.35, 10),
+        new THREE.MeshStandardMaterial({ color: 0x090d16, metalness: 0.75, roughness: 0.25 })
+      );
+      siphSlab.castShadow = true;
+      siphSlab.receiveShadow = true;
+      siphGroup.add(siphSlab);
+
+      // 16 Coprime Residue Tiles (4 × 4 grid)
+      const tileBorderMat = new THREE.LineBasicMaterial({ color: 0x22d3ee, transparent: true, opacity: 0.55 });
+      const wgMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      for (let tr = 0; tr < 4; tr++) {
+        for (let tc = 0; tc < 4; tc++) {
+          const tx = -3.75 + tc * 2.5;
+          const tz = -3.75 + tr * 2.5;
+
+          const tileEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(2.3, 0.02, 2.3));
+          const tileFrame = new THREE.LineSegments(tileEdges, tileBorderMat);
+          tileFrame.position.set(tx, 0.18, tz);
+          siphGroup.add(tileFrame);
+
+          for (let w = 0; w < 4; w++) {
+            const wgH = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.03, 0.06), wgMat);
+            wgH.position.set(tx, 0.19, tz - 0.75 + w * 0.5);
+            siphGroup.add(wgH);
+          }
+        }
+      }
+      siphGroup.position.y = STRATA_LAYOUT.siph.baseY;
+      webglScene.add(siphGroup);
+      webglStrataGroups.siph = siphGroup;
+
+      // ----------------------------------------------------
+      // Stratum 4: SiO₂ Thermal Decoupling Buffer & TDVs
+      // ----------------------------------------------------
+      const sio2Group = new THREE.Group();
+      const sio2Mat = new THREE.MeshStandardMaterial({
+        color: 0xc7d2fe,
+        transparent: true,
+        opacity: 0.42,
+        roughness: 0.1,
+        metalness: 0.1
+      });
+      const sio2Slab = new THREE.Mesh(new THREE.BoxGeometry(9.8, 0.5, 9.8), sio2Mat);
+      sio2Group.add(sio2Slab);
+
+      const tdvGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.52, 10);
+      const tdvMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.95, roughness: 0.2 });
+      for (let vr = 0; vr < 4; vr++) {
+        for (let vc = 0; vc < 4; vc++) {
+          const vx = -3.6 + vc * 2.4;
+          const vz = -3.6 + vr * 2.4;
+          const tdv = new THREE.Mesh(tdvGeo, tdvMat);
+          tdv.position.set(vx, 0, vz);
+          sio2Group.add(tdv);
+        }
+      }
+      sio2Group.position.y = STRATA_LAYOUT.sio2.baseY;
+      webglScene.add(sio2Group);
+      webglStrataGroups.sio2 = sio2Group;
+
+      // ----------------------------------------------------
+      // Stratum 5: CMOS Base Die (7nm FinFET Logic Layer)
+      // ----------------------------------------------------
+      const cmosGroup = new THREE.Group();
+      const cmosMat = new THREE.MeshStandardMaterial({ color: 0x022c22, metalness: 0.7, roughness: 0.35 });
+      const cmosSlab = new THREE.Mesh(new THREE.BoxGeometry(10.2, 0.5, 10.2), cmosMat);
+      cmosSlab.castShadow = true;
+      cmosSlab.receiveShadow = true;
+      cmosGroup.add(cmosSlab);
+
+      const circuitMat = new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.65 });
+      const circuitEdges = new THREE.EdgesGeometry(new THREE.BoxGeometry(9.8, 0.02, 9.8));
+      const circuitGrid = new THREE.LineSegments(circuitEdges, circuitMat);
+      circuitGrid.position.y = 0.26;
+      cmosGroup.add(circuitGrid);
+
+      // Gold BGA interconnect ball array on bottom
+      const ballGeo = new THREE.SphereGeometry(0.12, 8, 8);
+      const ballMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.95, roughness: 0.2 });
+      const ballMesh = new THREE.InstancedMesh(ballGeo, ballMat, 64);
+      let bIdx = 0;
+      for (let br = 0; br < 8; br++) {
+        for (let bc = 0; bc < 8; bc++) {
+          dummy.position.set(-4.2 + bc * 1.2, -0.28, -4.2 + br * 1.2);
+          dummy.updateMatrix();
+          ballMesh.setMatrixAt(bIdx++, dummy.matrix);
+        }
+      }
+      ballMesh.instanceMatrix.needsUpdate = true;
+      cmosGroup.add(ballMesh);
+
+      cmosGroup.position.y = STRATA_LAYOUT.cmos.baseY;
+      webglScene.add(cmosGroup);
+      webglStrataGroups.cmos = cmosGroup;
+    }
+
+    function animateWebGL() {
+      webglAnimFrameId = requestAnimationFrame(animateWebGL);
+
+      // Smooth explosion interpolation (LERP)
+      currentExplosion += (targetExplosion - currentExplosion) * 0.08;
+
+      // Update Y positions of all strata
+      for (const [key, layout] of Object.entries(STRATA_LAYOUT)) {
+        const grp = webglStrataGroups[key];
+        if (grp) {
+          grp.position.y = layout.baseY + layout.maxOffset * currentExplosion;
+        }
+      }
+
+      // Update highlight mesh position
+      if (webglHighlightMesh && currentArchLayer && STRATA_LAYOUT[currentArchLayer]) {
+        const layout = STRATA_LAYOUT[currentArchLayer];
+        const curY = layout.baseY + layout.maxOffset * currentExplosion;
+        webglHighlightMesh.position.y = curY;
+        webglHighlightMesh.visible = true;
+      }
+
+      // Smooth camera target LERP
+      if (cameraTargetCurrent && cameraTargetLerp) {
+        cameraTargetCurrent.lerp(cameraTargetLerp, 0.06);
+        if (webglControls) webglControls.target.copy(cameraTargetCurrent);
+      }
+
+      // Auto-rotation (smooth 60fps orbit)
+      if (webglControls) {
+        webglControls.autoRotate = isWebglAutoRotate;
+        webglControls.autoRotateSpeed = 0.8;
+        webglControls.update();
+      }
+
+      if (webglRenderer && webglScene && webglCamera) {
+        webglRenderer.render(webglScene, webglCamera);
+      }
+    }
+
+    function resizeWebGLCanvas() {
+      const wrapper = document.getElementById('archWebglWrapper');
+      if (!wrapper || !webglRenderer || !webglCamera) return;
+      const w = wrapper.clientWidth;
+      const h = wrapper.clientHeight;
+      if (w > 0 && h > 0) {
+        webglCamera.aspect = w / h;
+        webglCamera.updateProjectionMatrix();
+        webglRenderer.setSize(w, h);
+      }
+    }
+
+    function onWebGLExplosionInput(val) {
+      targetExplosion = parseFloat(val) / 100.0;
+      updateWebGLExplosionUI(targetExplosion);
+    }
+
+    function setWebGLExplosion(factor) {
+      targetExplosion = Math.min(Math.max(factor, 0.0), 1.0);
+      const slider = document.getElementById('arch-webgl-slider');
+      if (slider) slider.value = Math.round(targetExplosion * 100);
+      updateWebGLExplosionUI(targetExplosion);
+    }
+
+    function toggleWebGLExplode() {
+      if (targetExplosion < 0.5) {
+        setWebGLExplosion(1.0);
+      } else {
+        setWebGLExplosion(0.0);
+      }
+    }
+
+    function updateWebGLExplosionUI(factor) {
+      const pct = Math.round(factor * 100);
+      const readout = document.getElementById('webgl-explode-readout');
+      if (readout) readout.innerText = `Separation: ${pct}%`;
+      const badgeText = document.getElementById('webgl-state-text');
+      if (badgeText) {
+        if (pct === 0) badgeText.innerText = '0% • Assembled Monolithic Package';
+        else if (pct === 100) badgeText.innerText = '100% • Fully Exploded Strata Inspection';
+        else badgeText.innerText = `${pct}% • Partially Separated Strata`;
+      }
+      const btn = document.getElementById('webgl-explode-btn');
+      if (btn) {
+        btn.innerHTML = factor > 0.5 ? '📦 Assemble Package' : '💥 Explode Strata';
+      }
+    }
+
+    function toggleWebGLAutoRotate() {
+      isWebglAutoRotate = !isWebglAutoRotate;
+      const btn = document.getElementById('webgl-autorotate-btn');
+      if (btn) {
+        btn.innerText = isWebglAutoRotate ? '🔄 Auto-Rotate: ON' : '⏸ Auto-Rotate: OFF';
+      }
+    }
+
+    function resetWebGLCamera() {
+      if (!webglCamera || !webglControls) return;
+      webglCamera.position.set(16, 12, 18);
+      if (cameraTargetLerp) cameraTargetLerp.set(0, 0, 0);
+      if (cameraTargetCurrent) cameraTargetCurrent.set(0, 0, 0);
+      webglControls.target.set(0, 0, 0);
+      webglControls.update();
+    }
+
+    function focusWebGLLayer(layerKey, autoSeparate = true) {
+      if (!STRATA_LAYOUT[layerKey]) return;
+      const layout = STRATA_LAYOUT[layerKey];
+      if (autoSeparate && targetExplosion < 0.35) {
+        setWebGLExplosion(0.70);
+      }
+      if (cameraTargetLerp) {
+        cameraTargetLerp.set(0, layout.focusY * (targetExplosion > 0.1 ? targetExplosion : 0.2), 0);
+      }
+    }
 
     function switchArchSubView(subViewId) {
       currentArchSubView = subViewId;
@@ -4023,6 +4568,12 @@
       if (subViewId === '3d') {
         if (panel3d) panel3d.style.display = 'block';
         if (panel2d) panel2d.style.display = 'none';
+        if (current3DRenderMode === 'webgl') {
+          setTimeout(() => {
+            initWebGLStrata();
+            resizeWebGLCanvas();
+          }, 30);
+        }
       } else {
         if (panel3d) panel3d.style.display = 'none';
         if (panel2d) panel2d.style.display = 'block';
@@ -4068,8 +4619,10 @@
         `).join('');
       }
 
-      // If user intentionally clicked, and video is assembled, jump to 5.2s exploded view so user sees the layers
-      if (jumpToExploded) {
+      // Synchronize 3D viewport
+      if (current3DRenderMode === 'webgl') {
+        focusWebGLLayer(layerKey, jumpToExploded);
+      } else if (jumpToExploded) {
         const vid = document.getElementById('janusDemoVideo');
         if (vid && (vid.paused || vid.currentTime < 2.0 || vid.currentTime > 8.0)) {
           jumpDemoVideo(5.2);
@@ -6159,6 +6712,9 @@
       selectRoadmapModel('1A');
       selectArchLayer('siph', false);
       updateVideoUI(0, 10.0);
+      setTimeout(() => {
+        if (typeof initWebGLStrata === 'function') initWebGLStrata();
+      }, 50);
 
       // Active Heartbeat to keep backend server alive during interactive simulation
       setInterval(() => {
